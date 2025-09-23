@@ -1,0 +1,87 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Systems Identification - 111106}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+\subsection{Concepts}
+This course will explore a few broad topics listed below
+\begin{itemize}
+    \item Systems Identification
+    \item State Estimation
+\end{itemize}
+The first section of the class will start with systems identification, we will then go over state estimation at the end.
+
+\subsection{What is Systems Identification?}
+Identifying a system deals with building a model with the goal of representation a system.
+State equations, transfer functions, and frequency/step responses are mathematical ways that we can describe a system.
+Graphical representations can also be useful to identify a system in a visual way.
+Often, depending on the system, a photo or diagram of a system can be a useful way to extract information and gather insights.
+We can also have code representations which attempt to model system logic through programmatic rules.
+Physical models exist such as that of a scale representation attempts to simulate a system through simplification and minimizing the scale model of the actual system.
+
+A dynamic system is a system that varies over time and doesn't just have an input and output but evolves over time.
+On the other hand, a static system is a system that is only dependent on a transformation from its inputs to its outputs.
+By building models, we can attempt to represent these systems in a few ways.
+Continuous time models attempt to divide time into the true continuous time stream, where discrete times bucket time into discrete intervals.
+There are also linear and nonlinear models that are used to represent systems, sometimes regardless of their linearity.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=latex, thick, node distance=2.4cm]
+% Static system
+\node (u_s) {$u(t)$};
+\node[draw, rectangle, minimum width=1.8cm, minimum height=1.0cm, right=1.2cm of u_s] (S) {$f(\cdot)$};
+\draw[->] (u_s) -- (S);
+\node[right=1.2cm of S] (y_s) {$y(t)$};
+\draw[->] (S) -- (y_s);
+\node[below=0.25cm of S] {Static: $y(t)=f\!\big(u(t)\big)$};
+
+% Dynamic system
+\node[right=4.4cm of y_s] (u_d) {$u(t)$};
+\node[draw, rectangle, minimum width=2.2cm, minimum height=1.0cm, right=1.2cm of u_d] (D) {$G$};
+\draw[->] (u_d) -- (D);
+\node[right=1.2cm of D] (y_d) {$y(t)$};
+\draw[->] (D) -- (y_d);
+
+% State feedback loop (memory)
+\node[draw, circle, minimum size=6mm, above=1.0cm of D] (x) {$x$};
+\draw[->] (x) -- (D);
+\draw[->] (D) |- +(0,1.05) -| (x);
+
+\node[below=0.25cm of D, align=center] {Dynamic: $\dot x(t)=g\!\big(x(t),u(t)\big)$\\$y(t)=h\!\big(x(t),u(t)\big)$};
+\end{tikzpicture}
+\caption{Static system: output depends only on present input. Dynamic system: output depends on present input and an internal state that evolves over time.}
+\end{figure}
+
+\subsection{Why Create Models?}
+After creating model representations of systems, we can use the model for various reasons.
+One of which is simulation. 
+After creating a model, we can use a simulation to approximate and identify how a system would behave under different parameters without spending the real life physical cost associated with doing so.
+We can also use a model to tune individual parameters that we have control over in the system and better design our system.
+Models can also be used to design controls and vary our input parameters better.
+\begin{itemize}
+    \item Simulation
+    \item Parameter Tuning (System Design)
+    \item Controls
+    \item State Estimation
+    \item Fault Detection
+\end{itemize}
+
+
+
+\end{document}
