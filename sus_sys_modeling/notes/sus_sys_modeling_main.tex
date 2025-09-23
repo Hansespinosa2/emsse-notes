@@ -1,0 +1,63 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Sustainable Systems Modeling - 114543}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction to System Theory}
+A \textbf{system}, denoted as a box with an $S$ inside depicted below in Figure \ref{figure:system}, is a set of entities interacting with each other and with the external environment according to different laws, relationships, and activities.
+
+\begin{figure}[h]
+  \centering
+    \begin{tikzpicture}[baseline=(S.center)]
+    \node[draw, rectangle, minimum width=1cm, minimum height=0.8cm] (S) {$S$};
+    \draw[->] ($(S.west)+(-1,0)$) -- node[above] {$u$} (S.west);
+    \draw[->] (S.east) -- node[above] {$y$} ($(S.east)+(1,0)$);
+    \end{tikzpicture}
+  \caption{Abstract system.}
+  \label{figure:system}
+\end{figure}
+
+A system \textit{reacts} to an external action by an input signal denoted $u$.
+The input comes from the outside and impacts the system in some way.
+The system then produces an output signal $y$.
+Generally, a system's output signal depends on the input signal and a combination of the system's inherent physical and behavioural features.
+
+There is a third set of quantities that characterize the system which represents the full information on the system at an arbitrary moment in time.
+
+\begin{figure}[h]
+  \centering
+    \begin{tikzpicture}[baseline=(S.center)]
+    \node[draw, rectangle, minimum width=1cm, minimum height=0.8cm] (S) {$S$};
+    \draw[->] ($(S.west)+(-1,0)$) -- node[above] {$u$} (S.west);
+    \draw[->] (S.east) -- node[above] {$y$} ($(S.east)+(1,0)$);
+    \draw[<->, red] ($(S.south)+(0,-0.5)$) -- node[right] {$x$} (S.south);
+    \end{tikzpicture}
+  \caption{Abstract system with a state $x$}
+  \label{figure:system_w_state}
+\end{figure}
+
+The state vector is denoted $x$.
+These values $u,y,x$ are all typically time dependent.
+\begin{itemize}
+  \item $x(t), u(t), y(t)$
+\end{itemize}
+
+\begin{equation}
+  \textbf{x}(t) \in X \subseteq \mathbb{R}^n
+\end{equation}
+
+\end{document}
