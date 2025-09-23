@@ -4,7 +4,7 @@
 %% Define the include path
 \makeatletter
 \providecommand*{\input@path}{}
-\g@addto@macro\input@path{{include/}{../include/}}
+\g@addto@macro\input@path{{include/}{../../include/}}
 \makeatother
 
 \usepackage{../../include/akazachk}
@@ -12,13 +12,51 @@
 \title{Machine Learning and Deep Learning - 86798}
 \author{Andres Espinosa}
 \begin{document}
+\pgfplotsset{compat=1.18}
 \maketitle
 
 \tableofcontents
 
 \section{Module 1 - Prerequisites}
 
+\subsection{Introduction}
+Most animals pass information along through the genetic Darwin process.
+Humans have the unique ability to encode information in writing, symbols, and computers to manipulate and pass information to others in addition to passing genes along.
+Artificial intelligence has been created to manipulate information using statistics and hopes to emulate human intelligence.
+Currently, artificial intelligence is narrow in its applications and is built to solve specific problems.
+In the future, we hope to create general intelligence that is able to perform the similar breadth of tasks that humans can.
 
+Machine learning aims to use data to build representations and learn from it.
+Deep learning uses specific data that has general biological properties such as: chemistry, image data, audio data, etc.
+A subsection of deep learning is GenAI, which aims to produce data that mimics what humans are capable of outputting.
+
+Humans have two frameworks for thinking and learning:
+\begin{itemize}
+    \item Slow Thinking: Taking the time to build connections, comprehension, and full understanding of something. This process is expensive and therefore not done very frequently.
+    \item Fast Thinking: Using the brains capacity to mirror to imitate without needing to fully comprehend.
+\end{itemize}
+A big advent of machine learning was Turing's push to utilise machines to engage in fast thinking to imitate smaller human tasks as opposed to the previous approach in attempting to build general AI.
+
+In current machine learning, we have a problem that we want to solve conditional on data that we have collected.
+We then pursue the solution of this problem with gradient descent.
+The world undergoes the process of \textbf{datafication} where we attempt to collect data on as much as we can in our daily lives.
+This leads to graphs, images, and text that is all collected and able to be used to predict from.
+
+Deep learning allows us to take these more complex representations and use vectors to approximately imitate the data.
+Things like convolutions and attention mechanisms allow us to exploit a property of the data.
+Convolutions exploit the fact that indices in a matrix (or pixels in a photo) tend to be highly correlated with each other.
+Attention allows us to assign a relation to sections of the data that are far away from each other but are still correlated with each other.
+
+AlphaGo and RL was an inflection point in AI history as it was able to predict and generate a human-like output from data.
+ChatGPT functions by encoding natural language into different tokens and then predicting the next token given the input vector of inputted tokens.
+It has a built in recursion in a way by using its own output tokens as its next input to continue a sentence after predicting the initial token.
+
+Diffusion models work by introducing small amounts of noise to images or data and predicting the reconstructed image from noise.
+
+Now that models are so massive and trained multi-modally on text, images, speeches, etc, we have foundationa models that are adapted to different tasks such as captioning, recognition, and imitation.
+The way models take in multiple modalities is by turning them into vector representations that are all fed into an LLM.
+Retrieval Augmented Generation (RAG) is the way that LLMs are now able to search and retrieve information that is current.
+Models will estimate the necessity of querying the internet based off your prompt and then have a built-in way to handle these queries where it goes online and adds that information to its context.
 
 
 \end{document}
