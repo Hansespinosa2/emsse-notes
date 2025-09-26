@@ -40,3 +40,37 @@ In simpler terms, $re^{j\theta}$ represents a point $z$ that has a distance $r$ 
 
 When adding or subtracting complex numbers, the cartesian form is preferred due to its simplicity.
 Conversely, for multiplying, dividing, or raising to a power, the polar form simplifies greatly compared to the cartesian form.
+
+\subsubsection{Sinusoids}
+For a sinusoid $x(t) = C \cos (2\pi f_0 t + \theta)$, we know that the sinusoid repeats itself every $2\pi n$ where $n \in \mathbb{Z}$.
+The section $f_0 t$ is an integer whenever $t$ changes by $1/f_0$.
+Commonly, $f_0$ is known as the frequency and $T_0 = \frac{1}{f_0}$ is known as the period.
+$C$ is the amplitude and $\theta$ is the phase.
+
+The variable $w_0$ is used frequently (radian frequency) to express $2\pi f_0$.
+$w_0$ has units in radians whereas $f_0$ has units in hertz.
+This leads to the following sinusoid representation
+\begin{equation}
+    x(t) = C \cos (w_0 t + \theta)
+\end{equation}
+where the the period $T_0 = \frac{2 \pi}{w_0}$.
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/example_sinusoids.png}}
+  \caption{Some examples of different sinusoids}
+  \label{fig:example_sinusoids}
+\end{figure}
+
+It is important to remember that getting from $\sin$ to $\cos$ is as simple as shifting by $\pi/2$
+\begin{equation}
+    C \cos(w_0 t - \pi/2) = C \sin w_0 t
+\end{equation}
+
+$\sin w_o t$ lags $\cos w_0 t$ by $\pi/2$.
+
+We can add two sinusoids that have the same frequency easily.
+
+\begin{equation}
+    C \cos \theta \cos w_0 t - C \sin \theta \sin w_0 t = C \cos (w_0 t + \theta) = a \cos w_0 t + b \sin w_0 t 
+\end{equation}
+
