@@ -1,0 +1,119 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Computer Security - 80156}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+\subsection{Motivation of Computer Security}
+As computers and the relationships between them have evolved, computers have grown to be an interconnected network of devices, machines, data, transactions, and other systems.
+By limiting the access that different computers and different users have to these systems we can enforce a level of protection across this network.
+We are therefore motivated to improve these security processes and protocols to ensure we can protect computer and information systems across the world with little barrier of entry.
+
+\subsection{What is Information Security?}
+\textbf{Computer Security} deals with the prevention and detection of \textit{unauthorized} actions by user of a computer system.
+The term \textit{authorization} allows us to crucially define different actors and agents that we \textit{authorize} to use our system.
+A simple example, we create our phone password and at times we share it with one or two other trusted users, these users then become \textit{authorized} users of the system.
+This in effect becomes our \textit{security policy}, a set of rules and information that dictate who (or what) may perform which actions in a computer system.
+
+\textbf{Information Security} is even more general, it deals with \textit{information} independent of computer systems.
+Information can be any type of numbers, facts, or words displayed or communicated by a computer system.
+Typically, information is important strings, data, or summaries that should be protected. 
+
+To protect our right of proctection of self, we have developed these fields of information and computer security accordingly.
+
+Some key concepts of information security include the following:
+
+\begin{itemize}
+    \item \textbf{Security} concerns the protection of \textbf{assets} from \textbf{threats}
+    \item \textbf{Threats} are the potential of abuse of \textbf{assets}
+    \item \textbf{Owners} value their \textbf{assets} and want to protect them
+    \item \textbf{Threat agents} also value \textbf{assets}, and serve as adversarial entities that seek to abuse an owner's \textbf{assets}
+    \item Although many \textbf{threat agents} may exist, those that the \textbf{owner} is able to determine as significant are \textbf{risks}
+    \item \textbf{Risks} can result in numerous \textbf{vulnerabilities} to a system, and \textbf{countermeasures} can be employed to reduce them and ideally minimize them (keeping in mind a tradeoff with feasibility and expense)
+\end{itemize}
+
+\subsection{Security Properties}
+There are a few properties that define how secure an information or computer system is.
+
+\begin{enumerate}
+    \item \textbf{confidentiality} information is not learned by unauthorized principals
+    \item \textbf{integrity} data has not been (maliciously) altered
+    \item \textbf{authentication} principals or data origin can be identified accurately
+    \item \textbf{availability} data/services can be accessed when desired
+    \item \textbf{accountability} actions can be trace to responsible principals
+\end{enumerate}
+
+Systems typically require a great deal of protection on these properties holistically throughout the system.
+We can't narrow in or tunnel vision to a specific property (confidentiality, integrity, etc) on a specific part of the system (hardware, software, etc) as security is a whole system issue.
+In order to protect these properties, we implement protection countermeasures in the following section.
+
+\subsubsection{Countermeasures}
+\textbf{Prevention}. 
+The goal of the prevention countermeasure is to intelligently design the system and employ appropriate security technologies to prevent security breaches from occurring in the first place.
+For example, a firewall set up to prevent external access to corporate intranets which immediately checks and forces appropriate credentials login before a user accesses the intranet.
+
+\textbf{Detection}.
+In the event of a security breach, we try to ensure that it will be detected.
+Logging and MACs (file hashes to detect alteration) are primary methods of detection to identify when a security breach has occurred.
+There exist intrusion detection systems which actively watch for intruders which are more common detection methods in practice.
+
+\textbf{Response}.
+In the event of a secuirty breach, we must respond or recover the assets.
+Responses range from restoring backups through to informing appropriate concerned parties or law-enforcement agencies.
+
+\subsubsection{Protecting Properties}
+\textbf{Confidentiality}, in general, is concerned with an unauthorized learning of information.
+Clearly, this can mean many different things in different systems and agents.
+One such example can be someone using unauthorized access to read data they otherwise would not be able to do.
+Confidentiality presumes a notion of an authorized party, or more generally, a \textit{security policy} with rules that dictate who or what can access our data (and appropriate when/where conditions for that access).
+Confidentiality is also closely related to the ideas of privacy and secrecy, the former generally meaning confidentiality for individuals and the latter meaning confidentiality for organizations or groups of individuals.
+For example, a medical record obtained without your consent is a confidentiality breach that infringes on your privacy.
+\\ \\
+\textbf{Integrity}, in the context of computer security, means the ability of the system's information to be maliciously altered by someone who is not authorized to do so.
+Integrity can be thought of as the \textit{write} counterpart to confidentiality's \textit{read}.
+An example could be a payment that was maliciously altered and increased from 100 euro to 10.000 euro.
+\\ \\
+\textbf{Authentication} is verification of the identity of a person or system.
+In the event that a system wishes to grant access to certain individuals while simultaneously restricting access to others, authentication is a crucial piece with an access control system.
+Different methods of authentication can be: entrycards, RFID, passwords, fingerprint, passkeys, etc.
+Depending on the system, different checking methods can be used: either implicity or explicitly checked.
+We can have a process running in the background that ensures that a user is logged in at each new HTTP request, or we can force the user to login each time they enter a site.
+Different authentication methods can be compounded on each other as well to implicitly and explicitly check in multiple ways to increase the level of security.
+For example, we could run an explicit username and password check to have a user login, then implicitly verify their status as a "subscribed" member.
+\\ \\
+\textbf{Availability} ensures that a service can be accessed in a reliable and timely way.
+Different systems require different levels of availability depending on their purposes.
+A threat to availability covers many different kinds environmental events (fire, power outage, etc) and also incidental malicious attacks (virus, DoS attacks)
+By ensuring availability we attempt to prevent \textit{denial of service} (DoS) attacks, as much as possible.
+An example violation of the availability property is a deadly distributed DoS attack against an on-line service to render it impossible to be used.
+\\ \\
+\textbf{Accountability} means that actions are recorded and can be traced to the party responsible.
+When prevention methods and access controls fail (or are too expensive), we can fall back to detection: keeping a \textit{secure audit trail} is important so that actions affecting security can be traced back to the responsible party.
+If the level of accountability is strong enough, it is \textit{non-repudiation}, when a party does not have a plausible deniability to that action.
+Logs must be safe and should not be able to be tampered with so are often sent to a location that is isolated and append-only.
+
+\subsection{Implementing a Security Solution}
+\begin{itemize}
+    \item A \textbf{security analysis} surveys the threats which pose risks to assets, and then proposes policy and solutions at an appropriate cost.
+    \item A \textbf{threat model} documents the possible threats to a system, imagining all the vulnerabilities which might be exploited.
+    \item A \textbf{risk assessment} studies the likelihood of each threat in the system environment and assigns a cost value, to find the risks.
+    \item A \textbf{security policy} addresses the threats, and describes a coherent set of \textit{countermeasures}.
+    \item This allows a \textbf{security solution} to be designed, deploying appropriate technologies at an appropriate cost.
+          Partly this is a budgeting exercise; but it's also important to spend effort in the right place.
+\end{itemize}
+
+\end{document}
