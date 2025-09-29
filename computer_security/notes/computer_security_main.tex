@@ -116,4 +116,51 @@ Logs must be safe and should not be able to be tampered with so are often sent t
           Partly this is a budgeting exercise; but it's also important to spend effort in the right place.
 \end{itemize}
 
+\subsection{Cyber-risk}
+Risk is the way that we determine how harmful and likely a threat is.
+With a given event $e$, the risk of that event is determined by its likelihood and impact.
+\begin{equation}
+    \text{Risk}_e = \text{Likelihood}_e \times \text{Impact}_e
+\end{equation}
+
+A system/organization may have numerous potential events $e$ that pose security risks.
+We can evaluate and sum all individual risks to identify the total risk exposure to a system.
+The treatment and mitigation of risks is naturally a cost/time tradeoff with security.
+It is therefore necessary to evaluate risks sufficiently to identify which countermeasures are worth the cost of implementation and deployment.
+
+\subsubsection{Cyber-risk Management}
+NIST has a framework for managing cyber-risk that divides into 5 core function.
+\begin{itemize}
+    \item Recover
+    \item Identify: Develop an organizational understanding to manage cybersecurity risk to systems.
+    \item Protect: Develop and implement the appropriate safeguards to ensure delivery of service.
+    \item Detect: 
+    \item Respond
+\end{itemize}
+
+\textbf{Identify}: Develop an organizational understanding to manage cybersecurity risk to systems.
+Identifying a risk is important to manage cyber-risk because we can establish policies that build roles and responsibilities for users.
+Things like dual factor authentication is a way to increase the governance in our identification process.
+
+\textbf{Protect}: Develop and implement the appropriate safeguards to ensure delivery of service.
+There are many systems put in place to protect a system.
+\begin{itemize}
+    \item Firewall: A firewall is a line of defense that aims to guard the junctions of a piece of digital infrastructure. 
+          By protecting these crucial areas and ensuring that data sent follows the security policy, we can decrease the risks associated with not following our security policy.
+    \item Anti-virus: An anti-virus is a program that automatically scans files in a network for any sources of potential harm.
+    \item Intrusion Prevention Systems: An IPS polices a network and monitors traffic to actively block any malicious activity.
+    \item Identity and Access Management Systems: An IAMS is a program set up to centrally contain users and their permissions. 
+          We then validate and ensure that all users in a system are limited to their permissions and are present in the system.
+\end{itemize}
+
+\textbf{Detect}: Develop and implement the appropriate activities to identify the occurence of a cybersecurity event.
+Intrusion detection systems exist that do not actively block actions but attempt to detect and flag any potentially harmful intrusions.
+
+\textbf{Respond}: Develop and implement the appropriate activities to take action regarding a detected cybersecurity event.
+Do we have a system in place to quickly respond to a cybersecurity incident?
+
+\textbf{Recover}: Develop and implement the appropraite activities to maintain plans for resilience and to restore any capabilities or services that were impaire due to a cybersecurity event.
+Backups are an important way for us to quickly recover and revert back to a version prior to the cybersecurity incident.
+
+
 \end{document}
