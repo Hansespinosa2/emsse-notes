@@ -83,6 +83,113 @@ Models can also be used to design controls and vary our input parameters better.
     \item Prediction
 \end{itemize}
 
+\subsection{Models}
+Different properties exist that divide models into distinct categories that inform their development and characteristics.
+\begin{itemize}
+    \item Discrete-time vs Continuous: Discrete timesteps $k \in \mathbb{Z}$ vs a continuous time frame $t \in \mathbb{R}$.
+    \item Time-varying vs Invariant: A time-varying model has properties that change over time where as a time-invariant model does not evolve or change over time.
+    \item Parametric vs Non-Parametric: A parametric model has a finite number of parameters that can be linear or non-linear.
+    \item Linear vs Non-Linear: Most systems are non-linear but we can use linear models to approximate or non-linear models to attempt to model a higher degree of complexity.
+\end{itemize}
+
+\subsection{Linear Models}
+
+\subsubsection{Box Car Example}
+
+The system depicted in Figure \ref{fig:box_car} is a linear time-invariant system.
+The spring acts with $Kp$ and the dampener counteracts it with $Cv$
+\begin{equation}
+    Ma = F - Kp - Cv
+\end{equation}
+By changing this equation where $F = u(t)$ is our input which represents our input force  and $p = y(t)$ is our output which represents the position of the car.
+\begin{equation}
+    M y^{\prime \prime} + C y^\prime + K y = u 
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=latex, thick, node distance=1.5cm]
+% Car
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1.5cm] (car) {Box};
+
+% Spring
+\draw[decorate, decoration={coil, aspect=0.6, segment length=4mm, amplitude=2mm}] 
+    (car.west) -- ++(-1.5cm, 0) node[midway, above] {Spring};
+
+% Damper (parallel to spring)
+\draw[thick] (car.west) ++(-1.5cm, -0.5cm) -- ++(-0.5cm, 0) 
+    node[midway, below] {Damper};
+\draw[thick] (car.west) ++(-1.5cm, -0.5cm) -- ++(0, 1cm);
+\draw[thick] (car.west) ++(-2cm, -0.5cm) -- ++(0, 1cm);
+\draw[thick] (car.west) ++(-2cm, 0) -- ++(0.5cm, 0) 
+    node[midway, above] {};
+
+\draw[thick] (car.west) ++(-2cm, -0.5cm) -- ++(2cm, 0cm);
+\draw[thick, fill=gray!30] (car.west) ++(-1cm, -0.75cm) rectangle ++(0.5cm, 0.5cm);
+
+% Force
+\draw[->] (car.east) -- ++(1.5cm, 0) node[midway, above] {$F$};
+\end{tikzpicture}
+\caption{Box car diagram with a spring and a parallel damper on the left, and a pulling force on the right.}
+\label{fig:box_car}
+\end{figure}
+
+A linear system has this equation $y(t) = y_f(t) + y_0 (t) $.
+There are two special scenarios for a linear system:
+One where the initial conditions are zero and we force an input to directly map to the output (forced output $y_f$),
+and one where no input is ever forced into the system but the initial condition is not zero (free output $f_0$).
+
+A property of linear systems is that, in the context of a forced output, any input can be represented as a linear combination of other inputs and the output will be the same linear combination of the corresponding outputs.
+
+More simply, consider $x(0) = 0$ (initial state/conditions is null/zero), the following is a property of linear systems.
+
+For a $u_1(t) \rightarrow y_1(t)$ and $u_2(t) \rightarrow y_2(t)$ and two scalars $\alpha, \beta$
+
+\begin{equation}
+    u(t) = \alpha u_1(t) + \beta u_2(t) \implies y_f(t) = \alpha y_1(t) + \beta y_2(t)
+\end{equation}
+
+\subsubsection{System Vs Model}
+In the example in Figure \ref{fig:box_car}, it is easy to see that this model isn't a perfect representation of the actual system.
+Friction is an important component that would introduce complexity and non-linearity.
+$S = M(\theta)$ or $S=M$ means that for the purpose of the math exercise, the system is perfectly represented by its model and its parameters.
+
+\subsubsection{Circuit Model - Nonlinear}
+As an example, we can have a small system that is a battery - resistor - capacitor - ground circuit in series.
+
+\begin{figure}[h]
+\centering
+\begin{circuitikz}[american]
+    % Battery
+    \draw (0,0) to[battery, l=$V_b(t)$] (0,2)
+              to[short] (2,2)
+              to[R, l=$R$] (4,2)
+              to[short] (4,1)
+              to[C, l=$C$] (4,-1)
+              to[short] (2,-1)
+              to[short] (0,-1)
+              to[short] (0,0);
+    % Label for capacitor voltage
+    \node at (4.5, 0) {$V_c(t)$};
+\end{circuitikz}
+\caption{Battery-resistor-capacitor circuit in series.}
+\label{fig:circuit_model}
+\end{figure}
+
+\begin{equation}
+    V_b(t) = R i(t) + V_c (t)
+\end{equation}
+This equation can be turned into a model by having the input be the battery voltage inputted and the output be the voltage of the capacitor.
+\begin{equation}
+    u(t) = y(t) + RC y^\prime(t)
+\end{equation}
+
+This isn't a linear system since there will be a breaking point that will explode the capacitor if overfilled with voltage.
+Although our linear model is an approximation for this more complex system, this can generally be enough for a lot of applications.
+The system will frequently be "linear enough" when values are reasonably constrained or small.
+
+
+
 \include{extra/sys_n_sig}
 
 \end{document}
