@@ -162,5 +162,66 @@ Do we have a system in place to quickly respond to a cybersecurity incident?
 \textbf{Recover}: Develop and implement the appropraite activities to maintain plans for resilience and to restore any capabilities or services that were impaire due to a cybersecurity event.
 Backups are an important way for us to quickly recover and revert back to a version prior to the cybersecurity incident.
 
+\section{Cryptography}
+
+\subsection{Introduction}
+
+Preserving information and its security as we pass it along is one of the oldest cybersecurity problems.
+As we open channels between communication partners, we want to make sure that we keep the information intact and untampered with.
+How do we turn \textbf{untrustworthy channels} into \textbf{trustworthy} ones?
+Cryptography is the enabling technology that allows us to preserve the confidentiality, integrity, and authentication as we pass information.
+
+Cryptology is the study of secret writing, steganography is the science of hiding messages in other messages, and cryptography is the science of secret writing.
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/cryptography_diagram.png}}
+  \caption{A diagram of the workings of cryptography}
+  \label{fig:cryptography_diagram}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/general_cryptography_schema.png}}
+  \caption{The general cryptography schema}
+  \label{fig:general_cryptography_schema}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Security depends on secrecy of the key, not of the algorithm}
+    \item An algorithm is symmetric if key1 is equal to key2 or are easily derived from each other.
+    \item An algorithm can be asymmetric or public key if they are different keys that cannot be derived frome ach other or there is one key that is public and can be published without compromising the private key.
+\end{itemize}
+
+Communicating the key is crucial to occur over a secure channel and is one of the fundamental problems of cybersecurity.
+
+There exist two classifications of security: unconditional and conditional.
+Unconditional security means that a system is secure even if an adversary has infinite computing power.
+This occurs when the ciphertext provides insufficient information to uniquely determine the corresponding plaintext.
+Conditional security entails an adversary having a theoretic ability to calculate the plaintext from the ciphertext, however this would require more power than any adversary would realistically have.
+
+A brute-force attack is a method of attempting to decrypt which would involve trying every key.
+
+There are a few kinds of attacks.
+A \textbf{ciphertext only} attack starts with the cipher text given and attempts to deduce the original plaintext message.
+Given $C_1 = E_k (M_1), \dots, C_n E_k (M_n)$ deduce $M_1, \dots, M_n$.
+Another type of attack is a \textbf{known plaintext} attack, where the attacker knows the plaintext message and the cipher text.
+Their goal is to get the key or to compute the algorithm to be able to decrypt future messages even when they do not have the future plaintext.
+Given $M_1, C_1 = E_k (M_1), \dots, M_n, C_n E_k (M_n)$ deduce $M_{n+1} from C_{n+1} = E_k (M_{n+1})$.
+
+\subsection{Mathematical formulation}
+\begin{itemize}
+    \item $A$, is the alphabet, the finite set of characters.
+    \item $M \subseteq A^*$ is the message space. $\textbf{M} \in M $ is a plaintext message.
+    \item $C$ is the ciphertext space, whose alphabet could differ from $M$.
+    \item $K$ denotes the key space of keys.
+    \item Each $e \in K$ determines a bijective function from $M \to C$, denoted by $E_e$. $E_e$ is the encryption function.
+    \item Similarly, for each $d \in K$, $D_d$ (the decryption function) denotes a bijection from $C \to M$.
+\end{itemize}
+
+An encryption scheme or cipher consists of an encrypting set $\{ E_e | e \in K \}$ and a corresponding decrypting set $ \{ D_d | d \in K \}$ with the property that for each $e \in K$ there is a unique $d \in K$ such that $D_d = E_e^{-1}$
+\begin{equation}
+    D_d(E_e(m)) = m, \quad \forall m \in M
+\end{equation}
+
+The keys $(e,d)$ form a key pair.
 
 \end{document}

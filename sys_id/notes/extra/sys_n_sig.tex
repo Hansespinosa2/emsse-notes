@@ -74,3 +74,31 @@ We can add two sinusoids that have the same frequency easily.
     C \cos \theta \cos w_0 t - C \sin \theta \sin w_0 t = C \cos (w_0 t + \theta) = a \cos w_0 t + b \sin w_0 t 
 \end{equation}
 
+\subsubsection{Exponentially-Decaying Sinusoids}
+An exponentially-decaying sinusoid has the form 
+\begin{equation}
+    Ae^{-at} \cos (\omega_0 t + \theta)
+\end{equation}
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/drawing_exponential_sinusoids.png}}
+  \caption{An example of combining an exponential and sinusoid into an exponentially-decaying sinusoid.}
+  \label{fig:drawing_exponential_sinusoids}
+\end{figure}
+
+\subsubsection{Cramer's Rule}
+A linear equation with the same amount of equations and unknowns $n$ can be solved with Cramer's Rule.
+\begin{equation}
+    x_k = \frac{|\textbf{D}_k|}{|\textbf{A}|} \quad k = 1,2,\dots, n
+\end{equation}
+This only occurs if the determinant of \textbf{A} is not zero and is therefore non-singular.
+
+\subsubsection{Partial Fraction Expansion}
+If we have a function that is a fraction of two polynomials, this function $F$ is improper if $m$ (the degree of the numerator polynomial) is larger than $n$ (the degree of the denominator).
+It is proper if the converse holds.
+\begin{equation}
+    F(x) = \frac{P(x)}{Q(x)} = \frac{b_m x^m + b_{m-1} x^{m-1} + \dots + b_1 x + b_0}{a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0}
+\end{equation}
+An improper fraction can always be turned into the sum of a polynomial and a proper fraction ($m < n$).
+There are a few ways that we can turn a rational function $F(x)$ into partial fractions.
+Clearing fractions can be used by splitting into each partial fraction with their root denominators and then multiplying to remove fractions, and finally solving a system of equations.
+The method of residues involves getting to a set of factors that are distinct for $Q(x)$ and then plugging them into the original $F(x)$ while excluding that root from the equation.
