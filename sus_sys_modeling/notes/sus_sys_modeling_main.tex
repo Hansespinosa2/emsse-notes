@@ -223,6 +223,118 @@ can be turned into the following set of matrix equations
 \subsubsection{State Total Response}
 Similar to the output response, we can break up the system state into the two forced and free terms.
 
+\begin{equation}
+  \textbf{x}(t) = \textbf{x}_n + \textbf{x}_f 
+\end{equation}
 
+\subsection{Discrete Time}
+We can divide timesteps into $k$ intervals and represent a similar input-output relationship as the continuous analogue with the following
+\begin{align}
+  y(k-n) + a_{n-1} y(k-n+1) + \dots + a_1 y(k-1) + a_0 y(k) \\
+  = b_m u(k-m) + b_{m-1} u(k-m + 1) + \dots + b_1 u(k-1) + b_0 u(k)
+\end{align}
+
+Our objective is to find the response/output of the system $y(k)$.
+We can do this by solving the linear differential equation with constant coefficients.
+
+Similarly to the continuous case, we can divide the total response of a system $y(k)$ into two terms.
+
+\begin{equation}
+  y(k) = y_n(k) + y_f(k)
+\end{equation}
+
+where $y_n$ is the free response with the input equal to zero and the initial conditions non-zero and $y_f$ is the forced response with initial condition zero.
+
+\subsubsection{Input-Output Representation}
+Consider a warehouse with one type of product and $n(k)$ be the number of products in the system.
+Every time step $k$ there is a flow $q^{in}(k), q^{out}(k) = h \times n(k) $
+
+\begin{equation}
+  n(k+1) = n(k) + q^{in}(k) - hn(k) = (1-h) n(k) + q^{in}(k)
+\end{equation}
+
+In this scenario, we have one input $u(k) = q^{in}(k)$ and one output $y(k) = \alpha n(k)$
+\begin{equation}
+  y(k+1) - (1-h)y(k) = \alpha u (k)
+\end{equation}
+This is the input-output representation
+
+\subsubsection{State-Space Representation}
+
+\begin{equation}
+  \begin{cases}
+    \textbf{x}(k + 1) = \textbf{A} \textbf{x} (k) + \textbf{b} u(k) \\
+    y(k) = \textbf{c}^\top \textbf{x} (k) + d u(k)
+  \end{cases}
+\end{equation}
+
+where in a SISO system these are  $\textbf{A} \in \mathbb{R}^{n \times n}, \textbf{b} \in \mathbb{R}^n, \textbf{c} \in \mathbb{R}^n, d \in \mathbb{R}$ constant matrices (since we are time-invariant) that map how the state influences the next time step state and output.
+This likely gets more complicated and are turned into full matrices $\textbf{A}, \textbf{B}, \textbf{C}, \textbf{D}$ when we have multiple inputs and outputs.
+
+In a state-space representation for discrete time, similarly we can break out the $\textbf{x}$ state vector in to 
+\begin{equation}
+  \textbf{x} (k) = \textbf{x}_n (k) + \textbf{x}_f (k)
+\end{equation}
+
+Now, tackling the warehouse problem with two types of products $n_1(k), n_2(k)$ with corresponding flows $q_i^{in}, q_i^{out}$
+
+\begin{gather}
+  n_1 (k +1) = (1-h_1) n(k) + q_1^{in}(k) \\
+  n_2 (k +1) = (1-h_2) n(k) + q_2^{in}(k) 
+\end{gather}
+
+We want to predict 
+\begin{equation}
+  y(k) = \alpha n_1(k) + \beta n_2(k)
+\end{equation}
+
+Switching to the right notations w/ state space
+
+\begin{gather}
+  x_1 (k +1) = (1-h_1) x_1(k) + u_1(k) \\
+  x_2 (k +1) = (1-h_2) x_2(k) + u_2(k) \\ 
+  y(k) = \alpha x_1(k) + \beta x_2(k)
+\end{gather}
+
+In the matrix notation, 
+\begin{align}
+  \textbf{A} =
+  \begin{bmatrix}
+     1 -h_1 & 0 \\ 0 & 1-h_2
+  \end{bmatrix},
+  \\
+  \textbf{B} = 
+  \begin{bmatrix}
+    1 & 0\\ 0 & 1
+  \end{bmatrix}
+  \\
+  \textbf{c} = 
+  \begin{bmatrix}
+    \alpha \\ \beta
+  \end{bmatrix}^\top
+  \\
+  d = 0
+\end{align}
+
+\subsubsection{General Matrix Form}
+We can turn a set of state equations and the output transform function into a general matrix form of arbitrary $n$ inputs and $m$ outputs.
+The general matrix form of a state-space representation is
+\begin{equation}
+  \begin{cases}
+    \textbf{x} (k+1) = \textbf{A} \textbf{x} (k) + \textbf{B} \textbf{u} (k) \\
+    \textbf{y}(k) = \textbf{C} \textbf{x} (k) + \textbf{D} \textbf{u} (k)
+  \end{cases}
+\end{equation}
+
+where 
+\begin{itemize}
+  \item $\textbf{x}(k) \in \mathbb{R}^p$ is the state vector of $p$ state parameters at timestep $k$
+  \item $\textbf{y}(k) \in \mathbb{R}^m$ is the output vector of $m$ outputs at timestep $k$
+  \item $\textbf{u}(k) \in \mathbb{R}^n$ is the input vector of $n$ inputs at timestep $k$.
+  \item $\textbf{A} \in \mathbb{R}^{p \times p}$
+  \item $\textbf{B} \in \mathbb{R}^{p \times n}$
+  \item $\textbf{C} \in \mathbb{R}^{m \times p}$
+  \item $\textbf{D} \in \mathbb{R}^{m \times n}$
+\end{itemize}
 
 \end{document}

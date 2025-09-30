@@ -188,6 +188,38 @@ This isn't a linear system since there will be a breaking point that will explod
 Although our linear model is an approximation for this more complex system, this can generally be enough for a lot of applications.
 The system will frequently be "linear enough" when values are reasonably constrained or small.
 
+\subsection{September 30th}
+A transform function takes a space that it in a different domain (like time) and turns it into another domain (like complex space).
+\begin{equation}
+    Y_f(s) = T(s) U(s)
+\end{equation}
+
+The transfer function works with the forced output, not the free output. 
+Another way to describe a transfer function is the laplace transform of the forced impulse response.
+\begin{equation}
+    T(s) = L \{ h(t) \}
+\end{equation}
+
+\begin{equation}
+    y_f(t) = h(t) \ast u(t) = \int_{0}^{\tau} h(\tau) u(t-\tau) d \tau
+\end{equation}
+
+A system can be split into its controllable and observable parts.
+A transfer function $T(s)$ works with the inputs that are both controllable and observable.
+A frequency response $T(jw)$ is a transfer function that is computed in imaginary component.
+
+\subsubsection{Plant Example}
+Consider an asymptotically (it will become stable over time with any initial conditions and no input) stable plant with transfer function $G(s)$
+\begin{equation}
+    u(t) = \sin (wt)
+\end{equation}
+
+Since the system is asymptotically stable, after some time the free output will converge to zero and the forced output will converge to an amplified sinusoid similar to the input sinusoid.
+\begin{equation}
+    y_f (t) = |G(j \omega)| \sin (\omega t + \angle G(jw))
+\end{equation}
+where $|G(j \omega)|$ is the radius $r$ and $\angle G(jw)$ is the angle $\theta$ that the point makes with the real and imaginary plane.
+
 
 
 \include{extra/sys_n_sig}
