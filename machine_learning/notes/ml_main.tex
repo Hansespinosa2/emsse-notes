@@ -58,5 +58,97 @@ The way models take in multiple modalities is by turning them into vector repres
 Retrieval Augmented Generation (RAG) is the way that LLMs are now able to search and retrieve information that is current.
 Models will estimate the necessity of querying the internet based off your prompt and then have a built-in way to handle these queries where it goes online and adds that information to its context.
 
+\subsection{Regression}
+I missed this class but there is some review.
+Given we have a function that we would like to solve that has a scalar input and output $y=f(x), x,y \in \mathbb{R}$.
+We attempt to build a learning machine that is able to learn the relationship from input to output.
+We have some noisy data that we want to learn $D = \{ (x_1, y_1), (x_2, y_2), \dots, (x_m, y_m ) \}$.
+As engineers, our goal is to create a model of $f$ that is better than our current model at predicting $y$ from $x$.
+
+\subsubsection{Polynomial Regression}
+We can make an assumption $f$ in modeling the system.
+One possible assumption we can make on $f$ to attempt to model the underlying system is a polynomial.
+\begin{equation}
+    f(x) = \sum_{i=0}^{P} c_i x^i
+\end{equation}
+
+We also choose a loss function to identify how close our prediction $f(x)$ is to our actual recorded data output $y$.
+We can choose the MSE since it is differentiable and easy to calculate
+\begin{equation}
+    l(f(x),y) = (y-f(x))^2
+\end{equation}
+
+In order to calculate our total cost across the entire dataset we can sum our MSE over each data point $m$ in $D$.
+
+\begin{equation}
+    \textbf{c} = \arg \min_\textbf{c} \sum_{i=1}^{m} (y_i - \textbf{c}^\top \textbf{x})^2
+\end{equation}
+where
+\begin{align}
+    \textbf{y}
+  \begin{bmatrix}
+    y_1 \\ \vdots \\ y_m 
+  \end{bmatrix}
+  \textbf{c} = 
+  \begin{bmatrix}
+    c_0 \\ \vdots c_p
+  \end{bmatrix}
+  \textbf{X} = 
+  \begin{bmatrix}
+    x_1^0 & \dots & x_1^p \\
+    \vdots & \vdots & \vdots \\
+    x_m^0 & \dots & x_m^p
+  \end{bmatrix}
+\end{align}
+
+We can therefore express in matrix form the cost function
+
+\begin{equation}
+    \textbf{c} = \arg \min_\textbf{c} \| \textbf{y} - \textbf{X} \textbf{c} \|
+\end{equation}
+
+Taking the derivative of this and setting it to zero to see where we have the optimal solution we get
+
+\begin{gather}
+    (\textbf{y} - \textbf{X} \textbf{c})^\top (\textbf{y} - \textbf{X} \textbf{c}) = \textbf{y}^\top \textbf{y} - \textbf{y}^\top \textbf{X} \textbf{c} - (\textbf{X} \textbf{c})^\top \textbf{y} - (\textbf{X} \textbf{c})^\top (\textbf{X} \textbf{c}) \\
+    = \textbf{y}^\top \textbf{y} - 2 \textbf{y}^\top \textbf{X} \textbf{c} - \textbf{c}^\top \textbf{X}^\top \textbf{X} \textbf{c} \\
+    \nabla_\textbf{c} = 0 \\
+    2 \textbf{X}^\top \textbf{y} - 2 \textbf{X}^\top \textbf{X}  \textbf{c} = 0
+\end{gather}
+
+\begin{equation}
+    (\textbf{X}^\top \textbf{X} ) \textbf{c} = \textbf{X}^\top \textbf{y}
+\end{equation}
+Solving this equation for $\textbf{c}$ will give us our set of parameters that minimizes our MSE on this dataset.
+The computational complexity of this is $O(p^2)$ where $p$ is our number of parameters, and therefore our length of the vector $\textbf{c}$.
+Our real computational time is quite different and depends on $m$, however when $p \gg m$, the computation time approaches $p^2$.
+
+\subsubsection{Selecting Good $p$}
+In order to identify the best $p \in \mathbb{Z}^{++}$ to use, we can split the dataset into a training and validation set.
+We can then train our data with multiple versions of different $p$ and validate our data on the portion of data that it did not see during training.
+Finally, we select the $p$ that performed best on the validation set.
+
+\subsection{Statistics}
+Consider a random variable $X$ that outputs $x \in \mathbb{R}$.
+The mean of the $X$ is  $\mu = \mathbb{E} [x] = \int x p(x) dx$.
+We can find an approximation of this mean by getting the arithmetic mean $\bar{x} = \frac{1}{m} \sum_{i=1}^{m}x_i$.
+If the samples are I.I.D, then  this arithmetic mean is an unbiased estimator (it converges to the true value) of the true mean.
+
+In order to approximate the noise of the system, we have the variance $\sigma^2 = \mathbb{E}_x [(x-\mu)^2] = \int (x-\mu)^2 p(x) dx$.
+Which is also written as $\mathbb{E}_x [x^2] - \mu^2$.
+If we want to get the empirical estimate of this on an actual dataset we have, we need to use the empiral average.
+
+\begin{gather}
+    \sigma_x^2 = \int_{-\infty}^{\infty} (\bar{x} - \mu)^2 p(x) dx \\
+    \geq \int_{|\bar{x}- \mu| \geq \varepsilon} (\bar{x} - \mu)^2 p(x) dx \\
+    \geq \int_{|\bar{x}- \mu| \geq \varepsilon} \varepsilon^2 p(x) dx \\
+    P [|\bar{x} - \mu| \geq \varepsilon] \leq \frac{1}{m \varepsilon^2} = \delta
+\end{gather}
+
+\subsubsection{Statistical Learning Theory}
+In order to use statistics to create a general model capable of learning from dataset, it is clear that we break an assumption of independence of the model and the data.
+Statistical learning theory is the field that allows us to take a catalogue of functions and evaluate them on a subset of data.
+We can then sample functins and data together to identify which functions perform best on data that it has not seen before.
+
 
 \end{document}
