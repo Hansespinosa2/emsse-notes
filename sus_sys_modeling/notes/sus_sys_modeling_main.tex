@@ -337,4 +337,129 @@ where
   \item $\textbf{D} \in \mathbb{R}^{m \times n}$
 \end{itemize}
 
+\subsection{Signals}
+There can be continuous (time $t$) and discrete (timestep $k$) signals.
+The unit step function (or Heaviside step) is defined as $\textbf{1}(t)$ or with $H(t)$
+
+\subsubsection{Continuous-Time Signals}
+\begin{equation}
+  \textbf{1}(t) =
+  \begin{cases}
+    1 & t \geq 0 \\
+    0 & t < 0
+  \end{cases}
+\end{equation}
+
+The causal version of a signal is the version that starts only at $t=0$ and is defined as $f(t) = 0, t <0$.
+We can use the \textbf{1}(t) to truncate or translate functions over the time axe as seen in Figure \ref{fig:truncated_signal}
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=1\textwidth]{../../images/truncated_signal.png}}
+  \caption{A signal truncated using the heaviside function}
+  \label{fig:truncated_signal}
+\end{figure}
+
+Frequently, we can't practically use the unit step function due to its undefined derivative and numerical stability problems.
+So, we use a linear variation with $\frac{1}{D}$ as the angular coefficient.
+$D$ represents the amount of smoothing we apply to approximate the unit step.
+When $D \longrightarrow 0$, the step becomes ideal and its derivative is named Dirac Delta $\delta(t)$
+
+\begin{equation}
+  \int_{a}^{b} \delta (t) dt =
+  \begin{cases}
+    1 & 0 \in (a,b) \\ 
+    0 & 0 \notin (a,b)
+  \end{cases}
+\end{equation}
+
+The main purposes of this dirac delta is to extract the value of a function at zero $f(0)$ or to model the signal with high intensity and low duration as a spike or impulse.
+
+The integral of the unit step function gives us the unit ramp function
+
+\begin{equation}
+  \int_{-\infty}^{t} \textbf{1} (\tau) d \tau = t \textbf{1}(t) = r(t)
+\end{equation}
+
+\begin{equation}
+    r(t) = 
+  \begin{cases}
+    t & t \geq 0 \\ 0 & t < 0
+  \end{cases}
+\end{equation}
+
+The exponential signal is also an important signal
+\begin{equation}
+  f(t) = e^{at} \textbf{1} (t) = 
+  \begin{cases}
+    e^{at} & t \geq 0 \\
+    0 & t < 0
+  \end{cases}
+\end{equation}
+
+where $a \in \mathbb{R}$
+
+A critical system is a system that goes to infinity.
+An affine function or parabolic function is a critical system whereas a harmonic function is not.
+
+Sine and cosine signals are the harmonic functions with amplitude $A \in \mathbb{R}$ and radian frequency $w$.
+\begin{gather}
+  f(t) = A sin(wt) \textbf{1} (t) \\
+  A cos (wt) \textbf{1} (t)
+\end{gather}
+
+We can also have sine and cosine signals where the amplitude is actually a function. 
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=1\textwidth]{../../images/functional_amplitude_harmonic.png}}
+  \caption{Sine and cosine functions with functions as amplitude}
+  \label{fig:functional_amplitude_harmonic}
+\end{figure}
+
+\subsubsection{Discrete-Time Signals}
+The same signals present in continuous-time have their analagous discrete-time counterparts using $k$ instead of $t$.
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/discrete_exponential.png}}
+  \caption{A discrete exponential signal}
+  \label{fig:discrete_exponential}
+\end{figure}
+
+\subsection{Laplace}
+\subsubsection{Laplace Transform}
+The laplace transform is a linear integral operator that converts a function of a real variable (time-domain) to a function of a complex variable (s-domain) $ \mathcal{L}  : f(t) \longrightarrow F(s), \mathcal{L} \{ f(t)\} = F(s), \mathcal{L}^{-1} \{ F(s) \} = f(t)$
+
+\begin{equation}
+  \mathcal{L} \{ f(t) \} = \int_{0^{-}}^{\infty} f(t) e^{-st} dt = F(s)
+\end{equation}
+is called the Laplace transform of $f(t)$ and is indicated as $F(s)$ where $s = a + bj $.
+
+\subsubsection{Laplace Transform Examples}
+\textbf{First Example}: $f(t) = 1(t)$
+
+\begin{gather}
+  \mathcal{L} \{ 1(t) \}  =  \int_{0^-}^{\infty} 1(t) e^{-st} dt = - \frac{e^{-st}}{s} |_{0^-}^{\infty}= 0 - (-\frac{1}{s}) = \frac{1}{s}
+\end{gather}
+
+\subsubsection{Properties}
+\begin{itemize}
+  \item Linearity: $\mathcal{L} \{ a f_1(t) + b f_2(t) \} = a \mathcal{L} \{ f_1(t) \} + b \mathcal{L} \{ f_2(t) \} $
+  \item Time Shift: $\mathcal{L} \{ f(t-T)1(t-T) \}  = e^{-Ts} \mathcal{L} \{ f(t) \}$
+  \item Shifting over complex plane: $\mathcal{L} \{ e^{at} f(t) \} = F(s-a) = \mathcal{L} \{ e^{at} f(t) \}$
+  \item Time scaling: $\mathcal{L} \{ f(\frac{t}{a}) \} = a F(as)$ where $a \in \mathbb{R}$
+  \item Derivative Laplace transform: $\mathcal{L} \{f^\prime (t)\} = sF(s) - f(0^{-}) $
+  \item Multiplication by $t^n$: $\mathcal{L} \{ t^n f(t) \} = (-1)^n \frac{d^n F(s)}{d s^n } $
+\end{itemize}
+
+The full general laplace transform of the derivative can be written as 
+\begin{equation}
+  \mathcal{L} \{ f^{(n)} (t) \} = s^n F(s) - s^{n-1} f(0^-) - \dots - f^{(n-1)} (0^-)
+\end{equation}
+
+Multiplying by $s$ in the complex domain is equivalent to taking a deriative in the time domain.
+Similarly, dividing by $s$ in the complex domain is equivalent to integrating in the time domain.
+
+
+
+
+
 \end{document}
