@@ -220,6 +220,26 @@ Since the system is asymptotically stable, after some time the free output will 
 \end{equation}
 where $|G(j \omega)|$ is the radius $r$ and $\angle G(jw)$ is the angle $\theta$ that the point makes with the real and imaginary plane.
 
+\subsection{October 6th}
+
+\subsubsection{Systems ID Types}
+Black box methods of systems identification represent attempting to identify the system without information on the system's dynamics or parameters.
+In order to attempt to solve it, we feed in inputs $u(t)$ and record the outputs $y(t)$ to create a dataset $D=((u_1, y_2), \dots)$.
+We can identify a possible type of function, for example a rational transfer function 
+\begin{equation}
+    G(s) = \frac{b_m s^m + \dots + b_1 s + b_0}{a_n s^n + \dots + a_1 s + a_0}
+\end{equation}
+
+and use our dataset to attempt to fit the parameters ($a,b$) and meta-parameters ($n,m$) to the problem.
+
+We also have a grey-box approach in which we have a known structure but we do not know the specific parameters to the system.
+For example, a physics system in which we know the components in play but we do not know exact specifications like the mass or different physics constants.
+We can similarly conduct experiments to attempt to parameterize the system.
+
+Ad-hoc methods or tailor-made methods are very specific methods used to identify systems in specific domains.
+
+\subsubsection{Frequency vs Step Response}
+
 
 
 \include{extra/sys_n_sig}
