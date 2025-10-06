@@ -224,4 +224,46 @@ An encryption scheme or cipher consists of an encrypting set $\{ E_e | e \in K \
 
 The keys $(e,d)$ form a key pair.
 
+To construct an encryption scheme requires fixing a message space $M$, a ciphertext space $C$, and a key space $K$, as well as encryption transformations $\{ E_e | e \in K \}$ and corresponding decryption transformations $\{ D_d | d \in K  \}$
+
+\subsection{Symmetric-key encryption}
+Consider a cipher $\{ E_e | e \in K \}, \{ D_d | d \in K  \}$.
+The cipher is symmetric-key if for each associated pair $(e,d)$ it is computationally "easy" to determine $d$ knowling only $e$ and to determine $e$ from $d$.
+In practice, it is symmetric-key if $e=d$.
+In symmetric-key, the sender and recipient share a common key for both encryption and decryption.
+Transmitting the symmetric-key is frequently a major problem with this cipher type.
+
+\subsubsection{Block vs Stream vs Codes}
+There are a few types of cipher / encryption scheme types that define how the cipher breaks up messages of different lengths.
+\begin{itemize}
+    \item A \textbf{block cipher} works by breaking up a long plaintext message into different blocks of a fixed length $t$ and it encrypts each block one at a time.
+    \item A \textbf{stream cipher} is a block cipher where the block-length is 1. It therefore breaks up by each character.
+    \item A \textbf{code} does not care about the specific length of a word and encrypts word-by-word.
+\end{itemize}
+
+\subsection{Substitution Ciphers}
+
+Substitution ciphers work by directly substituting characters for other characters in an attempt to conceal the original message.
+\begin{itemize}
+    \item Caesar Cipher: Rotate each character by three alphabet characters to the right: "HELLO WORLD" $\longrightarrow$ "KHOOR ZRUOG"
+    \item ROT13: Same process as the Caesar Cipher but by 13 places
+    \item Alphanumeric: Substituting numbers for letters: "2-25-5" $\longrightarrow$ "BYE".
+\end{itemize}
+
+A mono-alphabetic substiution cipher is the generalized version of a caesar cipher where each substitution is set in the key arbitrarily.
+An affine cipher is  mono-alphabetic substitution cipher that follows the formula 
+\begin{equation}
+    e(m) = (am + b) \% |A|
+\end{equation}
+where \% is the modulus operator.
+
+A problem frequently occurs with substitution ciphers due to the fact that any written language has a probability distribution on its characters.
+With a long enough ciphertext that has been encrypted through mono-alphabetic substitution, it is generally possible to count relative letter frequencies and use trial and error to decipher the key.
+
+
+Homophonic substitution ciphers exist which replace each alphabet character $a$ with a randomly chosen string from $H(a)$.
+Where $H(a)$ is a set of strings of $t$ symbols.
+
+
+
 \end{document}
