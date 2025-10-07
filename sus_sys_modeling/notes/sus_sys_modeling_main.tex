@@ -440,6 +440,17 @@ is called the Laplace transform of $f(t)$ and is indicated as $F(s)$ where $s = 
   \mathcal{L} \{ 1(t) \}  =  \int_{0^-}^{\infty} 1(t) e^{-st} dt = - \frac{e^{-st}}{s} |_{0^-}^{\infty}= 0 - (-\frac{1}{s}) = \frac{1}{s}
 \end{gather}
 
+\textbf{Second Example}: $f(t) = 3e^{-t} + 2t + cos (2t)$
+\begin{gather}
+  \mathcal{L}\{ 3e^{-t} \} = 3 \frac{1}{s+1} \\
+  \mathcal{L}\{ 2t \} = \frac{2}{s^2} \\
+  \mathcal{L}\{ cos (2t) \} = \frac{s}{s^2 + 4} \\
+  \therefore
+  \mathcal{L}\{ f(t) \} = 3 \frac{1}{s+1} + \frac{2}{s^2} + \frac{s}{s^2 + 4}
+\end{gather}
+
+
+
 \subsubsection{Properties}
 \begin{itemize}
   \item Linearity: $\mathcal{L} \{ a f_1(t) + b f_2(t) \} = a \mathcal{L} \{ f_1(t) \} + b \mathcal{L} \{ f_2(t) \} $
@@ -458,9 +469,57 @@ The full general laplace transform of the derivative can be written as
 Multiplying by $s$ in the complex domain is equivalent to taking a deriative in the time domain.
 Similarly, dividing by $s$ in the complex domain is equivalent to integrating in the time domain.
 
+\subsubsection{Zeros and Poles}
+The zeros of the laplace transform are the values of $s$ for which $F(s) = 0$.
+The poles of the laplace transform are the values of $s$ for which $F(s) = \infty$.
+Naturally, for a rational function the zeros of the laplace transform are the zeros of the numerator and the poles are the zeros of the denominator
+\begin{equation}
+  F(s) = \frac{N(s)}{D(s)}
+\end{equation}
+Considering this rational function $F(s)$, the zeros of $F$ are the roots of $N$, and the poles of $F$ are the roots of $D$.
 
+For example, for the function $\mathcal{L}\{ cos (2t) \} = \frac{s}{s^2+4}$, the zero of the laplace transform is $z_1 = 0$ and the poles are $p_1, p_2 = \pm j2$ with multiplicity $\mu_{1,2} = 1$.
+The poles have a correlation with the original function $f(t)$.
 
+The following list correlations with single multiplicity poles:
+A positive real-valued pole indicates that the function $f(t)$ increases over time and is a critical signal.
+A negative real-valued pole indiciates that the function $f(t)$ decreases over time and converges to 0 over time.
+A zero real-valued pole indicates that the function $f(t)$ is horizontally symmetric and does not diverge or converge to 0 over time.
 
+With multiple multiplicity poles, the same is true except for the fact that a zero does not diverge.
+With multiple multiplicity poles, the zero real-valued functions are also critical signals.
 
+\subsubsection{Inverse L-Transform}
+For an L transform $\mathcal{L}\{ f(t) \} \to F(s)$, we can also define an inverse L-transform that takes a function from the complex space to the real space $\mathcal{L}^{-1}\{ F(s) \} \to f(t)$
+
+One method for the L-inverse transform can take place when the rational function $F(s) = N(s) / D(s)$ has the property of degree of the numerator being strictly lower than the degree of the denominator
+
+\begin{gather}
+  F(s) = \frac{N(s)}{D(s)} = \sum_{i=1}^n \frac{A_i}{s-p_i} \\
+  = \sum_{i=1}^{r} \sum_{j=1}^{\mu_i} \frac{c_{ij}}{(s-p_i)^j} + \sum_{i=1}^{c} \sum_{j=1}^{\eta_i} \frac{P_{ij} (s)}{((s-\sigma_i)^2 + \omega_i^2)^j}
+\end{gather}
+
+In the event that the degree of the numerator is the same as the degree of the denominator, we use a different method for partial fraction expansion.
+
+\begin{gather}
+ F(s) = \frac{N(s)}{D(s)} = Q(s) + \frac{N^\prime (s)}{D(s)} \\
+ \mathcal{L}^{-1}\{ F(s) \} = q \delta (t) + \mathcal{L}^{-1}\{ \frac{N^\prime (s)}{D(s)} \}
+\end{gather}
+
+The initial value theorem is a theorem used to relate complex domain functions to the time domain behavior as time approaches zero.
+
+\textbf{Initial Value Theorem}: 
+Given $f(t)$ a function in time-domain and $F(s)$ as the L-transform of $f(t)$ in the complex domain, if the $\lim_{s \to + \infty} sF(s)$ exists, then
+\begin{equation}
+  \lim_{t\to 0^+} f(t) = \lim_{s \to + \infty} sF(s)
+\end{equation}
+
+The final value theorem is used to relate complex domain functions to the time domain as time approaches infinity.
+
+\textbf{Final Value Theorem}:
+Given $f(t)$ a function in time-domain and $F(s)$ as the L-transform of $f(t)$ in the complex domain, if the $\lim_{s \to 0^+} sF(s)$ and $\lim_{t \to + \infty} f(t)$ exist, then
+\begin{equation}
+  \lim_{t\to + \infty} f(t) = \lim_{s \to 0^+} sF(s)
+\end{equation}
 
 \end{document}
