@@ -240,8 +240,67 @@ Ad-hoc methods or tailor-made methods are very specific methods used to identify
 
 \subsubsection{Frequency vs Step Response}
 
+\subsection{October 7th}
+\subsubsection{Systems Identification Process }
+When we identify and build a model for a system, we typically have a goal in mind.
+Our goal could be for control, estimation, diagnosis, prediction, simulation.
+After we have our goal in mind for our system identification or model, we want to clarify the quantities and parameters that are entering and exiting the system.
+At this point we can have a general idea of $u(t), y(t)$.
+After, we want to see how much data we may have available on the system.
+At times, we may only have data on the system and have little information on the system, and in other times we can only collect data through active experiments and have no previous data given such as reinforcement learning where we collect the data by running the system without access to the system itself.
 
+A crucial choice is that of the "suitable" model class for the data and information collected.
+$\mathcal{M}_n(\theta)$ is a denotion of the model class where $\mathcal{M}$ is the model class, $\theta$ is the parameters and $n$ is the complexity of the parameters. 
+Typically, $\hat{\theta}$ is used as it is the estimated parameters, not the true set.
+A higher degree of complexity for a parameter space naturally means that more data is needed to appropriately model the system.
 
+Identifying the parameter vector $\hat{\theta}$ is an important task, including the complexity of the set.
+After having identified the parameter vector, we must then validate and ask ourselves if we are satisfied with our model based off our data, our knowledge of the system, and some accuracy metric to characterize our proximity to satisfaction.
+
+The following is the complete systems identification process framework
+\begin{enumerate}
+    \item State goal of identification
+    \item Clarify inputs and outputs
+    \item Identify data available (given or experiment needed)
+    \item Experiment if needed and possible
+    \item Choose a suitable class of models
+    \item Identify the optimal parameter vector $\hat{\theta}^*$ using the data
+    \item Validate and return to previosu steps as necessary
+\end{enumerate}
+
+\subsubsection{Discrete Time}
+Computers don't handle continuous, so we need to give a discretized version of representations in discrete time.
+We can take a continuous stream and sample them at $\Delta t$ intervals $u(t) \to u(k \Delta t) = u(k), y(t) \to y(k \Delta t) = y(k)$
+For the purpose of this class, the abuse of notation we will use $u(k)\triangleq u(t=k \Delta t)$.
+$u(r)$ refers to the $r$-th value in memory of the data input.
+
+In the continuous case, when we have a $y$ output defined by $y(t) = y_f(t) + y_0(t)$, we can introduce an impulse $\delta(t)$ which pulses a property at 0 and 0 only.
+We can see the impulse response $y_f(t) = h(t)$ and how the function behaves with no initial conditions and just an impulse force.
+
+For general $u(t) \implies y_f(t) = h(t) \ast u(t) $
+\begin{equation}
+    h(t) \ast u(t) = \int_{0^-}^{t} h(\tau) u(t-\tau) d \tau
+\end{equation}
+To relate using the laplace transformed input we have
+\begin{equation}
+    Y_f (s) = G_c (s) U(s)
+\end{equation}
+where $G_c(s) = \mathcal{L}\{ h(t) \}$
+
+In the case of discrete-time, we can rewrite and redefine these properties in discrete time step $k$.
+\begin{equation}
+    \delta (k) \triangleq 
+    \begin{cases}
+        1 & k = 0 \\ 0 & k \neq 0
+    \end{cases}
+\end{equation}
+for this impulse, $f_f(k) = h(k)$.
+
+For a generalized input $u(k)$,
+\begin{equation}
+    y_f(k) = \sum_{l = 0}^k g(l) u(k-l)
+\end{equation}
 \include{extra/sys_n_sig}
+
 
 \end{document}
