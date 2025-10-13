@@ -300,6 +300,64 @@ For a generalized input $u(k)$,
 \begin{equation}
     y_f(k) = \sum_{l = 0}^k g(l) u(k-l)
 \end{equation}
+
+\subsection{October 13th}
+When we have discrete time, it can be modeled as discrete time where the input occurs as impulses at every $k$-th timestep.
+The forced output is therefore
+\begin{equation}
+    y_f(k) = \sum_{l=0}^{K} g(l) u(K-l)
+\end{equation}
+In the event that $K=\infty$, there is no initial condition and then
+\begin{equation}
+    y(k) = y_f(k) = \sum_{l=0}^{\infty} g(l) u(K-l)
+\end{equation}
+
+Given a sequence of values $v(k), k=0,1,2,\dots$, we can define a Z-transform $V(z) \triangleq \sum_{k=0}^{\infty} v(k) Z^{-k}$.
+Additionally, given that sequence of $v(k)$, we can define a one-step of delay operator as $z^{-1}$, where
+\begin{equation}
+    z^{-1} v(k) = v(k-1)
+\end{equation}
+delays the sequence of values by one timestep. 
+Effectively, this operator will shift a signal by one timestep.
+Naturally, this operator can be extended to shift the signal by any timestep $l$.
+\begin{equation}
+    z^{-l} v(k) = v(k-l)
+\end{equation}
+We can therefore rewrite the forced output $y_f(k)$ with this new delay operator
+\begin{equation}
+    y_f(k) = \sum_{l=0}^{\infty} g(l) z^{-l} u(k) =  (\sum_{l=0}^{\infty} g(l) z^{-l}) u(k) = G(z) u(k)
+\end{equation}
+where $G(z)$ is an operator that is the z-transform of the $g(k)$ impulse reponse sequence.
+This z-transform $G(z)$ is also called the transfer function and can be interpreted as an operator.
+This means that $G(z) u(k) = [g(0) + g(1) z^{-1} + \dots] u(k) = g(0) u(k)+ g(1) z^{-1} u(k) + \dots$.
+To show that the $G(z)$ isn't the complex domain we can change the notation to be $G(q)$.
+
+Consider some systems that have an input $u(k)$, a transfer function $G(z)$, and a forced output $y_f(k)$.
+If the system experiences an impulse response of the impulse, that means the transfer function $\mathcal{L}\{ \delta(k) \} = 1$ and the forced output is $y_f(k) = u(k)$.
+If the system experiences an impulse response of the delay, that means the transfer function $\mathcal{L}\{ z^{-1} \}$ and the forced output is $y_f(k) = u(k-1)$.
+
+An anti-transform is taking a $G(z)$ to $g(z)$.
+We can do this by understanding the functions that can comprise the impulse responses in discrete time.
+\begin{gather}
+    G(z) = \frac{z}{z+1} = 1 - \frac{1}{z+1} \\
+    = 1 - z^{-1} + z^{-2} - z^{-3} + z^{-4} + \dots
+\end{gather}
+This is an oscillating step function with values (+1) for any odd steps and (-1) for any evens.
+Similarly we can do $G(z) = \frac{z}{z-1}$ and find the heaviside step function.
+
+\subsubsection{Exercise Z anti-transform}
+\begin{gather}
+    G(z) = \frac{z}{z-1/2} = 1 + \frac{1/2}{z-1/2} \\
+    = 1 + \frac{1}{2} z^{-1} + (\frac{1}{2})^2 z^{-2} + \dots
+\end{gather}
+
+By putting rational transfer functions into a form that has only negatives, it makes it easy to do the anti-transform.
+In the event that the degree of the numerator exceeds that of the denominator, then the system is not a causal system.
+\begin{equation}
+    G(z) = \frac{b_m z^m + b_{m-1} z^{m-1} + \dots + b_0}{a_n z^{n} + a_{n-1} z^{n-1} + \dots + a_0}
+\end{equation}
+
+
 \include{extra/sys_n_sig}
 
 
