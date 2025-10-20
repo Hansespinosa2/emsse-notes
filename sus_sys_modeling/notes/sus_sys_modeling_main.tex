@@ -602,4 +602,103 @@ To perform the z-inverse transform we need to do the partial fraction expansion.
         \end{equation}
     \end{minipage}
 }
+
+\subsection{Solutions of a System}
+\subsubsection{Input-Output}
+The input-output representation of a continuous time LTI system consists of the differential equation:
+\begin{equation}
+  y^{(n)} (t) + a_{n-1} y^{n-1}(t) + \dots + a_1 y^{(1)}(t) + a_0 y(t) = b_m u^{(m)} + \dots + b_0 u(t)
+\end{equation}
+we can solve the input of the input-output representation using the laplace transform.
+We use the laplace transform of the derivative function to expand it and turn it into the complex domain for both the left side and the right side.
+We can also rearrange it to get the following laplace transformed version:
+\begin{gather}
+  s^n Y(s) + a_{n-1} s^{n-1} Y(s) + \dots + a_0 Y(s) - I(s,y(0^{-}), \dots, y^{n-1}(0^-)) \\ =
+  b_m s^m U(s) + b_{m-1} s^{m-1} U(s) + \dots + b_0 U(s)
+\end{gather}
+where $I$ is a polynomial in $s$ whose coefficients are a function of the initial conditions of the output.
+
+We can rearrange this for the current state $Y(s)$ as
+
+\begin{gather}
+  Y(s) = \frac{I(s,y(0^-), \dots, y^{(n-1)}(0^-))}{s^n + a_{n-1} s^{n-1} + \dots a_1s + a_0} + \frac{b_m s^m + b_{m-1} s^{m-1} + \dots + b_0}{s^n + a_{n-1} s^{n-1} + \dots + a_1s + a_0} U(s)
+\end{gather}
+
+These two fractions can also be split into the free and forced response of the output.
+\begin{gather}
+  Y_n(s) = \frac{I(s,y(0^-), \dots, y^{(n-1)}(0^-))}{s^n + a_{n-1} s^{n-1} + \dots a_1s + a_0} \\
+  Y_f(s) = \frac{b_m s^m + b_{m-1} s^{m-1} + \dots + b_0}{s^n + a_{n-1} s^{n-1} + \dots + a_1s + a_0} U(s)
+\end{gather}
+
+\subsubsection{Transfer Function}
+The forced response of the system can be written as 
+\begin{equation}
+  Y_f(s) = T(s) U(s)
+\end{equation}
+
+\begin{equation}
+  T(s) = \frac{b_m s^m + b_{m-1} s^{m-1} + \dots + b_0}{s^n + a_{n-1} s^{n-1} + \dots + a_1s + a_0} 
+\end{equation}
+The roots of the numerator of the transfer function are the zeros of the system and the those of the denominator are the poles of the system.
+
+\subsubsection{State-Space}
+\begin{equation}
+  \begin{cases}
+    \dot{\textbf{x}} (t) = \textbf{A} \textbf{x} (t) + \textbf{B} \textbf{u} (t) \\
+    \textbf{y}(t)  = \textbf{C} \textbf{x} (t) + \textbf{D} \textbf{u} (t)
+  \end{cases}
+\end{equation}
+
+Similarly to the input-output form, this can be solved with lagrange equations nad split up into the forced and natural response of botht he state and the output.
+\begin{gather}
+  \textbf{x}_n (t) = e^{A(t-t_0)} \textbf{x} (t_0) \\
+  \textbf{x}_f (t) = \int_{t_0}^{t} e^{A(t-\tau)} B u(\tau) d\tau \\
+  y_n(t) = C e^{A(t-t_0)} \textbf{x} (t_0) \\
+  y_f(t) = \int_{t_0}^{t} e^{A(t-\tau)} B u(\tau) d\tau + Du(t)
+\end{gather}
+
+We can transform these with laplace so we do not have to raise $e$ to the power of the matrix $A$.
+
+\begin{equation}
+  \begin{cases}
+    sX(s) - \textbf{x} (t_0^-) = AX(s) + BU(s) \\
+    Y(s) = CX(s) + DU(s)
+  \end{cases}
+\end{equation}
+
+so we finally get the following
+\begin{equation}
+  \begin{cases}
+    X(s) = (s I - A)^{-1} \textbf{x}(t_0^-) + (s I - A)^{-1} BU(s) \\
+    Y(s) = C (s I - A)^{-1} \textbf{x}(t_0^-) + [C(s I - A)^{-1}B + D] U(s)
+  \end{cases}
+\end{equation}
+
+\subsubsection{Example 4 State Space}
+Find $(s I - A)^{-1}$, characteristic polynomial and minimal polynomial of the matrix
+\begin{align}
+  A =
+  \begin{bmatrix}
+     -1 & 0 & 0 \\ 
+     0 & -1 & 1 \\
+     0 & 0 & -2
+  \end{bmatrix}
+\end{align}
+
+\begin{align}
+  (s I - A)^{-1} =
+  \begin{bmatrix}
+    s +1 & 0 & 0 \\
+    0 & s + 1 & 1 \\ 
+    0 & 0 & s + 2
+  \end{bmatrix}^{-1}
+\end{align}
+
+\begin{align}
+  |s I - A| = 
+    (s+1)^2(s+2)
+\end{align}
+
+
+
 \end{document}
