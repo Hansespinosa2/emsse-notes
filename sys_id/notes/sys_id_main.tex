@@ -357,6 +357,45 @@ In the event that the degree of the numerator exceeds that of the denominator, t
     G(z) = \frac{b_m z^m + b_{m-1} z^{m-1} + \dots + b_0}{a_n z^{n} + a_{n-1} z^{n-1} + \dots + a_0}
 \end{equation}
 
+\subsection{October 20th}
+When we introduce a non-controllable variable $n(k)$, we then have a system equation containing this observable disturbance.
+\begin{equation}
+    y(k) = G(z) u(k) + H(z) n(k) = \frac{B(z)}{A(z)} u(k) + \frac{D(z)}{C(z)} n(k)
+\end{equation}
+The variable $n$ belongs to a white noise space $n(k) ~ WN(\sigma, \lambda^2)$.
+A white sequence means that any single point has no correlation with other points over time in the future or past.
+A memoryless property or no memory in a sequence means that that sequence is white.
+
+Ergodicity is a property that says that the average of collected signal data approaches the real signal average.
+
+In order to have a causal system, for $G(z)= \frac{B(z)}{A(z)}$ we need the following:
+\begin{equation}
+    A(z) = 1 + a_1 z^{-1} + a_2 z^{-2} + \dots + a_n z^{-n}
+\end{equation}
+and
+\begin{equation}
+    B(z) = b_0 + b_1 z^{-1} + \dots + b_m z^{-m}
+\end{equation}
+
+where $a_0 = 1$ and $b_0 \in \mathbb{R}$ guarantees that the degree of the denominator is greater than or equal to that of the numerator.
+The case is different for the disturbance $H(z) = \frac{D(z)}{C(z)}$.
+We can assume that both $D,C$ are monic (they have $d_0, c_0 = 1$)
+This is due to the fact that $H$ is a white noise function and therefore has a zero mean.
+
+We can then create a parameter vector $\theta$ that parametrizes the "true" system.
+\begin{align}
+  \theta = 
+  \begin{bmatrix}
+    a_1 \\ \vdots \\ a_n \\ b_0 \\ \vdots \\ b_m \\ c_1 \\ \vdots \\ c_l \\ d_1 \\ \vdots \\ d_q
+  \end{bmatrix}
+\end{align}
+and $p$ is the total dimension $n+m+1+l+q$.
+
+In the system identification framework, our goal is to approximate this true parameter set that defines our underlying system.
+We create a model that has an estimated parameter vector $\hat{\theta}$.
+We want to drive both our model's parameters $\hat{\theta}$ to optimality and the complexity of the model itself $p$.
+This optimal solution in both values and complexity is denoted $\hat{\theta}_{p^*}^*$
+
 
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
