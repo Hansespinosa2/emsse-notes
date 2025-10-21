@@ -396,6 +396,59 @@ We create a model that has an estimated parameter vector $\hat{\theta}$.
 We want to drive both our model's parameters $\hat{\theta}$ to optimality and the complexity of the model itself $p$.
 This optimal solution in both values and complexity is denoted $\hat{\theta}_{p^*}^*$
 
+\subsection{October 21st}
+When we predict the next output $y(k+1)$ using the form with controllable inputs $u$ and uncontrollable interferences $n$, 
+\begin{equation}
+    y(k) = \frac{B(z)}{A(z)} u(k) + \frac{D(z)}{C(z)} n(k)
+\end{equation}
+we use all previous outputs and inputs $y, u$ to predict $y(k+1)$.
+In the event that $b_0 \neq 0$, we also use the future input $u(k+1)$ to predict the future output.
+Therefore, given an information set $I$ at a moment $k$, we want to predict the future output.
+\begin{equation}
+    E[y(k+1) | I(k)]
+\end{equation}.
+We can bring in the estimated parameter vector to create a representation of our predicted output at a moment $k$.
+\begin{equation}
+    \hat{y} (k | \hat{\theta}) = E[y(k) | I(k-1)]
+\end{equation}
+
+where the information set $I$ is 
+\begin{equation}
+    I(k-1) = 
+    \begin{cases}
+       u(0), \dots, u(k) \\
+       y(0), \dots, y(k-1)
+    \end{cases}
+\end{equation}
+
+Although you would think that would mean we can get rid of the noise because the expectation of $n(k)$ is zero, but we can not do that.
+Our previous interferences and white noise has an effect on our information set $I$.
+Since $C,D$ are monic, we can invert that transfer function and move the equation around.
+\begin{gather}
+    \frac{C}{D}y(k) = \frac{C B}{D A} u(k) + n(k)\\
+    (1-1 \frac{C}{D}) y(k) = \dots \\
+    y(k) = [1-\frac{C}{D}]y(k) + \frac{C B}{D A} u(k) + n(k)
+\end{gather}
+The bottom equation is called the model in prediction form.
+We can handle the y(k) on the right side in the following way using the fact that both $C,D$ are monic functions:
+\begin{gather}
+    [1-\frac{C}{D}]y(k) = [1-1 - \alpha_1 z^{-1} - \alpha_2 z^{-2} - \dots] y(k) \\
+    = -\alpha_1 y(k-1) - \alpha_2 y(k-2) - \alpha_3 y(k-3) - \dots
+\end{gather}
+\begin{equation}
+    \hat{y}(k|\theta) = [1- \frac{C(z)}{D(z)}]y(k) + \frac{C(z) B(z)}{D(z) A(z)} u(k)
+\end{equation}
+
+Where the error between this prediction and the actual system logic is
+\begin{equation}
+    e(k|\theta) = y(k) - \hat{y}(k|\theta) = n(k)
+\end{equation}
+
+\begin{equation}
+    \hat{y} (k | \theta) = [z \frac{D(z) - C(z)}{D(z)}] y(k-1) + \frac{C(z) B(z)}{D(z) A(z)} u(k)
+\end{equation}
+
+
 
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
