@@ -699,6 +699,61 @@ Find $(s I - A)^{-1}$, characteristic polynomial and minimal polynomial of the m
     (s+1)^2(s+2)
 \end{align}
 
+\subsection{Stability}
+\subsubsection{Definition of Stability}
+Stability is the property of a system to respond to perturbations by returning to the condition that existed before the perturbation, or at least by not moving away from it indefinitely.
+The Lyapunov definition of stability is:
+\begin{itemize}
+  \item The perturbation is applied to the initial condition of the state
+  \item Small perturbations of the initial state produce small perturbations of the state response that may become zero over the long period.
+\end{itemize}
+\subsubsection{Equilibrium}
+Stability is strictly related to the definition of the equilibrium points.
+
+For a generic dynamic LTI system, the equilibrium point is the pair $(\bar{\textbf{x}}, \bar{\textbf{u}})$
+and is defined as a point for which the system is subjected to constant input vector $\textbf{u}$ and reaches equilibrium state $\textbf{x}$ in which it remains indefinitely.
+In other words, the equilibrium point is such that it nullifies the dynamic of the system.
+\begin{equation}
+  A \bar{\textbf{x}} + B \bar{\textbf{u}} = 0
+\end{equation}
+
+An equilibrium point  $(\bar{\textbf{x}}, \bar{\textbf{u}})$ is said to be Lyapunov stable if for any $\epsilon$ greater than zero, there exists a delta greater than zero.
+
+\begin{equation}
+  \| \textbf{x}(0^-) - \bar{\textbf{x}} \| \leq \delta \implies \| \textbf{x}(t) - \bar{\textbf{x}} \| \leq \epsilon \quad \forall t > 0
+\end{equation}
+This basically means, that for any perturbation from the center point, there will be a limit on how far the system reacts over any time.
+
+An equilibrium point  $(\bar{\textbf{x}}, \bar{\textbf{u}})$ is said to be asymptotically stable if it is Lyapunov stable and there exists a delta greater than zero where
+\begin{equation}
+  \| \textbf{x}(0^-) - \bar{\textbf{x}} \| \leq \delta \text{ and } \lim_{t \to \infty} \| \textbf{x}(t) - \bar{\textbf{x}} \| = 0
+\end{equation} 
+
+Effectively, Lyapunov stable means that disturbing the point from the equilibrium point will cause it to not spiral and diverge.
+Asymptotically stable means that disturbing the point from the equilibrium will cause it to return to the equilibrium point.
+
+An equilibrium point is said to be unstable if it is not Lyapunov stable.
+
+\subsubsection{System Stability}
+Stability is a property of the system and relies on $A$ the matrix that characterizes the system and does not respond on any specific parts of the actual equilibrium point.
+\begin{equation}
+  \delta \dot{\textbf{x}} (t) = A \delta \textbf{x}(t)
+\end{equation}
+
+This leads to the following theorem
+
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Theorem}: a continuous-time LTI system is asymptotically stable if and only if all eigenvalues of the matrix $A$ have negative real part.
+    \end{minipage}
+}
+In other words, the roots of the characteristic polynomial must be negative.
+If there is any eigenvalue with a positive real part, then the system is unstable.
+If the multiplicity in the minimal polynomial is equal to one for a zero, then that means the algebraic multiplicty is equal to the geometric multiplicity in the characteristic polynomial.
+
+
+\subsubsection{Input-Output Representation}
+
 
 
 \end{document}
