@@ -448,6 +448,80 @@ Where the error between this prediction and the actual system logic is
     \hat{y} (k | \theta) = [z \frac{D(z) - C(z)}{D(z)}] y(k-1) + \frac{C(z) B(z)}{D(z) A(z)} u(k)
 \end{equation}
 
+\subsection{October 27th}
+In the event that we have no noise and an ideal case, we can clearly rearrange a system with transfer functions
+\begin{equation}
+    A(z) y(k) = B(z) u(k)
+\end{equation}
+this ideal case is generally never true, and instead we have some error and the following equation
+\begin{equation}
+    A(z) y(k) - B(z) u(k) = \epsilon (k)
+\end{equation}
+where $\epsilon$ represents the error in the model.
+Since $\epsilon$ can be anything, this equation-error model is always true.
+
+Ideally, we have a small white noise that can parametrize our error and therefore $\epsilon(k) = n(k)$.
+\subsubsection{ARX Model}
+The ARX model is the following
+\begin{equation}
+    A(z) y(k) = B(z) u(k) + n(k)
+\end{equation}
+where the predicted output is a linear combination of the previous outputs, all inputs and the disturbances.
+This is a regression on the same quantities, therefore it is an auto regressive as it incorporates the previous values of $y$.
+\begin{equation}
+    y(k) = -a_1 y(k-1) - \dots - a_m y(k-m) + b_0 u(k) + \dots + b_m u(k-m) + n(k)
+\end{equation}
+This is an autoregressive and exogenous input model.
+\begin{equation}
+    y(k) = \frac{B(z)}{A(z)} u(k) + \frac{1}{A(z)} n(k)
+\end{equation}
+Rearranging in the above equation shows that this holds the general form with $D(z) = 1, C(z) = A(z)$.
+\begin{equation}
+    y(k) = [1-A(z)] y(k) + B(z) u(k) + n(k)
+\end{equation}
+The above equation is the ARX model in predictive form.
+We can put this into a glorious matrix/vector form by putting the outputs and inputs into a single vector
+\begin{align}
+\phi(k) =
+  \begin{bmatrix}
+     -y(k-1)  \\ \vdots \\ -y(k-n) \\ u(k) \\ \vdots \\ u(k-m)
+  \end{bmatrix}
+\end{align}
+
+and the linear coefficients
+
+\begin{align}
+    \theta = 
+  \begin{bmatrix}
+     a_1 \\ \vdots \\ a_n \\ b_0 \\ \vdots \\ b_m
+  \end{bmatrix}
+\end{align}
+
+\begin{equation}
+    y(k) = \phi(k)^\top \theta + n(k)
+\end{equation}
+
+We can create models that incorporate a linear combination (a moving average) of the disturbances.
+\begin{equation}
+    y(k) = -a_1 y(k-1) - \dots - a_n y(k-n) + b_0 u(k) + \dots + b_m u(k-m) + n(k) + d_1 n(k-1) + \dots d_q n(k-q)
+\end{equation}
+This represents the ARMAX model (AutoRegressive eXogenous input Moving Average).
+This occurs when $C(z) = A(z)$ but there is a unique $D(z)$ that we can model.
+This means that the noise is not necessarily white noise.
+In the event that the noise is white, we have the ARX model, however if there is some structure or correlation of the noise with previous values then we have the ARMAX model.
+
+\begin{equation}
+    y(k) = [1-\frac{A(z)}{D(z)}] y(k) + \frac{B(z)}{D(z)} u(k) + n(k)
+\end{equation}
+this above equation is the predictive form of the ARMAX model.
+Now, we have parameters in the denominator so the predictive form is not linear in the parameters $\theta$ as it was in the ARX model.
+
+As we have our defining polynomials $A(z), B(z), C(z), D(z)$, we have $n,m,l,q$ unknowns as well as not actually knowing what $n,m,l,q$ are.
+In order to identify our system and get information such that we can make decisions about our model, parameters, and meta-parameters we can create an experiment to build a dataset.
+\begin{equation}
+    \{ (u(r), y(r)), r = 1,2,\dots,N \}
+\end{equation}
+We use the dataset that was collected offline to build an estimate of the parameters $\hat{\theta}$.
 
 
 \include{extra/sys_n_sig}
