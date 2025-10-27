@@ -752,8 +752,114 @@ If there is any eigenvalue with a positive real part, then the system is unstabl
 If the multiplicity in the minimal polynomial is equal to one for a zero, then that means the algebraic multiplicty is equal to the geometric multiplicity in the characteristic polynomial.
 
 
-\subsubsection{Input-Output Representation}
+\subsubsection{BIBO}
+Bounded Input Bounded Output (BIBO) stability is the system property that any bounded input yields a bounded output
 
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{theorem:} A continuous-time LTI system is said to be BIBO stable if posed $x(0^-) = 0$ and considering $\| u(t) \| \leq M$ with $M \in \mathbb{R}^+$, then there exists an $N$ where 
+        \begin{equation}
+          \| y(k) \| \leq N
+        \end{equation}
+    \end{minipage}
+}
+This property should hold for any limited input over any time.
+\begin{equation}
+  Y_f(s) = \frac{N_T(s)}{D_T(s)} \frac{N_U(s)}{D_U(s)}
+\end{equation}
+By deconstructing the input-output with the transfer function into the above, we can see that in order for $Y_f(s)$ to be limited, the denominator of the transfer function $D_T(s)$ must have only negative real part roots.
+
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Theorem:} A continuous-time LTI system is BIBO stable iff all the roots of the denominator of $T(s)$ have a negative real part.
+    \end{minipage}
+}
+Additionally, any continuous-time LTI system that is asymptotically stable is also BIBO stable.
+
+\subsubsection{Discrete-Time Stability}
+For a discrete-time LTI system, the equilibrium points satisfy the relationship
+\begin{equation}
+  x(k+1) - x(k) = 0 \implies \bar{x}(k) = A\bar{x}(k) + Bu(k)
+\end{equation}
+The discrete time has analagous definitions for lyapunov stabl, asymptotically stable, and unstable.
+
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Theorem: } A discrete-time LTI system is asymptotically stable iff all eigenvalues of the matrix $A$ have absolute value lower than one.
+    \end{minipage}
+}
+\subsubsection{Example}
+\begin{align}
+  x(k+1) =
+  \begin{bmatrix}
+     1/3 & 0 & 1 \\
+     0 & -1 & a \\
+     0 & 0 & -1
+  \end{bmatrix}
+  x(k) + 
+  \begin{bmatrix}
+    -1 \\ 0 \\ 1
+  \end{bmatrix}
+  u(k)
+  \\
+  y(k) = 
+  \begin{bmatrix}
+    1 \\ -1 \\ 1
+  \end{bmatrix}^\top 
+  x(k)
+  \\
+  (zI - A) = 
+  \begin{bmatrix}
+    z-1/3 & 0 & -1 \\
+    0 & z + 1 & a \\
+    0 & 0 & z + 1
+  \end{bmatrix}
+  \\
+  \det (zI-A) = 
+  (z-1/3)(z+1)^2
+\end{align}
+\begin{gather}
+  \lambda_1 = 1/3, \mu_1 = 1 \\
+  \lambda_2 = -1, \mu_2 = 2
+\end{gather}
+The system is either lyapunov stable or unstable, we will need to find the minimal polynomial and see if the multiplicity is 1 in that or find the geometric multiplicity.
+\begin{equation}
+  \nu_2 = 3 - rank(A + I)
+\end{equation}
+
+\begin{align}
+  A + I = 
+  \begin{bmatrix}
+     4/3 & 0 & 1 \\
+     0 & 0 & a \\
+     0 & 0 & 0
+  \end{bmatrix}
+\end{align}
+
+$\nu_2$ is equal to the algebraic multiplicity $2$ when $a=0$, otherwise if $a \neq 0$, the system is unstable.
+
+\subsection{Structure of LTI Systems}
+\subsubsection{Structural Properties}
+\begin{itemize}
+  \item Reachability and Controllability: properties concerning the possibility of driving the state to assume a fixed value by acting on the input
+  \item Observability and Constructibility: properties concerning the possibility of determining the initial value of the state from the knowledge of its output
+\end{itemize}
+
+\subsubsection{Reachability and Controllability}
+\begin{itemize}
+  \item A state $\textbf{x}$ is reachable if, considering a finite time interval of any duration, there exists an input function $u(t)$ capable of transferring the state of the system from the zero state to the state $\textbf{x}$.
+  \item A state $\textbf{x}$ is controllable if, considering a finite time interval of any duration, there exists an input functioncapable of transferring the state of the system from the state $\textbf{x}$ to the state zero.
+\end{itemize}
+
+A system is said to be fully reachable or controllable if every state $\textbf{x} \in \mathbb{R}^n$ is reachable or controllable.
+We can also therefore have certain subspaces of states containing the set of reachable and controllable states for a system.
+In discrete-time systems, reachability implies controllability but the converse is only truly when $A$ is invertible.
+
+\subsubsection{Observability and Constructibility}
+\begin{itemize}
+  \item A state $\textbf{x}$ is observable if knowledge of the system allows $x(0^-)$ to be traced.
+  \item A state $\textbf{x}$ is constructible if knowledge of the system allows $x(t)$ to be traced.
+\end{itemize}
 
 
 \end{document}
