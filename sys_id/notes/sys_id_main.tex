@@ -523,6 +523,81 @@ In order to identify our system and get information such that we can make decisi
 \end{equation}
 We use the dataset that was collected offline to build an estimate of the parameters $\hat{\theta}$.
 
+\subsection{October 28th}
+If we have a dataset with our observations $y(r)$ and predictions $\hat{y}(r|\theta)$, we can compute our expected error with the classic mean squared error.
+\begin{equation}
+    E[error] = \frac{1}{N} \sum_{r=1}^{N} [y(r) - \hat{y} (r | \hat{\theta})]^2
+\end{equation}
+
+by minimizing this cost function we can arrive at our optimal parameter set $\hat{\theta}^*$
+
+\begin{equation}
+    \hat{\theta}^* = \arg \min_{\hat{\theta}} \frac{1}{N} \sum_{r=1}^{N} [y(r) - \hat{y} (r | \hat{\theta})]^2
+\end{equation}
+We can also choose other cost functions instead of the least-squares such as the min max of the error.
+
+Going back to the ARX model
+\begin{equation}
+    \hat{y} (k | \hat{\theta}) = \phi^\top (k) \hat{\theta}
+\end{equation}
+we can rewrite the least-squares cost function with this 
+\begin{equation}
+    J(\hat{\theta}) = \frac{1}{N} \sum_{r=1}^{N} [y(r) - \phi^\top(r) \hat{\theta}]^2
+\end{equation}
+andddddddd we can also collect them into vectors to represent it in a clean vector form
+\begin{equation}
+    J_N(\hat{\theta}) = \| \textbf{y}_N - \hat{\textbf{y}} \|^2
+\end{equation}
+To build $\hat{\textbf{y}}$, we can stack the regressors on top of each other into a matrix.
+\begin{align}
+    \Phi_N = 
+  \begin{bmatrix}
+    \phi(1) & \phi(2) & \dots & \phi(N)
+  \end{bmatrix}
+  \\
+  \hat{\textbf{y}} = 
+  \begin{bmatrix}
+    \phi^\top (1) \hat{\theta} \\
+    \phi^\top (2) \hat{\theta} \\ 
+    \vdots \\
+    \phi^\top (N) \hat{\theta} \\ 
+  \end{bmatrix}
+  =
+  \Phi_N^\top \hat{\theta}
+\end{align}
+
+\begin{gather}
+    J_N(\hat{\theta}) = \frac{1}{N} [y_N - \Phi_N^\top \hat{\theta}]^\top [ y_N - \Phi_N^\top \hat{\theta}] \\
+    = \frac{1}{N} [y_N^\top y_N - y_N^\top \Phi_N^\top \hat{\theta} - \hat{\theta}^\top \Phi_N y_N + \hat{\theta}^\top \Phi_N \Phi_N^\top \hat{\theta}] \\
+    = \frac{1}{N} [y_N^\top y_N - 2y_N^\top \Phi_N^\top \hat{\theta}+ \hat{\theta}^\top \Phi_N \Phi_N^\top \hat{\theta}] \\
+    = \frac{1}{N} y_N^\top y_N + \frac{2}{N}[\frac{1}{2} \hat{\theta}^\top \Phi_N \Phi_N^\top \hat{\theta} -  y_N^\top \Phi_N^\top \hat{\theta} ]
+\end{gather}
+We can mimimize this with respect to $\hat{\theta}$
+\begin{align}
+  \text{minimize}_{\hat{\theta}} & \quad z = \frac{1}{2} \hat{\theta}^\top \Phi_N \Phi_N^\top \hat{\theta} -  y_N^\top \Phi_N^\top \hat{\theta}
+\end{align}
+
+\begin{gather}
+    \nabla_{\hat{\theta}} z(\hat{\theta}) = \Phi_N \Phi_N^\top \hat{\theta} - \phi_N y_N = \textbf{0} \\
+    \hat{\theta} = (\Phi_N \Phi_N^\top)^{-1} \phi_N y_N 
+\end{gather}
+which is okay when $\Phi_N \Phi_N^\top$ is positive semi-definite.
+This is always the case for the matrix even if $\Phi_N$ is not positive semi-definite or symmetric.
+
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Definition:} A matrix $\textbf{M}$ is positive semi-definite when $\forall \textbf{v} \neq 0$,
+        \begin{equation}
+            \textbf{v}^\top \textbf{M} \textbf{v} \geq 0
+        \end{equation}
+    \end{minipage}
+}
+
+An important note for gradients and partial derivatives, the gradient is the same as the transpose as the partial derivative.
+\begin{equation}
+    \nabla_\textbf{x} f(\textbf{x}) = [\frac{d f(\textbf{x})}{d \textbf{x}}]^\top
+\end{equation}
+
 
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
