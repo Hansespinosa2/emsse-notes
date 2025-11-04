@@ -598,6 +598,80 @@ An important note for gradients and partial derivatives, the gradient is the sam
     \nabla_\textbf{x} f(\textbf{x}) = [\frac{d f(\textbf{x})}{d \textbf{x}}]^\top
 \end{equation}
 
+\subsection{November 4th}
+\subsubsection{Gradient Descent}
+As we pursue our optimal solution for a problem,
+\begin{equation}
+    \textbf{x}^* = \arg \min_{\textbf{x}} f(\textbf{x})
+\end{equation}
+gradient descent is a powerful tool to bring us closer to the optimal solution where the gradient is equal to zero.
+We pick an initial point $\textbf{x}_0$ and use a step-size weighted pursuit opposite of the gradient to iteratively drive toward the optimal solution at $\nabla f= 0$.
+\begin{equation}
+    \textbf{x}^{k+1} = \textbf{x}^k - \alpha^k \nabla_{\textbf{x}} f(\textbf{x})
+\end{equation}
+We also develop and implement a stopping criterion with the goal of stopping once $\textbf{x}^ \approx \textbf{x}^*$.
+Below are some examples of stopping criteria.
+\begin{itemize}
+    \item We can stop once the change is small enough $f(\textbf{x}^{k+1}) - f(\textbf{x}^k) \leq \varepsilon_f$
+    \item We can stop once the gradient of the function is small enough to be considered approximately zero $ \| \nabla f(\textbf{x}^k) \|  \leq \varepsilon_g$.
+    \item We can also look at the change in the arguments to evaluate if the change is small enough where we have an approximately optimal solution $ \| \textbf{x}^{k+1} - \textbf{x}^k \| \leq \varepsilon_x$. This is effectively the same as the previous one.
+    \item We can also stop when we don't have enough time with a number of iterations $l$ and $l_{max}$. $l \leq l_{max}$
+\end{itemize}
+
+Gradient descent is a first-order solution method.
+It requires the first derivative in order to work.
+There exist zeroth-order and second-order methods (as well as a general $n$-th order).
+\begin{equation}
+    \begin{cases}
+        \text{Zeroth-Order} & f(x) \\
+        \text{First-Order} & \nabla f(x) \\
+        \text{Second-Order} & H(f(x))
+    \end{cases}
+\end{equation}
+\subsubsection{Zeroth Order Methods}
+A zeroth order method only utilises information from the function $f(x)$.
+One of these methods is called \textbf{random search} or \textbf{random walk}, in which a random direction and step is pursued and evaluated.
+We can evaluate if we increased or decreased at all and see where we achieved the lowest solution.
+\begin{equation}
+    \textbf{x}^{k+1} = \textbf{x}^k + \alpha^{k} \textbf{rand}
+\end{equation}
+Using the $\alpha$ term, we can approximate simulated annealing by varying the step size to balance exploration and expolitation.
+With a high step size, we can jump out of local minima.
+
+Another zeroth order method uses the approximate gradient by measuring the distance between points $\delta = \textbf{x}^{k+1} - \textbf{x}^k$.
+\begin{equation}
+    \textbf{x}^{k+1} = \textbf{x}^k - \alpha^k \tilde{\nabla}_{\textbf{x}} f(\textbf{x})
+\end{equation}
+
+\subsubsection{Second Order Methods}
+The second order methods take advantage of the parabola with the same slope and curvature at the point $f(\textbf{x})$.
+We can then jump to the bottom of the parabola and drive down to the optimal solution of the original function.
+Below is the taylor series that we can use to flesh out how to utilise the second order derivative to solve the function.
+\begin{equation}
+    f(\textbf{x}) \approx f(\hat{\textbf{x}}) + \nabla f (\hat{\textbf{x}})^\top (\textbf{x} - \hat{\textbf{x}}) + \frac{1}{2} (\textbf{x} - \hat{\textbf{x}})^\top \textbf{H}(f(\hat{\textbf{x}})) (\textbf{x} - \hat{\textbf{x}})
+\end{equation}
+We want to get the minimum of $f(\textbf{x})$ and can do so by getting the minimum of the right hand side
+\begin{equation}
+    \arg \min_{\textbf{x}} \hat{f}(\textbf{x}) = \arg \min_{\textbf{x}} \{ \frac{1}{2} (\textbf{x} - \hat{\textbf{x}})^\top \textbf{H}(f(\hat{\textbf{x}})) (\textbf{x} - \hat{\textbf{x}}) + \nabla f(\hat{\textbf{x}})^\top (\textbf{x} - \hat{\textbf{x}}) \}
+\end{equation}
+
+\begin{equation}
+    (\textbf{x} - \hat{\textbf{x}}) = - \textbf{H} (\hat{\textbf{x}})^{-1} \nabla_{\textbf{x}} f(\hat{\textbf{x}})
+\end{equation}
+
+\begin{equation}
+    \textbf{x}^* = \hat{\textbf{x}} - \textbf{H} (\hat{\textbf{x}})^{-1} \nabla_{\textbf{x}} f(\hat{\textbf{x}})
+\end{equation}
+We are able to arrive to an iterative algorithm using this
+\begin{equation}
+    \textbf{x}^{k+1} = \textbf{x}^k - \alpha^k \textbf{H} (\textbf{x}^k)^{-1} \nabla_{\textbf{x}} f(\textbf{x}^k)
+\end{equation}
+Clearly, this only works when the hessian is positive definite $\textbf{H} \succ 0$.
+In the event that we do not have access to a positive definite hessian, we resort to the gradient descent without the hessian.
+This Newton's Method is effectively weighting the gradient descent by the hessian to improve the speed of convergence.
+
+In the event that we have a quadratic equation as our original problem, this clearly converges to the optimal solution in one step when $\alpha = 1$.
+A general version would be to replace $\textbf{H}$ with $\textbf{H} + \textbf{M}$ where $\textbf{M}$ is a term that adds the identity matrix to ensure we use gradient descent if the hessian is not positive definite.
 
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
