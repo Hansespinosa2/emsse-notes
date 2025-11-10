@@ -898,4 +898,32 @@ Air quality is incredibly important for cities to be able to reduce illnesses an
 Each city is quite different and many factors such as geography, altitude, culture, and more can influence the way that a smart city can and should be created.
 New business opportunities are arising to create solutions to improve cities across the world. 
 Electric vehicles, renewable energy, internet of things, housing development, and other sectors are exploding as cities demand this improving technology.
+
+\section{Discrete Event Systems and Queueing Theory}
+\subsection{Discrete-Event Models}
+A queueing system has a set of arrivals that enter a queue in line for a server, which in turn has departures.
+\begin{figure}[h]
+  \centering
+    \begin{tikzpicture}
+      % Draw the queueing system
+      \node[draw, rectangle, minimum width=1.5cm, minimum height=1cm] (queue) {Queue};
+      \node[draw, rectangle, minimum width=1.5cm, minimum height=1cm, right=2cm of queue] (server) {Server};
+      
+      % Draw arrows
+      \draw[->] ($(queue.west)+(-2,0)$) -- node[above] {Arrivals} (queue.west);
+      \draw[->] (queue.east) -- (server.west);
+      \draw[->] (server.east) -- ++(2,0) node[midway, above] {Departures};
+    \end{tikzpicture}
+  \caption{Queueing system with arrivals, queue, server, and departures.}
+  \label{fig:queueing_system}
+\end{figure}
+
+A discrete-event model is composed of entities and events.
+A state transition function is associated with each event, where this function defines how the system state is changed when an event occurs.
+The function has exogenous and endogenous inputs that impact the output.
+For each entity we define parameters and state variables that characterize the entity.
+For example, we could have parameters that define the interarrival time as a random distribution or a constant interval.
+On our server entity, we could have parameters for service time and have a state variable that denotes the idle/busy status and the number of clients in service and in the queue.
+
+
 \end{document}
