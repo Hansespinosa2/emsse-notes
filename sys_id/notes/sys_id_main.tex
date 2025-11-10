@@ -673,6 +673,48 @@ This Newton's Method is effectively weighting the gradient descent by the hessia
 In the event that we have a quadratic equation as our original problem, this clearly converges to the optimal solution in one step when $\alpha = 1$.
 A general version would be to replace $\textbf{H}$ with $\textbf{H} + \textbf{M}$ where $\textbf{M}$ is a term that adds the identity matrix to ensure we use gradient descent if the hessian is not positive definite.
 
+\subsection{November 10th}
+
+\begin{equation}
+    \hat{\theta}^{l+1} = \hat{\theta}^l - \alpha^l [H(\hat{\theta} + M^l)]^{-1} \nabla_{\hat{\theta}} J_N (\hat{\theta}^l)
+\end{equation}
+where
+\begin{equation}
+    J_N(\hat{\theta}) = \frac{1}{N} \sum_{r=1}^{N} (y(r) - \hat{y}(r | \hat{\theta}))^2
+\end{equation}
+
+of which we can represent the error as $e(r|\hat{\theta}) = y(r) - \hat{y}(r | \hat{\theta}) $.
+
+We can figure out the gradient of this sum of errors
+\begin{gather}
+    \frac{d J_N (\hat{\theta})}{d \hat{\theta}} = \frac{1}{N} \sum_{r=1}^{N} \frac{d e^2}{d \hat{\theta}} \\
+    = \frac{1}{N}   \sum_{r=1}^{N} 2 e \frac{d e}{d \hat{\theta}} 
+\end{gather}
+
+we can do the same for the hessian to get
+\begin{equation}
+    \frac{d^2 J}{d \hat{\theta}^2 } = \frac{2}{N} \sum_{r=1}^{N} \frac{d e}{d \hat{\theta}}^\top \frac{d e}{d \hat{\theta}} + e \frac{d^2 e}{d \hat{\theta}^2}
+\end{equation}
+
+The second term should approximate zero as we get closer to no error.
+If our selected $\hat{\theta}$ is good, then we have a good approximation and our error $e$ approaches zero.
+We can create this algorithm that is kind of an adaptive version of newtons method where at the beginning iterations, we use gradient descent and as we get closer, we introduce more of the second derivative to get closer to the actual solution.
+
+\begin{equation}
+   \hat{\theta}^{l+1} = \hat{\theta}^l - \alpha^l [\frac{2}{N} \sum_{r=1}^{N} (\frac{d e(r|\hat{\theta})}{d \hat{\theta}}^\top \frac{d e(r|\hat{\theta})}{d \hat{\theta}}) + \delta^l \textbf{I} ]^{-1} [\frac{2}{N} \sum_{r=1}^{N} e(r|\hat{\theta}) \frac{d e(r|\hat{\theta})}{d \hat{\theta} } ]^\top
+\end{equation}
+
+As an application example, lets consider an ARMAX model with a collected dataset with entries $r$.
+\begin{equation}
+    \hat{y}(r | \hat{\theta}) = [1-\frac{A(z)}{D(z)}] y(r) + \frac{B(z)}{D(z)} u(r)
+\end{equation}
+therefore to get the error $e$, we can plug this in
+\begin{gather}
+    e(r|\hat{\theta}^l) = y(r) - \hat{y}(r|\hat{\theta}^l) \\
+    = y(r) - [1-\frac{A(z)}{D(z)}] y(r) + \frac{B(z)}{D(z)} u(r) \\
+    = \frac{A(z|\hat{\theta}^l)}{D(z|\hat{\theta}^l)} y(r) - \frac{B(z|\hat{\theta}^l)}{D(z|\hat{\theta}^l)}
+\end{gather}
+
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
 
