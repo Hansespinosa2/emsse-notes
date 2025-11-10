@@ -925,5 +925,25 @@ For each entity we define parameters and state variables that characterize the e
 For example, we could have parameters that define the interarrival time as a random distribution or a constant interval.
 On our server entity, we could have parameters for service time and have a state variable that denotes the idle/busy status and the number of clients in service and in the queue.
 
+\subsection{Queueing Theory}
+\textbf{Queueing Theory} has the objective of defining analytical models for studying waiting phenomena occurring when there is a service provided by a server (or a set of servers) to a set of clients.
+To characterize a queueing system, we have arrival process statistics, service process statistics, a number of servers, a buffer capacity, a client population, and a service discipline.
+This creates the Kendall's notation language system that we use to characterize queueing systems, such as an M/M/1 system.
+
+\begin{equation}
+  A | B | m | K | H | Z
+\end{equation}
+where:
+\begin{itemize}
+  \item $A$ refers to the arrival process
+  \item $B$ refers to the service process
+  \item $m$ is the number of servers
+  \item $K$ is the buffer capacity
+  \item $H$ refers to the population of clients
+  \item $Z$ is the service discipline.
+\end{itemize}
+When, $K$ and $H$ are not specified, they get the infinite value and if $Z$ is not specified, then the FIFO discipline is assumed by default.
+For the arrival and services processes, we can have M (Markovian), D (Deterministic), N (Normal), E (Erland), G (General) codes for the different process distributions.
+
 
 \end{document}
