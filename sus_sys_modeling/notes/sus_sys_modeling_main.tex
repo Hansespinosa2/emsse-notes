@@ -945,5 +945,68 @@ where:
 When, $K$ and $H$ are not specified, they get the infinite value and if $Z$ is not specified, then the FIFO discipline is assumed by default.
 For the arrival and services processes, we can have M (Markovian), D (Deterministic), N (Normal), E (Erland), G (General) codes for the different process distributions.
 
+Below is some important notation for queuing theory
+\begin{itemize}
+  \item $m$ is the number of servers
+  \item $a_i$ is the arrival time of client $i$.
+  \item $d_i$ is the departure time of client $i$.
+  \item $T_a(t)$ is a stochastic variable related to the clients interarrival time, for which it is generally defined the arrival frequency $\lambda$ is expressed as $\lambda = \frac{1}{E[T_a(t)]}$
+  \item $T_s(t)$ is a stochastic variable related to the clients service time, for which it is generally defined the service frequency $\mu$ is expressed as $\mu = \frac{1}{E[T_s(t)]}$
+  \item $L_q(t)$ is the number of clients in the queue at time $t$ (including queue and service)
+  \item $L_w(t)$ is the number of clients waiting in queue at time $t$ (including just those in the queue)
+  \item $T_{q,i}$ is the permanence time in the system of client $i$
+  \item $T_{w,i}$ is the waiting time of client $i$
+  \item $T_{s,i}$ is the service time of client $i$.
+\end{itemize}
+Naturally, there are some relationships between these concepts such as 
+\begin{equation}
+  T_{q,i} = T_{w,i} + T_{s,i} = d_i - a_i
+\end{equation}
+
+\subsubsection{Stability}
+We can have a queueing system that is either stable or unstable.
+A stable queueing system is if it does not diverge over time.
+This occurs when the length of the queue at time $t$ is limited as $t \to \infty$.
+If the length of the queue increases indefinitely and is not bounded as $t \to \infty$, then the system is unstable.
+The load coefficient must be less than 1, meaning that the resources are freed up quicker than they arrive into the system.
+If we have a stable system, the usage coefficient and load coefficient are the same.
+
+\subsubsection{Laws}
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Lindley's Law: } In a queueing system with one single server and following FIFO, it holds that:
+        \begin{equation}
+          d_i = \max \{ a_i, d_{i-1} \} + T_{s,i}
+        \end{equation}
+    \end{minipage}
+
+}
+
+\framebox[\linewidth]{
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        \textbf{Little's Law:} In stochastic equilibrium conditions the average number of clients in the system is given by the product between the arrival rate and the average permanence time in the system:
+        \begin{equation}
+          \bar{L}_q = \lambda \times \bar{T}_q
+        \end{equation}
+    \end{minipage}
+}
+
+\subsubsection{Markovian Queues}
+The probability $\pi_n(t)$ that at time $t$ the population consists of $n$ units, can be computed starting from $n=0$ with a time step $dt$ as such:
+\begin{gather}
+  \pi_0(t+dt) = \pi_0(t)(1-\lambda_0) dt + \pi_1(t) \mu_1 dt \\
+  \pi_1(t+dt) = \pi_1(t)(1-\lambda_1 - \mu_1) dt + \pi_0 \lambda_0 dt + \pi_2(t) \mu_2 dt \\
+  \vdots \\
+  \pi_n(t+dt) = \pi_n(t) (1-\lambda_n - \mu_n) dt + \pi_{n-1} \lambda_{n-1} dt + \pi_{n+1}(t) \mu_{n+1} dt
+\end{gather}
+
+\begin{gather}
+  \pi_n = C_n \pi_0
+\end{gather}
+
+\subsubsection{Capacity Buffer}
+We can have a system that is $M | M | 1 | K$, with a maximimum buffer of clients $K$ that can be in the system at a time.
+By definition, this system is always stable since clients will be rejected and are thus bounded by the maximum buffer.
+
 
 \end{document}
