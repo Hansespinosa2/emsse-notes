@@ -1008,5 +1008,32 @@ The probability $\pi_n(t)$ that at time $t$ the population consists of $n$ units
 We can have a system that is $M | M | 1 | K$, with a maximimum buffer of clients $K$ that can be in the system at a time.
 By definition, this system is always stable since clients will be rejected and are thus bounded by the maximum buffer.
 
+\section{Group Intermediate Project}
+let $\textbf{x}(k) \in \mathbb{R}^6$ be the number of inhabitants (males and females) in the population.
+The amount of inhabitants in the first age group at a time $x_1(k+1)$ is:
+
+\begin{align}
+  x_1(k+1) = (0.9980)(0.9413)
+  (x_1(k) + (\frac{6.3}{1000})
+  \begin{bmatrix}
+     0.01 \\ 0.75 \\ 0.24 \\ 0 \\ 0 \\ 0
+  \end{bmatrix}^\top
+  \textbf{x}(k)
+  + \frac{u_1}{1000} x_1(k) )
+\end{align}
+
+\begin{tiny}
+\begin{align}
+  \textbf{A} = 
+  \begin{bmatrix}
+     (0.9980)(0.9413)+\frac{0.634}{1000} + \frac{6.3}{1000}(0.01) & \frac{6.3}{1000} (0.75) & (\frac{6.3}{1000})(0.24) & 0 & 0 & 0 \\
+     (1-(0.9413))(0.9980) & (0.9448)(0.9920) + \frac{1.585}{1000} & 0 & 0 & 0 & 0 \\
+     0 & (1-(0.9448))(0.9920) & (0.9446)(0.9567) + \frac{0.761}{1000} & 0 & 0 & 0 \\
+     0 & 0 & (1-(0.9446))(0.9567) & (0.9663)(0.7401) + \frac{0.190}{1000} & 0 & 0 \\
+     0 & 0 & 0 & (1-(0.9663))(0.7401) & (0.9520)(0.5806) & 0 \\
+     0 & 0 & 0 & 0 & (1-(0.9520))(0.5806) & 0
+  \end{bmatrix}
+\end{align}
+\end{tiny}
 
 \end{document}
