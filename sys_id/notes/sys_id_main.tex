@@ -715,6 +715,79 @@ therefore to get the error $e$, we can plug this in
     = \frac{A(z|\hat{\theta}^l)}{D(z|\hat{\theta}^l)} y(r) - \frac{B(z|\hat{\theta}^l)}{D(z|\hat{\theta}^l)}
 \end{gather}
 
+\subsection{November 24th}
+With two assumptions we can say that the system is perfectly modeled by the system:
+\begin{itemize}
+    \item $S = M(\theta)$
+    \item $\hat{\theta} = \theta$
+\end{itemize}
+If these two assumptions are true, then the error corresponds to a white noise following the noise in the system.
+\begin{equation}
+    e(k | \hat{\theta}) = y(k) - \hat{y} (k| \hat{\theta}) = n(k)
+\end{equation}
+where $n(k)$ follows $N(0,\lambda^2)$.
+We can also conclude that if the error does not follow a white noise normal distribution, then one or both of the assumptions are failed.
+Either, the model does not fit the system appropriately, or the parameters estimated do not appropriately characterize the system.
+
+We can think about a whiteness test to determine whether a sequence of data points come from "white noise".
+We can conclude with a certain level of confidence or accuracy that a sequence is white or not.
+The whiteness test is a measure of how well the model adheres to the assumptions, and therefore it can be used to compare different models' performances.
+
+In order to get an informative enough dataset, we need to have an input that is persistently exciting.
+Our input should be variable enough to capture enough variance in the data to learn from it.
+With an infinite amount of data (or a set large enough to capture most meaningful variance), overfitting is more difficult to achieve.
+
+for ARX:    
+\begin{equation}
+    \hat{y} (k | \hat{\theta}) = \phi^\top (k) \hat{\theta}
+\end{equation}
+
+where $\phi$ is the regressor
+\begin{align}
+  \phi(k) = 
+  \begin{bmatrix}
+     - y(k-1) \\ \vdots \\ -y(k-m) \\ u(k) \\ \vdots \\ u(k-n)
+  \end{bmatrix}
+\end{align}
+
+and
+\begin{equation}
+    \hat{\theta}^* = [\Phi_N \Phi_N^\top]^{-1} \Phi_N y_N
+\end{equation}
+
+and 
+\begin{align}
+  \Phi_N = 
+  \begin{bmatrix}
+   \phi(1) & \dots & \phi(N)
+  \end{bmatrix}
+\end{align}
+
+We can then create a general function $\gamma: \mathbb{R}^{m + n +1} \to \mathbb{R}$ that maps the parameters and regressors into the output.
+\begin{equation}
+    \hat{y} (k | \hat{\theta}) = \hat{\gamma} (\phi(k), \hat{\theta})
+\end{equation}
+where for ARX, $\hat{\gamma} = \phi^\top \hat{\theta}$.
+With an ARX model, we can say that the first assumption holds and that the system itself is ARX if 
+\begin{equation}
+    y(k) = \phi(k)^\top \theta + n(k)
+\end{equation}.
+
+This generalized function $\gamma$ is a non linear difference equation.
+This can create a N-ARX class of models which is the non-linear ARX models.
+\begin{equation}
+    y(k) = \gamma(\phi(k)) + n(k)
+\end{equation}
+Our goal is then to find the optimal function $\gamma^*$ to minimize some functional cost $J$.
+\begin{equation}
+    \gamma^* = \arg \min_{\hat{\gamma}} J_N (\gamma) = \frac{1}{N} \sum_{r=1}^{N} [y(r) - \hat{\gamma}(\phi(k))]^2
+\end{equation}
+
+
+
+
+
+
 \include{extra/sys_n_sig}
 \include{extra/sys_ljung}
 
