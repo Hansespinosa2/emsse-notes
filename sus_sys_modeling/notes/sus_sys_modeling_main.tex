@@ -1053,4 +1053,26 @@ and
   \end{bmatrix}
 \end{align}
 
+\subsection{Queueing networks theory}
+A Gordon-Newell's model contains a system that has a steady-state condition and a finite state space $S$.
+The steady state probability distribution is given by:
+\begin{equation}
+  \pi(n_1, n_2, \dots, n_N) = \pi(\textbf{n}) = C \prod_{i=1}^N \frac{x_i^{n_i}}{\beta_i(n_i)}
+\end{equation}
+
+in which the constants $\beta_i(n_i)$ are computed as:
+\begin{equation}
+  \beta_i(n_i) = 
+  \begin{cases}
+    n_i ! & 1 \leq n_i \leq m_i -1 \\
+    m_i ! m_i^{n_i - m_i} & n_i \geq m_i
+  \end{cases}
+\end{equation}
+
+and the constant $C$ is a normalization coefficient computed as:
+
+\begin{equation}
+  C = \frac{1}{\sum_{\textbf{n} \in S} (\prod_{i=1}^{N} \frac{x_i^{n_i}}{\beta_i(n_i)})}
+\end{equation}
+
 \end{document}
