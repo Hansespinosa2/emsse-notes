@@ -783,9 +783,62 @@ Our goal is then to find the optimal function $\gamma^*$ to minimize some functi
     \gamma^* = \arg \min_{\hat{\gamma}} J_N (\gamma) = \frac{1}{N} \sum_{r=1}^{N} [y(r) - \hat{\gamma}(\phi(k))]^2
 \end{equation}
 
+\subsection{December 15th}
+For asymptotical stability in continuous time we require that the characteristic matrix $F-HG$ has strictly negative real parts to the eigenvalues.
+For discrete time, the absolute value of all eigenvalues should be less than one.
+\begin{equation}
+    \textbf{e}(k+1) = (F-HG) \textbf{e}(k)
+\end{equation}
 
+with this description of a system,
+\begin{gather}
+    \textbf{z}(k+1) = \hat{F} \textbf{z}(k) + \hat{W} \textbf{u}(k) + H \textbf{y} (k) \\
+    \hat{\textbf{x}}(k) = \textbf{z} (k)
+\end{gather}
+it is asymptotical observer if 
+\begin{itemize}
+    \item $\hat{W} = W$
+    \item $\hat{F} = F - HG$ 
+    \item $H$ s.t. $F-HG$ is asymptotically stable
+\end{itemize}
+For the third condition, we can choose $H$ to adhere to this constraint if $S$ is completely observable.
+OR, if all parts of $S$ that are not observable are asymptotically stable.
 
+We can break up any system into the observable parts and the non-observable parts.
+The input influences both the observable part and the non-observable, but the observable part has a one-way effect on the non-observable part.
+The non-observable part does not have a direct effect on the output but can cause the system to explode if it is asymptotically unstable.
 
+Assume we have $\hat{F}, \hat{W}, H$ that adhere to the previous three constraints
+\begin{gather}
+    \textbf{z}(k+1) = (F-HG)\textbf{z}(k) + W \textbf{u}(k) + H \textbf{y}(k) \\
+    = F \textbf{z} + W \textbf{u} + H(\textbf{y} - G \textbf{z})
+\end{gather}
+this is an asymptotical observer with $\hat{\textbf{x}}(k) = \textbf{z}(k)$.
+In the event that $z$ is the same as the state $x$, then the term $\textbf{y} - G \textbf{z}$ approaches zero.
+
+Bringing it back to the recursive ARX model
+\begin{equation}
+    \hat{\theta}^*(k) = \hat{\theta}^* (k-1) + \gamma (k) [y(k) - \hat{y} (k | \hat{\theta}^* (k-1))]
+\end{equation}
+
+we can augment the state with parameters that we do not know and create a $X(k)$ from $x(k)$ and $\theta$.
+
+We can also have time-varying matrices for our system and observer.
+\begin{gather}
+    \textbf{x}(k+1) = F(k) \textbf{x}(k) + W(k) \textbf{u}(k) + \xi(k) \\
+    \textbf{y}(k) = G(k) \textbf{x}(k) + \eta(k)
+\end{gather}
+where $\xi, \eta$ are white noise random variables with time-varying covariances $Q(k), R(k)$ respectively.
+
+\begin{itemize}
+    \item $\hat{\textbf{x}}(k | k)$ is an estimate of the state $\textbf{x}(k)$ based on the current information set $I(k)$.
+    \item $\hat{\textbf{x}}(k | k - 1)$ is a prediction of the state $\textbf{x}(k)$ based on the previous information set $I(k-1)$
+\end{itemize}
+
+\begin{gather}
+    \hat{\textbf{x}} (k | k) = E[\textbf{x} (k) | I(k)] \\
+    \Sigma(k | k) = E[ (\textbf{x}(k) - \hat{\textbf{x}}(k | k))(\textbf{x}(k) - \hat{\textbf{x}}(k | k))^\top | I(k)]
+\end{gather}
 
 
 \include{extra/sys_n_sig}
