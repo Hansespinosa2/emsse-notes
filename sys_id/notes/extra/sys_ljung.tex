@@ -4,3 +4,78 @@
 A system is some kind of object that interact with and produce signals.
 An input $u$ enters the system that is controllable by the user alongside a set of uncontrollable but observable inputs $w$.
 There are additional disturbances that influence the system but are not observable or controllable $v$.
+
+\subsubsection{Models}
+A model is some kind of an assumed relationship between observed signals of a system.
+There can be mental models, graphical models, software models, and analytical models.
+We build a model from observed data, regardless of the type of model.
+
+To build a mathematical model, we can 1) split up the system into subsystems that have already been "created" and combine these subsystems into a final model of the whole system or 2) we can use experimentation to try analyze experimental data of input and output to create a model.
+The first type, that of subsystems, is called \textit{modeling} and the second type, with experimentation, is called \textit{system identification}.
+
+Generally, we care about the usefulness of a model as we compare it to the system.
+
+\subsubsection{Example Problem with ARX}
+A system's inputs and outputs can be represented with $u(t), y(t)$ at each time step $t$.
+We can use the linear difference equation to show a basic relationship between the two.
+\begin{equation}
+    y(t) + a_1 y(t-1) + \dots + a_n y(t-n) = b_1 u(t-1) + \dots + b_m u(t-m)
+\end{equation}
+This can be rearranged 
+\begin{equation}
+    y(t) = - a_1 y(t-1) - \dots - a_n y(t-n) + b_1 u(t-1) + \dots + b_m u(t-m)
+\end{equation}
+and then rewritten as
+\begin{equation}
+    \hat{y}(t) = \phi^\top (t) \theta
+\end{equation}
+where
+\begin{align}
+    \theta = 
+  \begin{bmatrix}
+    a_1 \\ \vdots \\ a_n \\ b_1 \\ \vdots \\ b_m
+  \end{bmatrix}
+  & \quad \phi =  
+  \begin{bmatrix}
+    -y_(t-1) \\ \vdots \\ -y(t-n) \\ u(t-1) \\ \vdots \\ u(t-m)
+  \end{bmatrix}
+\end{align}
+
+In the event that we have a dataset $Z^N$, a collection of $N$ inputs and outputs, we can use the least squares method to select the value that minimizes the least squares of the distance between the parameter selected values and the real output
+
+\begin{equation}
+    \hat{\theta} = \arg \min_\theta \frac{1}{N} \sum_{i=1}^{N} (y(t) - \hat{y}(t | \theta))^2
+\end{equation}
+
+where we can substitute the prediction $\hat{y}(t|\theta)$ with $\phi^\top(t) \theta$.
+This can be solved by setting the derivative to zero and the least squares problem has the closed form solution.
+
+The vector $\phi(t)$ is called the regression vector, and the components are the regressors.
+Models that contain old values of the output $y(t-1), y(t-2), etc$ are called auto regressors, leading to the model class ARX (Auto-Regression with eXtra inputs).
+
+\subsubsection{Systems Identification Procedure}
+In order to construct a model we need a dataset, a set of candidate models, and a rule by which to assess the model.
+Generally, a model structure is a parametrized mapping from past inputs and outputs to the space of the model outputs, that has been trained on the dataset.
+\begin{equation}
+    \hat{y}(t|\theta) = g(\theta, Z^{l-t})
+\end{equation}
+A black box model is a model where we have no physical consideration of the system, and a model with some physical interpretation is a gray box.
+Experiment design can be used to create a maximally informative dataset, we can use background information and modeling to identify a set of candidate models, and we can use a few testing techniques to use the gathered data to approximate the model's performance on the overall system.
+We can then identify if the model is good enough and perform model validation, at which we then go back through the loop if it is not.
+
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.50\textwidth]{../../images/sys_des_loop.png}}
+  \caption{System Design Loop}
+  \label{fig:sys_des_loop}
+\end{figure}
+
+In order to select a good model, the following information is helpful:
+\begin{enumerate}
+    \item Identification techniques and rational, and typical choices of model steps
+    \item Knowledge of the properties of the identified model and their dependence on data, the model set, and identification criterion.
+    \item Numerical schemes for computing the estimate
+    \item Sufficient knowledge to make intelligent choices of experiment design, model set, and identification criterion.
+\end{enumerate}
+
+\subsection{Time-Invariant Linear Systems}
+\subsubsection{Impulse Responses}
