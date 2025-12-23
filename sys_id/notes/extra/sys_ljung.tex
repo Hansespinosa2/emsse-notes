@@ -136,5 +136,25 @@ For a rational transfer function $G(q)$, the zeros are the zeros of the numerato
 
 A filter is monic if its zeroth coefficient is 1
 \begin{equation}
-    H(q) = \sum_{k=0}^{\infty} h(k) q^{-k}, \quad h(0) = 1
+    H(q) = 1+ \sum_{k=1}^{\infty} h(k) q^{-k}
 \end{equation}
+
+\subsubsection{Frequency-Domain Expressions - Skipped}
+\subsubsection{Signal Spectra - Skipped}
+\subsubsection{Single Realization Behavior and Ergodicity}
+Provided the stochastic part of a signal can be described as filtered white noise, and hence brought into $v$, then the spectrum of an observed single realization of $s(t)$, computed for a deterministic signal, coincides, with probability 1, with that of the process $s(t)$, defined by ensemble averages.
+Basically, the theory of probability is useful even when you only have limited data.
+
+\subsubsection{Multivariable Systems}
+We can change the assumed single-input single-output models into a multivariable model with $p$ output components and $m$ input components.
+These systems are multivariable where $\mathbf{y} \in \mathbb{R}^p, \mathbf{x} \in \mathbb{R}^m$.
+The easy part of this change is notational changes and ensuring that transposes are maintained and that the general structure and logic of the problem is adhered to.
+The difficult part arises when there $p > 1$, and there are multiple outputs.
+
+\begin{equation}
+    \mathbf{y}(t) = \textbf{G} (q) \textbf{u}(t) + \textbf{H}(q) e(t)
+\end{equation}
+
+where $\mathbf{y} \in \mathbb{R}^p, \mathbf{x} \in \mathbb{R}^m, \textbf{G} \in \mathbb{R}^{p \times m}, \textbf{H} \in \mathbb{R}^{p \times p}, \textbf{e} \in \mathbb{R}^p$.
+This is the basic linear system with disturbances with multiple inputs and multiple outputs.
+The $i,j$-th entry of $\textbf{G}$ is the scalar transfer function from input number $j$ to output number $i$.
