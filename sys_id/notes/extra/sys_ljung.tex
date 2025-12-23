@@ -78,4 +78,63 @@ In order to select a good model, the following information is helpful:
 \end{enumerate}
 
 \subsection{Time-Invariant Linear Systems}
-\subsubsection{Impulse Responses}
+\subsubsection{Impulse Responses, Disturbances, and Transfer Function}
+A system is considered \textit{time invariant} if its response to a certain input signal does not depend on absolute time, it is \textit{linear} if the output response to a linear combination of inputs is the same linear combination of the output responses of the individual inputs, and it is \textit{causal} if the output at a time $t$ depends only on $0,\dots,t$, that is the time up to $t$.
+A linear, time-invariant, causal system can be described by its impulse response $g(\tau)$
+\begin{equation}
+    y(t) = \int_{\tau=0}^{\infty} g(\tau) u(t-\tau) d \tau
+\end{equation}
+
+for discrete time,
+\begin{equation}
+    y(t) = \sum_{k=1}^{\infty} g(k) u(t-k)
+\end{equation}
+
+This is an oversimplification the majority of the time as the output is not perfectly characterized by the inputs.
+Instead, we have disturbances that add some random signals that we can not observe into the system.
+We can represent these disturbances as $v(t)$, which can represent the sum of measurement noise, uncontrollable or unobservable inputs, or other random sources.
+\begin{equation}
+    y(t) = \sum_{k=1}^{\infty} g(k) u(t-k) + v(t)
+\end{equation}
+Most disturbances are only noticeable by their effect on the output.
+The value of a disturbance is not known beforehand.
+The disturbance can be defined as a convolution with an impulse response $h(k)$ of the disturbance and a white noise variable $e(t)$
+\begin{equation}
+    v(t) = \sum_{k=0}^{\infty} h(k) e(t-k)
+\end{equation}
+These white noise (zero mean, constant variance, no correlation between points OR a sequence of independent random variables with zero mean and variances $\lambda$) distributions can come in many forms, such as a constant (positive and negative) value applied with probability $\mu$ every $t$ time step, or a normal distribution with mean $0$. 
+
+The second-order properties of $v$ refer to the mean $E[v(t)] = 0$ and the variance $E[v(t) v(t-\tau)] = \lambda \sum_{k=0}^{\infty} h(k) h(k-\tau)$.
+
+This book uses $q, q^{-1}$ for the forward and backward shift operator respectively.
+\begin{equation}
+    q^{-1} u(t) = u(t-1)
+\end{equation}
+and we can therefore rearrange the impulse response function convolution equation into a transfer function form:
+\begin{gather}
+    y(t) = \sum_{k=1}^{\infty} g(k) u(t-k) = \sum_{k=1}^{\infty} g(k) (q^{-k} u(t)) \\ 
+    = [\sum_{k=1}^{\infty} g(k) q^{-k}] u(t) = G(q) u(t)
+\end{gather}
+where $G(q) = \sum_{k=1}^{\infty} g(k) q^{-k}$.
+
+which can be extended to the case of the disturbances
+\begin{equation}
+    v(t) = H(q) e(t)
+\end{equation}
+and to the overall case of a linear system with additive disturbances
+\begin{equation}
+    y(t) = G(q) u(t) + H(q) v(t)
+\end{equation}
+
+The transfer function $G(z)$ is stable if the sum of the impulse responses until infinity converge.
+\begin{equation}
+    \sum_{k=1}^{\infty} |g(z)| < \infty
+\end{equation}
+which coincides with the definition of BIBO (bounded input, bounded output) stability.
+This also means that the function $G(z)$ is analytic on and outside the unit circle and has no poles in that area.
+For a rational transfer function $G(q)$, the zeros are the zeros of the numerator and the poles are the zeros of the denominator.
+
+A filter is monic if its zeroth coefficient is 1
+\begin{equation}
+    H(q) = \sum_{k=0}^{\infty} h(k) q^{-k}, \quad h(0) = 1
+\end{equation}
