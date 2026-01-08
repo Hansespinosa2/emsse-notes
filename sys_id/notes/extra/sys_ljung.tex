@@ -158,3 +158,46 @@ The difficult part arises when there $p > 1$, and there are multiple outputs.
 where $\mathbf{y} \in \mathbb{R}^p, \mathbf{x} \in \mathbb{R}^m, \textbf{G} \in \mathbb{R}^{p \times m}, \textbf{H} \in \mathbb{R}^{p \times p}, \textbf{e} \in \mathbb{R}^p$.
 This is the basic linear system with disturbances with multiple inputs and multiple outputs.
 The $i,j$-th entry of $\textbf{G}$ is the scalar transfer function from input number $j$ to output number $i$.
+
+\subsection{Simulation and Prediction}
+\subsubsection{Simulation}
+We can use model and systems descriptions to run simulations.
+We have a sequence of inputs $u^*(t)$ and attempt to separate the model into the undisturbed component $y^*(t) = G(q) u^*(t)$ and the disturbance $v^* = H(q) e^*(t)$ that is caused by a sequence of randomly generated numbers $e^*(t)$.
+
+\subsubsection{Prediction}
+Let's say we want to predict the value of the output at time $t$ when we have known input and output for all periods up until then.
+\begin{equation}
+    \hat{y}(t|t-1) = H^{-1} (q) G(q) u(t) + [1- H^{-1} (q)] y(t)
+\end{equation}
+We also have the prediction error
+\begin{equation}
+    y(t) - \hat{y}(t | t-1) = -H^{-1} (q) G(q) u(t) + H^{-1}(q)y(t) = e(t)
+\end{equation}
+
+\subsubsection{Observers}
+An observer is a prediction that removes the assumption of noise and ignores it.
+It naively attempts to predict $y(t) = G(q) u(t)$.
+
+With these observers, we can move around and define equations uniquely to either benefit measurement noise or incorrect initial conditions.
+For example, taking
+\begin{equation}
+    G(z) = b \sum_{k=1}^{\infty} (a)^{k-1} z^{-k} = \frac{b z^{-1}}{1-az^{-1}}
+\end{equation}
+we can have
+\begin{equation}
+    \hat{y}(t|t-1) = b \sum_{k=1}^{\infty} a^{k-1} u(t-k)
+\end{equation}
+OR
+\begin{equation}
+   \hat{y}(t|t-1) = a y(t-1) + b u(t-1)
+\end{equation}
+These two representations have different advantages.
+The first one relies only on the input, whereas the second only relies on $t-1$. 
+So the choice of predictor means that we can trade off between sensitivity with respect to measurement errors and rapidly decaying effects of erroneous initial conditions.
+
+We can also introduce a $W$ filter and decide $W$ as a variable to control between the measurement error and the erroneous initial conditions
+\begin{equation}
+    \hat{y}(t | t-1) = [1-W(q)]y(t) + W(q)G(q)u(t)
+\end{equation}
+
+\subsection{Models of Linear Time-Invariant Systems}
