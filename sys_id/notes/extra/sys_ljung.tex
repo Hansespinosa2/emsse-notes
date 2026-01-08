@@ -201,3 +201,216 @@ We can also introduce a $W$ filter and decide $W$ as a variable to control betwe
 \end{equation}
 
 \subsection{Models of Linear Time-Invariant Systems}
+\subsubsection{Linear Models and Sets of Linear Models}
+The following is a description of a system with inputs and disturbances at time $t$.
+\begin{equation}
+    y(t) = G(q) u(t) + H(q) e(t)
+\end{equation}
+where
+\begin{equation}
+    G(q) = \sum_{k=1}^{\infty} g(k) q^{-k}, \quad H(q) = 1+ \sum_{k=1}^{\infty} h(k) q^{-k}
+\end{equation}
+We can have different models such as rational transfer functions and finite-dimensional state-space descriptions to specify the functions $G,H, f_e$ where $f_e$ is the PDF of the random white noise.
+Generally, for this PDF, we specify the first and second moments (mean and STD) being $0, \lambda$.
+We can have a parameter vector that specifies the model
+\begin{gather}
+    y(t) = G(q,\theta) u(t) + H(q,\theta) e(t) \\
+    f_e(x, \theta); \{e(t)\} white noise
+\end{gather}
+
+This augments the predicition form to have this
+\begin{equation}
+    \hat{y}(t |\theta) = H^{-1}(q,\theta) G(q,\theta) u(t) + [1-H^{-q}(q,\theta)] y(t)
+\end{equation}
+
+\subsubsection{A Family of Transfer-Function Models}
+A linear difference equation can be used to parameterize $G,H$ as rational functions.
+\begin{equation}
+    y(t) + a_1 y(t-1) + \dots + a_{n_a} y(t-n_a) = b_1 u(t-1) + \dots + b_{n_b} u(t-n_b) + e(t)
+\end{equation}
+
+we can then gather these into a parameter vector $\theta$ and into transfer functions $A,B$.
+\begin{align}
+  \theta =
+  \begin{bmatrix}
+     a_1 \\ a_2 \\ \dots \\ a_{n_a} \\ b_1 \\ \dots \\ b_{n_b}
+  \end{bmatrix}
+  \\
+  A(q) = 1 + a_1 q^{-1} + \dots + a_{n_a} q^{-n_a} \\
+  B(q) = b_1 q^{-1} + \dots + b_{n_b} q^{-n_b}
+\end{align}
+with that we can rearrange equation to grab $G,H$:
+\begin{gather}
+    y(t) + a_1 y(t-1) + \dots + a_{n_a} y(t-n_a) = b_1 u(t-1) + \dots + b_{n_b} u(t-n_b) + e(t) \\
+    A(q)y(t) = B(q) u(t) + e(t) \\
+    y(t) = \frac{B(q)}{A(q)}u(t) + \frac{1}{A(q)} e(t)
+\end{gather}
+therefore, this model has $G = \frac{B}{A}, H=\frac{1}{A}$.
+This model is the \textbf{ARX Model - Autoregressive with exogenous input} 
+
+\textbf{Linear Regression}
+
+Combining this with the prediction model, we can get
+\begin{gather}
+    \hat{y}(t|\theta) = H^{-1}(q) G(q) u(t) + [1-H^{-1}(q)]y(t) \\
+    \hat{y}(t|\theta) = B(q) u(t) + [1-A(q)]u(t)
+\end{gather}
+
+with the vector
+\begin{align}
+    \phi(t) = 
+  \begin{bmatrix}
+     -y(t-1) & \dots & -y(t-n_a) & u(t-1) & \dots & u(t-n_b)
+  \end{bmatrix}
+\end{align}
+we can rewrite it as 
+\begin{equation}
+    \hat{y}(t|\theta) = \phi^\top (t) \theta
+\end{equation}
+
+\textbf{ARMAX}
+
+We can do the same and add the error component with a tunable parameter $\textbf{c} \in \mathbb{R}^{n_c}$
+
+\begin{equation}
+    A(q)y(t) = B(q) u(t) + C(q) e(t)
+\end{equation}
+This is the \textbf{ARMAX Model - Autoregressive Moving Average with Exogenous input}.
+Where $G=B/A, H=C/A$
+and the parameter vector $\theta$ has $\textbf{c}$ added on to it and the regression vector has the errors added on.
+
+this leads to the regression
+\begin{equation}
+    \hat{y}(t|\theta) = \frac{B(q)}{A(q)} u(t) + [1-\frac{A(q)}{C(q)}] y(t)
+\end{equation}
+Since the error is dependent on the parameter vector $\theta$, this is not linear regression but pseudolinear regression.
+
+\begin{gather}
+    \hat{y}(t|\theta) + [1-C(q)] \hat{y} = \frac{B(q)}{A(q)} u(t) + [1-\frac{A(q)}{C(q)}] y(t) + [1-C(q)] \hat{y} \\
+    \hat{y}(t|\theta) = B(q) u(t) + [1-A(q)] y(t) + [C(q) - 1][y(t) - \hat{y}(t|\theta)] \\
+    \hat{y}(t|\theta) = B(q) u(t) + [1-A(q)] y(t) + [C(q) - 1]e(t,\theta) \\
+\end{gather} 
+and we get the psuedolinear regression 
+\begin{equation}
+    \hat{y}(t|\theta) = \phi^\top(t,\theta) \theta
+\end{equation}
+
+More generally, we can have the ARARMAX model which has autoregression for the error and a moving average for the error
+\begin{equation}
+    A(q) y(t) = B(q) u(t) + \frac{C(q)}{D(q)}e(t)
+\end{equation}
+
+These ARMA models are all called equation-error models.
+We can also have output error models
+
+\textbf{Output Error Model Structure}
+
+We can take $w$ as the undisturbed output, and consequently have $y(t) = w(t) + e(t)$.
+We also have the relation with the input 
+\begin{equation}
+    w(t) + f_1 w(t-1) + \dots + f_{n_f} w(t-n_f) = b_1 u(t-1) + \dots + b_{n_b} u(t-n_b)
+\end{equation}
+and similarly arrange $f_1,\dots$ into a transfer function $F(q)$.
+Then, we get
+\begin{gather}
+    F(q)w(t) = B(q)u(t) \\
+    y(t) = \frac{B(q)}{F(q)} u(t) + e(t)
+\end{gather}
+This is the output error model structure with parameter vector
+\begin{align}
+    \theta = 
+  \begin{bmatrix}
+    b_1 \\ \dots \\ b_{n_b} \\ f_1 \\ \dots \\ f_{n_f}
+  \end{bmatrix}
+\end{align}
+
+and we get prediction form
+\begin{equation}
+    \hat{y}(t|\theta) = \frac{B(q)}{F(q)} u(t) = w(t, \theta)
+\end{equation}
+Effectly, we are predicting the undisturbed output
+and it is constructed from past inputs only with the predictor vector
+
+\begin{align}
+    \phi(t,\theta) =
+  \begin{bmatrix}
+    u(t-1) \\ \vdots \\ u(t-n_b) \\ -w(t-1, \theta) \\ \vdots \\ -w(t-n_f,\theta)
+  \end{bmatrix}
+\end{align}
+
+and gives
+\begin{equation}
+    \hat{y}(t|\theta) = \phi^\top (t, \theta) \theta
+\end{equation}
+
+\textbf{Generalized Model}
+The generalized model structure has a rational transfer function for both the input and the error.
+\begin{equation}
+    A y(t) = \frac{B(q)}{F(q)} u(t) +  \frac{C(q)}{D(q)} e(t)
+\end{equation}
+
+Turning this into the prediction form with $G= \frac{B}{F A}, H=\frac{C}{D A}$
+
+\begin{gather}
+    \hat{y}(t|\theta) = \frac{D(q) A(q)}{C(q)} \frac{B(q)}{F(q) A(q)} u(t) + [1 - \frac{D(q) A(q)}{C(q)}] y(t) \\
+    = \frac{B(q) D(q)}{C(q) F(q)} u(t) + [1 - \frac{A(q) D(q)}{C(q)}]y(t)
+\end{gather}
+
+\subsubsection{State-Space Models}
+A state-space model uses an auxilary state vector $x$ to describe a system.
+
+The following is the continuous time state space representation with  $\dot{x}$ representing the differential at time $t$.
+
+\begin{equation}
+    \dot{x}(t) = F(\theta) x(t) + G(\theta) u(t)
+\end{equation}
+
+The state variables $x$ have some kind of physical significance that capture the state of the system at a time and the outputs become a known combination of them.
+If we let $\eta (t)$ be noise-free measurements, we can have this relationship
+\begin{equation}
+    \eta (t) = H x(t)
+\end{equation}
+If we have $p$ for the differentiation operator, we can have
+\begin{equation}
+    [pI - F(\theta)] x(t) = G(\theta) u(t)
+\end{equation}
+and
+\begin{equation}
+   \eta(t) = G_c(p,\theta) u(t)
+\end{equation}
+where
+\begin{equation}
+    G_c(p, \theta) = H[pI-F(\theta)]^{-1}G(\theta)
+\end{equation}
+
+After the example, we get for the discrete time case:
+\begin{gather}
+    y(t) = G(q,\theta)u(t) + v(t) \\
+    G(q,\theta) = C(\theta) [qI - A(\theta)]^{-1} B(\theta)
+\end{gather}
+and
+\begin{gather}
+    x(t+1) = A(\theta)x(t) + B(\theta) u(t) \\
+    y(t) = C(\theta) x(t) + v(t)
+\end{gather}
+
+For a noisy representation, we can split up the measurement noise $v$ from the process noise $w$ and have the resulting representation:
+\begin{gather}
+    x(t+1) = A(\theta) x(t) + B(\theta) u(t) + w(t) \\ 
+    y(t) = C(\theta) x(t) + v(t)
+\end{gather}
+The kalman filter, which I do not understand, can be used to get the predictive form
+\begin{gather}
+    \hat{x}(t+1,\theta) = A(\theta) x(t) + B(\theta) u(t) + K(\theta) [y(t) - \hat{y}(t|\theta)] \\
+    \hat{y}(t|\theta) = C(\theta) \hat{x}(t,\theta)
+\end{gather}
+and also written as
+\begin{gather}
+    \hat{x}(t+1, \theta) = A(\theta) x(t) + B(\theta) u(t) + K(\theta) e(t) \\
+    y(t) = C(\theta) x(t,\theta) + e(t)
+\end{gather}
+
+\subsubsection{Distributed Parameter Models - SKIPPED}
+\subsubsection{Model Sets, Structures, and Identifiability - SKIPPED}
+
+\subsubsection{Identifiability of Some Model Structures - SKIPPED}
