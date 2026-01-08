@@ -17,7 +17,7 @@
 
 \tableofcontents
 
-\section{Introduction}
+\section{During Class}
 \subsection{Motivation of Computer Security}
 As computers and the relationships between them have evolved, computers have grown to be an interconnected network of devices, machines, data, transactions, and other systems.
 By limiting the access that different computers and different users have to these systems we can enforce a level of protection across this network.
@@ -264,6 +264,29 @@ With a long enough ciphertext that has been encrypted through mono-alphabetic su
 Homophonic substitution ciphers exist which replace each alphabet character $a$ with a randomly chosen string from $H(a)$.
 Where $H(a)$ is a set of strings of $t$ symbols.
 
+\section{Studying}
+\subsection{Introduction}
+\subsubsection{Basic Concepts}
+Our goal with computer security is to turn untrustworthy channels into trustworthy ones.
+We want to ensure a few things:
+\begin{enumerate}
+    \item \textbf{Confidentiality}: Transmitted information remains secret.
+    \item \textbf{Integrity}: Information is not corrupted or that we can detect alterations.
+    \item \textbf{Authentication}: Communicators know who they are speaking to.
+\end{enumerate}
+The general cryptrographic schema is to take plaintext, transform it into cipher text using an encryption algorithm and an enabling key that can be decoded with a decryption algorithm with another key.
+If the keys are the same, this algorithm is symmetric, otherwise they are asymmetric and there is a public and a private key.
 
+\begin{itemize}
+    \item \textbf{Unconditional Security}: Safe even with unbounded computing power.
+    \item \textbf{Conditional Security}: Realistically good enough.
+\end{itemize}
+\textbf{Cryptoanalysis}: science of recovering the plaintext from ciphertext without the key.
+Generally, the goal is to find the key and not just the message.
+There are brute-force methods and cryptanalytic attacks
+
+\subsubsection{A Mathematical Formalization}
+
+\subsection{Symmetric Cryptography}
 
 \end{document}
