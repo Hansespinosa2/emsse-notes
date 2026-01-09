@@ -288,5 +288,97 @@ There are brute-force methods and cryptanalytic attacks
 \subsubsection{A Mathematical Formalization}
 
 \subsection{Symmetric Cryptography}
+\subsubsection{Block vs Stream Ciphers}
+\begin{itemize}
+    \item Block ciphers encrypt messages in blocks and then decrypt those
+    \item Stream ciphers proces bit/byte by time
+\end{itemize}
+\subsubsection{Symmetric Cryptography}
+\textbf{Ideal Block Ciphers: }
+Block ciphers are effectively an extremely large substitution with a massive alphabet as each possible combination of $n$ bits is encrypted and decrypted one-to-one.
+For an ideal block cipher, we need a table of $2^n$ entries for an $n$-bit block and a key size of $n \times 2^n$.
+\textbf{An ideal cipher means that any statistical information of the plaintext is lost}
+
+A total of $2^n!$ transformations are possible where $n$ is the number of bits for each block.
+
+\textbf{Feistel Cipher Structure: }
+We can approximate the ideal block cipher practically by combining simple ciphers into a \textit{product cipher}.
+This is done with having a block cipher with a key length of $k$ bits and a block length of $n$, allowing for a total of $2^k$ transformations
+
+\textbf{Substitution-Permutation Cipher: }
+The SP cipher forms the basis of modern block ciphers, by combining substitution and permutation to confuse input bits and diffuse them.
+\begin{itemize}
+    \item Diffusion dissipates the statistical structure of the plaintext
+    \item Confusion makes the relationship between the ciphertext and key as complex as possible
+\end{itemize}
+
+The Feistel Cipher Structure works as an invertible product cipher by doing the following:
+\begin{enumerate}
+    \item Split block of length $n$ into two sections (left and right)
+    \item Perform a substitution on the left harmful based on the round function of the right half and a subkey
+    \item Then have permutation swapping the halves
+    \item Repeat the substitution and permutation multiple times
+\end{enumerate}
+We can decrypt with the following equations that show that the left block is the next rounds right block and the right block is the bitwise xor of previous left and functioned of previous right:
+\begin{gather}
+    L_r = R_{r-1} \\
+    R_r = L_{r-1} \oplus F(k_r, R_{r-1})
+\end{gather}
+we also get the fact that $R_r \oplus L_{r-1} = F(k_r, R_{r-1})$
+
+The feistel cipher has the following design elements:
+\begin{itemize}
+    \item block size 
+    \item key size
+    \item number of rounds
+    \item subkey generation algorithm
+    \item round function
+    \item fast software en/decryption
+    \item ease of analysis
+\end{itemize}
+
+\textbf{Data Encryption Standard, 1993}:
+Block cipher with a block length of $n$ and key length of $56$.
+The DES is a 16 round Feistel cipherr with a key scheduling algorithm that derives the subkeys of $F$ from original key.
+The round function $f$ is two permutations and an S-box substitution.
+
+The avalanche effect is a desirable property of an encryption algorithm where changing one input or key bit results in changing approximately half of the output bits.
+DES has security problems because it can be brute forced now and there exist analyic attacks that use structure of the cipher and timing attacks that take advantage of the fact that different inputs will cause differing calculation times.
+There exist double and triple DES to help with this.
+
+\textbf{Advanced Encryption Standard}: 
+Based on the rjindael cipher that has different key and block sizes. 
+For AES, the block size is 128 bits and there are three different key lengths, 128, 192, and 256.
+AES uses substitution-permutation
+
+\subsubsection{Modes of Operation}
+There are a few ways to handle when a message exceeds the block length.
+
+\textit{Electronic Codebook Mode} is to split the message into blocks and encrypt each individually.
+This has the problem that any identical blocked messages will be turned into the exact same ciphertext and there is no way to identify tampering from the ciphertext.
+
+\textit{Cipher-block Chaining} uses an XOR chain of plaintext block with preceding ciphertext.
+This has all ciphertext $C_j$ depend on all preceding plaintext and it is self-synchronizing so if an error occurs in one, then the others are still correctly decrypted.
+
+Stream ciphers are faster and easier to implement generally and in practice use a pseudorandom number generator to generate keys while using a seed for the pseudorandom generator to ensure replication.
+
+\subsubsection{Placement of Encryption}
+There are different places where encryption can be placed, with link encryption and end-to-end encryption as options.
+Any important routing information needs to be left alone.
+\begin{itemize}
+    \item end-to-end protects data contents over entire path and provides authentication
+    \item Link protects traffic flows from monitoring
+\end{itemize}
+
+Link encryption has message exposed in sending,receiving, and intermediate notes.
+In End-to-End encryption the message is encrypted at all nodes.
+Link encryption provides host authentication whereas end-to-end provides user authentication.
+Link encryption obscures header details whereas end-to-end does not.
+
+\subsubsection{Key Distribution}
+The big problem with symmetric keys is the transimission of the secret key. 
+Since one key is used for encryption and decryption, the key must be kept secret from anyone not authorized to have it.
+There can be multiple systems using physical distribution, third parties, master keys, session keys.
+
 
 \end{document}
