@@ -417,4 +417,67 @@ and also written as
 Identifiability means if we can identify the true parameters of a system using a model structure.
 It is globally identifiable if we can identify it for all values,
 and locally if there is a good enough.
-\subsection{Models for Time-Varying and Non-Linear Systems}
+\subsection{Models for Time-Varying and Non-Linear Systems - TBD}
+
+
+
+
+
+\subsection{Nonparametric Methods - SKIPPED}
+
+\subsection{Parameter Estimation Methods - SKIPPED}
+
+\subsection{Convergence and Consistency - TBD}
+
+\subsection{Asymptotic Distribution of Parameter Estimates - SKIPPED}
+
+\subsection{Computing the Estimate - TBD}
+
+\subsection{Recursive Estimation Methods - SKIPPED}
+
+
+\subsection{Options and Objectives}
+\subsubsection{Options}
+There are a few options we have when we are faced with a system to identify.
+We need to design an experiment, choose a model structure, fit criterion, and a validation procedure must be created.
+We have a number of experiments that we can pick and ways to conduct them, model structures to choose from, identification algorithms to apply, and validation paradigms.
+\subsubsection{Objectives}
+Our objective is to create a good and reliable model, using the "true system" or our physical approximation of it as a proximity measure
+\begin{equation}
+    y(t) = G(q) u(t) + H(q) e(t)
+\end{equation}
+Analysis pertains to assuming certain properties of the true data-generation mechanism (or true system) and subsequently calculating the necessary properties of the model to reflect it.
+
+We have a scalar $J$ that represents our difference between our model and the system or our desired results.
+We want to minimize that
+\begin{equation}
+    \min_{D \in \Delta} J(D)
+\end{equation}
+where $D$ is our design variables for our experiment, model, etc.
+
+$J$ is generally some kind of weighted difference between the true system parameters $G,H$ and our estimated ones $\hat{G}, \hat{H}$.
+In practice, this can be an L2 or L1 norm.
+For example, we can find the error of the one-step prediction problem
+\begin{equation}
+    \hat{y}(t|t-1) = H_D^{-1} (q) G_D(q) u(t) + [1-H_D^{-1}(q)] y(t)
+\end{equation}
+the error when using the design set $D$ would be 
+\begin{equation}
+    \tilde{y}_D(t) =  [H_D^{-1} (q) G_D(q) - H_T^{-1}(q) G_T(q)] u(t) + [H_T^{-1}(q) -H_D^{-1}(q) ] y(t)
+\end{equation}
+\subsubsection{Bias and Variance}
+We have bias and variance when selecting our design criterion.
+A big and flexible model generally gives a small bias, and a lot of data reduces the amount of variance.
+
+\subsection{Experiment Design}
+
+\subsection{Preprocessing Data}
+
+\subsection{Choice of Identification Criterion}
+
+\subsection{Model Structure Selection and Model Validation}
+
+
+
+
+
