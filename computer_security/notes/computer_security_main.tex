@@ -380,5 +380,107 @@ The big problem with symmetric keys is the transimission of the secret key.
 Since one key is used for encryption and decryption, the key must be kept secret from anyone not authorized to have it.
 There can be multiple systems using physical distribution, third parties, master keys, session keys.
 
+\subsection{Public-Key Cryptography}
+\subsubsection{Introduction}
+Public-key cryptography was developed to solve the problems of \textit{key distribution} and \textit{signatures}
+A public key is a trap door one-way function with trapdoor $d$.
+Effectively, we can not get $d$ from knowing $e$.
+\begin{itemize}
+    \item Symmetric encryption has the same key used for encryption and decryption, whereas public-key encryption has an algorithm with an encryption key and a decryption key.
+    \item Symmetric encryption requires both sender and receiver to have the same key, whereas public-key they must each have one of the two.
+    \item Symmetric requires the key to be kept secret, whereas only one must be kept secret in encryption
+    \item For both, it should be impractical to decipher the message with no other information available
+    \item In public-key encryption, knowledge of one of the keys and samples of cipher text and the algorithm should be insufficient to decipher the other key.
+\end{itemize}
+
+Below are some requirements for a public-key algorithm
+\begin{enumerate}
+    \item Computationally easy to generate $PU_b, PR_b$
+    \item Computationally easy to encrypte the message $C=E(PU_b,m)$
+    \item Computationally easy to decrypt the message $M=D(PR_b,C)$
+    \item Computationally infeasible to determine $PR_b$ from $PU_b$
+    \item Computationally infeasible to determine the message from knowing $PU_b,C$
+\end{enumerate}
+
+A function $f : X \rightarrow Y$ is a one-way function, if $f$ is easy to compute for all $x \in X$ but $f^{-1}$ is difficult or infeasible to compute.
+
+A trapdoor one-way function is a one-way function with $k$ trapdoor information and the following requirements
+\begin{gather}
+    y = f_k(x) \quad \text{easy, if $k,x$ are known} \\
+    x = f_k^{-1}(y) \quad \text{easy, if $k,y$ are known} \\
+    x = f_k^{-1}(y) \quad \text{infeasible, if just $y$ is known}
+\end{gather}
+
+\subsubsection{Number Theory}
+Multiplying is easy but factoring can be difficult.
+The prime factorisation of a number $a$ amounts to writing it as a power of prime numbers, which can occur with all numbers.
+
+Two numbers are \textit{relatively prime} if the greatest common factor is 1.
+For example, 4 and 9 are relatively prime since their only shared factor is $1$
+
+Two numbers $a,b$ are \textit{congruent modulo n}, if $a mod n = b mod n$
+which can be rewritten as 
+\begin{equation}
+    a =_n b
+\end{equation}
+
+The reduced set of residues of a number $n$ is the numbers from $0,\dots,n-1$ that are relatively prime with $n$.
+For example, for the number 6, the following is the reduced set of residues $\{ 1,5 \}$.
+
+The \textit{Euler Totient Function} $\phi (n)$ denotes the number of elements in the reduced set of residues.
+
+\begin{itemize}
+    \item $\phi(n) = n-1$ if the number $n$ is prime.
+    \item $\phi(pq) = (p-1)(q-1)$ if the numbers $p,q$ are both prime.
+\end{itemize}
+
+The euler theorem states that $a^{\phi(n)} =_n 1$ for all $a,n$ such that gdc($a,n$) $= 1$
+
+\subsubsection{The RSA Algorithm}
+The RSA algorithm is a crucial algorithm that relies on the fact that it is computationally difficult to factor very large numbers, and the keys are functions of a pair of large prime numbers.
+
+\begin{gather}
+    C = M^e \text{ mod } n \\
+    M = C^d \text{ mod } n = M^{ed} \text{ mod } n
+\end{gather}
+for some properly chosen values $e,d$ and the following keys $PU = (e,n), PR = (d,n)$.
+The following are the requirements for the algorithm:
+\begin{enumerate}
+    \item $M^{ed} \text{ mod } n =M$ for all $M<n$
+    \item The encryption and decyption is computationally easy
+    \item It is unfeasible to determine $d$ given $e,n$
+\end{enumerate}
+
+Number 1 is satisfied if $ed \text{ mod } \phi(n) = 1$
+
+The algorithm can generally be put into these steps:
+
+\textbf{Generate keys}: 
+\begin{enumerate}
+    \item Generate two large prime numbers $p,q$
+    \item Compute $n=pq$ and $\phi(n) = (p-1)(q-1)$
+    \item Select an $e$ that is relatively prime to $\phi(n)$
+    \item Compute $d$ such that $ed \text{ mod } \phi(n) = 1$
+    \item Publish $(e,n)$, keep $(d,n)$ private and discard $p,q$
+\end{enumerate}
+
+\textbf{Encryption}:
+\begin{enumerate}
+    \item Break message $M$ into blocks $<n$
+    \item Compute each $C_i = M^e \text{ mod } n$
+\end{enumerate}
+
+\textbf{Decryption:}
+\begin{enumerate} 
+    \item Compute $M = C^d \text{ mod } n$
+\end{enumerate}
+
+RSA is a malleable algorithm and is commonly used together with padding methods to avoid this problem.
+\begin{equation}
+    F(E(K,M)) = E(K,G(M)) \quad \forall K,M
+\end{equation}
+
+\subsubsection{Secret Key Distribution}
+RSA is a method for transmitting the private key as well as diffie-helman which exploits the difficulties of computing discrete logarithms.
 
 \end{document}
