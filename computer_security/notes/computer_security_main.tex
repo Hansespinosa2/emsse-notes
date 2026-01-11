@@ -537,4 +537,16 @@ An Arbitrated Digital Signature uses a trusted third party that creates signatur
 \subsubsection{PGP}
 PGP is Pretty Good Privacy and is a program for cybersecurity that provides standards for digital signatures, message encryption, compression, email compatibility, and segmentation.
 
+\subsection{Digital Certificates}
+Digital certificates are digital objects that serve \textbf{key distribution} and \textbf{authentication}.
+
+A certification authority can give a digital certificate that allows the relying party to verify the authenticity of a public key by binding the public key of the owner to its name.
+The certification authority uses a private key to validate that the public key matches the owner.
+
+There are different types of digital certificates.
+\begin{itemize}
+    \item \textbf{Domain Validation} verifies that the requester has effective control of the domain being used
+    \item \textbf{Organization Validation} verifies that the requester belongs to the appropriate organization
+\end{itemize}
+
 \end{document}
