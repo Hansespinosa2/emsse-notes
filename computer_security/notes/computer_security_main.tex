@@ -483,4 +483,58 @@ RSA is a malleable algorithm and is commonly used together with padding methods 
 \subsubsection{Secret Key Distribution}
 RSA is a method for transmitting the private key as well as diffie-helman which exploits the difficulties of computing discrete logarithms.
 
+\subsection{Message Authentication and Digital Signature}
+\subsubsection{Message Integrity and Authentication Functions}
+The goal with message authentication is to protect the integrity of the message, validate the sender, and there is non-repudiation of the origin.
+
+There are a couple authentication functions
+\begin{itemize}
+    \item Message encryption
+    \item Message authentication code
+    \item Cryptographic hash function
+\end{itemize}
+
+In order to have authentication functions work, we want ciphertext to decipher to intelligible plaintext, so we can add a checksum to the message prior to encryption so we have a guaranteed useless plaintext message at the end of the true message that authenticates it.
+
+A Message Authentication Code works by accepting a variable-size message $M$ and a key $K$ and producing a fixed size output $C(M,K)$.
+Also called a cryptographic checksum.
+
+The Data Authentication Algorithm splits a message into 64 bit chunks and then chains them in encryption to each other and the final compounded chunk is extracted with 16-64 bits as fixed length message authentication.
+
+\textbf{Hash Functions}
+A hash function works by taking a variable-sized message $M$ as input and producing a fixed-size output $H(M)$ (also called a hash code), but it does not use a key.
+A hash function $H$ must have the following properties:
+\begin{enumerate}
+    \item Can apply to any data size
+    \item Produces fixed output
+    \item Relatively easy to compute
+    \item Computationally infeasible to inverse (One-way property)
+    \item For a given input $x$ it is computationally infeasible to find a $y$ get a hash collision $H(x) = H(y)$ (Weak collision resistance)
+    \item Computationally infeasible to find any pair $(x,y)$ with a collision $H(x), H(y)$ (Strong collision resistance)
+\end{enumerate}
+The probability of a hash collision of a message that is $n$ long is $2^{-n}$, if there can be messages inputted, it is reduced to $2^{-n/2}$
+
+The general structure of a secure hash code is to have a compression algorithm $f$, an initial value $IV$ and a message split into blocks $M_i$.
+The hash then chains each function with the previous message block $M_i$ and the output of the previous $CV_{i} = f(CV_{i-1}, M_{i-1})$.
+
+\subsubsection{Digital Signature}
+Message authentication in the form of MAC or hash codes protect two parties exchanging messages from a third party, but it doesn't protect the parties against each other.
+Messages can be forged and therefore claimed to be forged.
+
+A digital signature must
+\begin{enumerate}
+    \item Verify author and timestamp
+    \item Authenticate content at the timestamp
+    \item Be verifiable
+\end{enumerate}
+
+The point of a digital signature is effectively to confirm that the message was indeed the message, sent by the author, and at a specific time without any changes since then.
+
+With the Direct Digital Signature,  the signature is formed by encrypting the sender's message with their private key or the hash code of the message with their private key.
+But, with this an opponent can steal a private key at time $T$ and forge messages stamped with a time before $T$.
+
+An Arbitrated Digital Signature uses a trusted third party that creates signatures for the author and timestamp and can or can not see the message.
+\subsubsection{PGP}
+PGP is Pretty Good Privacy and is a program for cybersecurity that provides standards for digital signatures, message encryption, compression, email compatibility, and segmentation.
+
 \end{document}
