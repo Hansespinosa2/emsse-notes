@@ -563,7 +563,115 @@ eIDAS is a set of rules for electronic identification and trust services
 \end{itemize}
 
 \subsection{Cryptographic Hash Functions}
+In order to verify a file $F$, you need the entire file and to split it up into blocks and create hash codes.
 
+\subsection{Security Protocols}
+\subsubsection{Motivation}
+We have a motivation for developing security protocols to be able to ensure that we have a level of trust in the system and its results.
+There are security protocols such as: IPSec, SSH, PGP, SSL, and Kerberos
 
+\subsubsection{Basic Notions}
+A protocol is a set of rules and conventions that dictate the flow of messages.
+
+Security protocols achieve this with various mechanisms to ensure different levels of non-repudiation, integrity, authentication, etc.
+
+With a message $M$, constructors $A,B$ and keys $K$, we can use the symbol $\{ M \}_{K_{AB}}$ to denote a message encoded with a symmetric key,  $\{ M \}_{K_{A}}$ to denote a message encoded with a public key from $A$,  $\{ M \}_{K_{A}^{-1}}$ to denote a message signed with a private key from $A$.
+We can also denote new random data items to validate with $N_A$ and timestamps with $T$
+
+A replay attack is an attack such as a car door opening where an activity or message is recorded that is only meant to be by one owner, but can be maliciously replayed by an attacker.
+This can be avoided by having the receiver respond with a nonce, and have the sender send a dummy message with the nonce.
+
+A protocol can specify a specific set of sequences or events that should occur in communication to enable an augmented level of security.
+The protocol should achieve the following:
+\begin{enumerate}
+    \item Authenticate messages
+    \item Ensure timeliness of messages
+    \item Guarantee secrecy
+\end{enumerate}
+
+An attacker generally has the following:
+\begin{enumerate}
+    \item Knows protocol
+    \item Cannot break crypto
+    \item Overhears all communications
+    \item Can intercept and generate messages
+    \item May be one of the principals
+\end{enumerate}
+
+Here are a few types of attacks:
+\begin{itemize}
+    \item \textbf{Replay Attack}: Reuse parts of previous messages
+    \item \textbf{Man-in-the-middle}: Message intercepted and changed $A\leftrightarrow M \leftrightarrow B$
+    \item \textbf{Reflection Attack}: Reflect message to sender
+    \item \textbf{Type flaw attack:} Substitute different types of messages (key, nonce, message, name)
+\end{itemize}
+
+\subsubsection{NSPK protocol}
+NSPK protocol is a mutual entity authentication, it validates that the sender is indeed $A$ and the receiver is indeed $B$.
+It works like this: $A$ sends its name and a nonce to $B$ using $B$'s private key.
+Then $B$ sends back to $A$ its own nonce alongside the sent one using $A$'s private key.
+Then $A$ sends the nonce encoded with $B$'s private key.
+\begin{enumerate}
+    \item $A \rightarrow B : \{ A, N_A \}_{K_B}$
+    \item $B \rightarrow A : \{ N_B, N_A, B \}_{K_A}$
+    \item $A \rightarrow B : \{ N_B \}_{K_B} $
+\end{enumerate}
+
+This has a vulnerability to man-in-the-middle attacks  that is fixed by putting $N_A,N_B, B$ in the message to $A$ from $B$
+
+A type flaw occurs when bits are parsed differently such as a name being read as a key or a nonce etc.
+
+\subsubsection{Otway-Rees Protocol}
+The Otway-Rees protocol is a key distribution and mutual authentication protocol using a trusted server $S$.
+\begin{enumerate}
+    \item $A$ asks $B$ to introduce them to a trusted server $S$
+    \item $A$ and $B$ prove to $S$ that they are present
+    \item $S$ gives $B$ an envelope with a shared secret key
+    \item $B$ hands $A$ the envelope after reading it.
+\end{enumerate}
+
+\begin{enumerate}
+    \item $A \rightarrow B : I, A, B, \{ N_A, I, A, B \}_{K_{AS}}$
+    \item $B \rightarrow S : I, A, B, \{ N_A, I, A, B \}_{K_{AS}}, \{ N_B, I, A, B \}_{K_{BS}}$
+    \item $S \rightarrow B : I, \{ N_A, K_{AB} \}_{K_{AS}}, \{ N_B, K_{AB} \}_{K_{BS}}$
+    \item $B \rightarrow A : I, \{ N_A, K_{AB} \}_{K_{AS}}$
+\end{enumerate}
+
+An attacker can play the role of $B$ and if the lengths of the bits are the same can return the same part as the first one.
+
+\subsubsection{Andrew Secure RPC Protocol}
+The goal with Andrew Secure RPC protocol is to exchange a fresh, authenticated, secret, shared key, between two principals sharing a symmetric key.
+
+\begin{enumerate}
+    \item $A \rightarrow B : A, \{ N_A \}K_{AB}$
+    \item $B \rightarrow A : \{ N_A +1, N_B \}K_{AB} $
+    \item $A \rightarrow B : \{ N_B+1 \}K_{AB} $
+    \item $B \rightarrow A : \{ K_{AB}^\prime, N_{B}^\prime \}K_{AB} $
+\end{enumerate}
+
+This is vulnerable to a type flaw attack if the key and nonces are the same length.
+
+\subsubsection{Key Exchange with CA}
+Exchanging a symmetric key using a certification authority and a server
+\begin{enumerate}
+    \item $A \rightarrow S : A,B$
+    \item $S \rightarrow A : C_A, C_B$
+    \item $A \rightarrow B : C_A, C_B, \{ \{ A, B, T_A, K_{AB} \}_{K_A^{-1}} \}_{K_B}$
+\end{enumerate}
+
+\subsubsection{Prudent Engineering for Security Protocols}
+There are a couple principles that dictate a secure protocol.
+
+\subsubsection{Automated Analysis of Security Protocols}
+As protocols get larger and are necessarily quite secure, automated analysis helps
+
+\subsubsection{Needham-Schroeder Shared-Key Protocol}
+Needham-Schroeder has a goal of authenticated key exchange.
+
+\subsubsection{Kerberos}
+Kerberos is based on NSSK protocol but uses timestamps instead of nonces.
+Kerberos is a big protocol that everything is now based off.
+It has an authentication phase to give $A$ user authentication, then an authorization phase where $A$ uses its authentication to request a ticket to access the service, then it enters the service phase where it uses service $B$.
+Kerberos relies heavily on clocks that are synchronized and uncompromised.
 
 \end{document}
