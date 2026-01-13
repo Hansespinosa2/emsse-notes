@@ -674,4 +674,53 @@ Kerberos is a big protocol that everything is now based off.
 It has an authentication phase to give $A$ user authentication, then an authorization phase where $A$ uses its authentication to request a ticket to access the service, then it enters the service phase where it uses service $B$.
 Kerberos relies heavily on clocks that are synchronized and uncompromised.
 
+\subsection{Web Security}
+Web security is not as well-defined as cryptographic security.
+Web security and networks can be subject to different implementation details and different versioning that can make it a much less well-defined problem.
+
+\subsubsection{HTTP in a Nutshell}
+Hypertext transfer protocol. 
+HTTP transfers hypertext requests and information between server and browsers.
+\begin{enumerate}
+    \item \textbf{GET}: request a web page
+    \item \textbf{HEAD}: request header of a web page
+    \item \textbf{PUT}: store a web page
+    \item \textbf{POST}: request with payload
+\end{enumerate}
+
+HTTP has three tiers to its architecture: the presentation side, business logic on the server, and a database backend.
+POST places sensitive information from the header into the body of the request and not the URL.
+GET can expose sensitive authentication information in the URL such as name or other requests.
+
+\subsubsection{The Client Side}
+The HTTP header is sent to the server via an HTTP header.
+For example, a form can be filled out and when the button is clicked, the information is sent via the header.
+The header can contains requested language, cookies, browser, etc.
+HTTP sends the header information unencrypted, whereas HTTPS sends it encrypted.
+
+A cookie is a piece of data given to the client by the server, and then returned to the server in subsequent requests.
+Cookies are naturally a privacy problem as they can hold on to information for extended periods after desired to not be held anymore.
+
+HTTP has \textbf{basic authentication} and \textbf{digest authentication}.
+Basic authentication is login / password based and unencrypted, whereas digest authentication is rarely used and uses nonces and hashes.
+
+\subsubsection{The Server Side}
+There are various types of attacks that can occur with HTTP.
+Unvalidated input can frequently be a problem with SQL injection.
+Injection code can frequently inject code and run it on the server system.
+
+The basic policy for untrusted JS code is "Same Origin Policy", which means that access is only granted to documents downloaded from the same site as the script.
+The origin means that it comes from the same <scheme, host, port> where the scheme is the protocol and the hostname is a combination of the local name (www) and the domain name (unige.it)
+
+\begin{itemize}
+    \item \textbf{Cross-Site Scripting (XSS)} works by injecting JS code into the website, so by embedding scripts into the links, we can send them to people to attempt to steal their information from the same origin (the actual site).
+    \item \textbf{Cross-Site Request Forgery} works by having a malicious link cause a user's browser to perform an unwanted action for an authenticated trusted site.
+    \item \textbf{Clickjacking} has a user interact with something it does not know it is.
+    \item \textbf{Session Attacks} occur when session management is exploited and the session ID that holds important information to a session is stolen. 
+          This can be done through interception, prediction, brute force, fixation
+\end{itemize}
+
+
+
+
 \end{document}
