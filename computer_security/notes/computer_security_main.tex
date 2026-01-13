@@ -722,6 +722,14 @@ The origin means that it comes from the same <scheme, host, port> where the sche
 
 \subsection{Buffer Overflow}
 \subsubsection{Motivation}
+A buffer overflow is when data that has a specified memory range that it occupies in the computer is overwritten.
+This can cause data to spill over into other parts of memory than intended and overwrite other data.
+
+These can be avoided with canarys, which is a value on the stack whose value is tested before returning.
+So if something was overwritten outside the stack, it might affect the canary.
+
+We can replace strcpy with strncpy and gets with fgets to avoid buffer overflows.
+Also check bounds of arrays when iterating over them.
 
 \subsection{Internet Security}
 \subsubsection{Overview}
