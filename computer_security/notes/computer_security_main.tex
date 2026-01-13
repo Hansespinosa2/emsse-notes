@@ -742,6 +742,136 @@ IPSec provides a secure channel for all applications and adds encryption and/or 
 
 \subsection{Access Control}
 
+\subsubsection{Motivation}
+There are systems that too complicated or handle data in specific ways that make the enforcement of confidentiality, integrity, and availability more difficult.
+
+\subsubsection{Basic Concepts}
+A security policy defines what is allowed, a model creates a formal representation of a family of policies, where security mechanisms specify individual functions and actions that define the implementation of the model.
+
+Access control policies can be 
+\begin{itemize}
+    \item \textbf{Discretionary}, governing a set of rules for each requestor, their identity, and what they are allowed to do.
+    \item \textbf{Mandatory}, based on mandated regulations by a central authority.
+    \item \textbf{Role-based}, users are given roles that have specific rules dictating what they can and can not do.
+\end{itemize}
+
+Every request passes through a reference monitor that is tamper-proof, non-bypassable, a security kernel, and small.
+
+The state of a system is a collection of all current memory, storage, and components.
+A security mechanism prevents a system from entering exiting the set of securely authorized states $Q$ into $P -  Q$.
+A secure system is one that starts in an authorized state and cannot enter into an unauthorized one.
+
+\subsubsection{Discretionary Access Control}
+The premise of discretionary access control is that individual users own resources and control their access.
+This is similar to google docs, where an owner of a doc owns the right to share with varying levels of access to different members.
+
+\subsubsection{Access Control Matrix}
+The Access Control Matrix is a matrix with resources and users where each cell specificies what the user can do with the resource.
+
+\begin{itemize}
+    \item $S$: Set of subjects (or users)
+    \item $O$: Set of objects (or resources)
+    \item $M$: A matrix specifying the privilege for each user for each object
+    \item $p$: A privilege that a subject $s$ can have for a resource $o$.
+\end{itemize}
+A model determines a state-transition system to add / remove / update users, resources, and privileges to the system.
+
+\subsubsection{The Harrison-Ruzzo-Ullman Model}
+The Harrison-Ruzzo-Ullman model defines authorization systems that specify how to change access rights for users and resources.
+
+\begin{itemize}
+    \item A state transition system following this form
+    \subitem \textbf{command} c
+    \subitem \textbf{if} allowed
+    \subitem \textbf{then} perform operation
+\end{itemize}  
+This model specifies rights that the system can have, and operations that can be created in those rights.
+The operations for this model are 
+\begin{enumerate}
+    \item enter $r$ into $M(s,o)$
+    \item delete $r$ from $M(s,o)$
+    \item create and remove subject $s$
+    \item create and remove object $o$
+\end{enumerate}
+
+The implementation of an access matrix generally involves keeping the access matrix, which is a list for each file based on access controls or a list of each subject with privilege.
+
+File mode bits are characters to denote the access to a file such as read (r), write (w), and execute (x).
+
+A problem with discretionary policies is that they ignore the distinctyion between a process (subject) and user.
+This can cause a trojan horse virus where someone runs a problem using their user permissions even though they are not aware of every process.
+
+\subsubsection{Mandatory Access Control}
+Mandatory access control involves having a set of clearances for each subject $s$ and security labels for each object $o$.
+Similar to role, but it is hierarchical and given from the top.
+Tends to go: top-secret, secret, confidential, public, etc.
+Or similar to P\&G's Highly Restricted, Internal Use, Business Use, Public.
+A top-secret authorized user can read down but a secret user can only produce secret or top-secret information.
+Read down and write up.
+
+A lattice $L$ is constructed to specify where each combination of two subjects and one object or two objects and one subject type can interact with differing clearances.
+
+\begin{itemize}
+    \item A set of $H$ classifications with hierarchical ordering
+    \item A set of $C$ categories
+    \item A security label is a pair $(h,c)$
+\end{itemize}
+
+\subsubsection{The Bell-LaPadula Model}
+The Bell-LaPadula model models confidentiality aspects of multi-user systems.
+BLP is a static model with security labels that never change.
+
+The important properties are:
+\begin{itemize}
+    \item A subject $s$ can only read an object $o$ if its security level $I_S$ is greater or equal than that of the object $I_o$.
+    \item A subject $s$ can only write an object $o$ if its security level $I_s$is less than or equal to that of the object $I_o$
+\end{itemize}
+
+The BLP model combines mandatory and discretionary as discretionarily there can be trusted subjects that bypass the write-up rule.
+The only state transitions are promoting all access and reading.
+It is a static model:
+\begin{itemize}
+    \item \textbf{Strong Tranquility}: Security levels of subjects and objects never change during system operation.
+    \item \textbf{Weak Tranquility}: Security levels change but not sufficiently to violate a defined security policy.
+\end{itemize}
+
+In this, information can flow in a bad direction by telling a user that their object was incorrectly handled.
+
+\subsubsection{Biba Model}
+Biba is a class of integrity models (different from BLP as it is not confidentiality).
+It handles the opposite of the write-up read-down rules by specifying that users can only change information below their security level and only read above it.
+It also has a dynamic ability to change lower or higher the subjects' security level to perform a specific action.
+
+\begin{itemize}
+    \item A subject $s$ can only write an object $o$ below its security level ($I_s \geq I_o$).
+    \item A subject $s$ can only read an object $o$ above its security level $(I_s \leq I_o)$.
+    \item If a subject $s$ wants to read an object $o$ below its security level, the subject will be demoted to the level of the object.
+    \item If a subject wants to write an object above its security level, the object is demoted to the level of the subject.
+\end{itemize}
+
+\subsubsection{Chinese Wall Model}
+The chinese wall model is a confidentiality model with the goal of restricting conflicts of interest.
+The Chinese Wall Model has companies, objects and subjects.
+It was developed for consultancy businesses.
+The objects each have a set of companies they belong to and each company has a set of companies it is in competition with.
+
+A matrix $N$ records if subjects have had access to an object, and if they did then they can be denied access to future resources.
+Objects can also be sanitized and have their pertinent company removed as a conflict class.
+
+\subsubsection{Clark-Wilson Model}
+An informal intergity model where objects are partitioned into constrained and unconstrained and integrity is specified by those.
+
+\subsubsection{Role-Based Access Control}
+Role-based access control security policies have a very fundamental way of working:
+\begin{itemize}
+    \item $s$ has permission $p$ on object $o$ if $s$ belongs to a role $r$ that has that permission.
+\end{itemize}
+Groups define sets of users with roles and roles define sets of priviliges on objects.
+We can have a set of role hierarchies where roles are superior to each other and subsets of each other.
+This reduces the amount of specific permissions needed to be assigned to specific roles.
+
+\subsubsection{Auditing}
+
 
 
 \end{document}
