@@ -1,0 +1,75 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Software Engineering for Systems Modeling}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+\section{Tuesday 03/24/2026}
+
+\subsection{V-Model}
+
+Requirements Analysis -> High level design -> Detailed specifications -> Coding -> Unit testing -> Integration testing -> Operational testing
+
+Requirements can be divided into that of problem (stakeholder) and solution (system) requirements.
+The requirements of the problem and stakeholder are concerned with the satisfaction of the output of the system.
+It is concerned with what a stakeholder would like to have from the system and how they might interact with it.
+The requirements of the solution and system are those that lie in the bounds of the system and define what it does.
+
+\subsection{MBSE}
+\textbf{Model-based Systems Engineering} defines a standard comprehensive perspect of a system and develops a single model for the process.
+It lowers the cost of changes throughout the process and establishes clear boundaries of both components of the system and the processes associated.
+
+\subsection{SysML}
+SysML shares overlap with UML, a modeling language and standard that provides a visual standard for components of software that interact with each other.
+With a modeling language, we can construct concrete and visual representations of previously abstract ideas.
+A system could be represented as a list of documents describing everything in detail.
+However, a model enables visual representations more flexible and comprehensable.
+
+SysML supports the specification, analysis, design, verification, and validation of systems that include hardware, software, data, personel, procedures, and facilities.
+It is a visual modeling language that provides semantics and notations for models, which at times, can be quite tedious and has inhibited its prevalence.
+
+The four pillars of SysML include: 
+\begin{enumerate}
+    \item Structure
+    \item Behavior
+    \item Requirements
+    \item Parametrics
+\end{enumerate}
+
+A SysML drawing has a few components
+\begin{itemize}
+    \item Analysis diagram
+    \item Internal block diagram
+    \item Package diagram
+    \item Parametric diagram
+    \item Requirement diagram
+    \item Sequence diagram
+    \item State machine diagram
+    \item Use case diagram
+    \item Allocation tables
+\end{itemize}
+
+Some important questions for defining a system:
+\begin{itemize}
+    \item What is its purpose and how is its purpose accomplished?
+    \item How does it interact with its environment?
+    \item Who is the user and how do they use it?
+    \item What are the components necessary to make it function, how do they interoperate and how do they interact with the environment?
+    \item What are the capabilities of the system and how are they tested?
+    \item What is the cost of the system?
+    \item What is the lifespan of the system?
+\end{itemize}
+
+\end{document}
