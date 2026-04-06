@@ -1,0 +1,39 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Advanced Machine Learning}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+\section{Monday April 6th}
+\subsection{Introduction}
+An introduction was provided for statistical learning, however I neglected to take notes.
+
+\subsection{Data Types}
+There are different paradigms for types of data.
+
+For qualitative of categorical data, we have nominal and ordinal data.
+Nominal describes data that can be lumped into categories with no numerical relation to each other. 
+For example, the category of country has Albania, Greece, Russia, etc. 
+Nominal implies there is no ordering between these categories, whereas ordinal data describes data that has an inherent size or ordering to it.
+For example, a "size" category where values can include small, medium, or large.
+These are categorical data entries describing qualitative features of the data, however there are direct implications to the size and relation of one category to the other, therefore it is ordinal.
+
+For quantative data, we have discrete and continuous data types.
+
+\subsection{Learning Types}
+Unsupervised, supervised, and semi-supervised.
+ 
+
+\end{document}
