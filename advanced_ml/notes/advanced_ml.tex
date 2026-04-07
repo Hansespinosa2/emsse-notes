@@ -35,5 +35,71 @@ For quantative data, we have discrete and continuous data types.
 \subsection{Learning Types}
 Unsupervised, supervised, and semi-supervised.
  
+\section{Tuesday April 7th}
+\subsection{Gaussian Distributions}
+An $\mathbb{R}^d$-valued random vector $\textbf{X} = [X_1, \dots, X_d]^\top$ is said to be Gaussian, if for any fixed vector $\textbf{a} = [a_1, \dots, a_d]^\top \in \mathbb{R}^d$ , the real r.v. $a_1 X_1 + \dots + a_d X_d$ (the dot product) is Gaussian.
+
+In the Gaussian case, a zero covariance between parts of a random variable means that the values are also independent.
+This is not the case in general for all distributions. 
+
+\subsection{Monte Carlo Method}
+Considering a continuous function $h$ mapping inputs between 0 and 1 to any real number
+\begin{equation}
+    I = \int_{0}^{1} h(x) dx = \int_{\mathbb{R}} h(x) \textbf{1}_{[0,1]}(x) dx = E[h(X)]
+\end{equation}
+
+where $X$ is a random variable following a [0,1] uniform distribution.
+Here, we transform a deterministic problem into a stochastic one.
+
+We can then calculate the expectation by collecting samples $X_i$ and using the mean as an approximation for the true expectation.
+\begin{equation}
+    \frac{h(X_1) + h(X_2) + \dots + h(X_n)}{n} \approx E(h(X))
+\end{equation}
+
+Monte Carlo relies on a random generation of a uniform distribution from [0,1].
+
+Weibull example:
+
+\begin{gather}
+    y = F(x) = 1 - e^{(-x\alpha)^\beta}, x \geq 0 \\
+    y = F^{-1} (y) = \alpha[-ln(1-y)]^{1/ \beta} \\
+    \tilde{X} = \alpha [-ln(1-U)]^{1 / \beta} \\
+    \tilde{X} = \alpha [-ln(U)]^{1 / \beta}
+\end{gather}
+
+Performing algorithm:
+\begin{gather}
+    \textbf{Step 1:} \quad u ~ U(0,1) \\
+    \textbf{Step 2:} \quad X = [-ln(u)]^{2/3}
+\end{gather}
+
+\subsubsection{Precision}
+The error of the estimate is 
+\begin{equation}
+    R_n = \frac{h(X_1) + \dots + h(X_n)}{n} - E[h(X)]
+\end{equation}.
+
+We define the precision by parameters $\varepsilon,\theta$, which values are small, as follows
+\begin{equation}
+    P(|R_n| \leq \varepsilon) \geq 1 - \theta
+\end{equation}
+or
+\begin{equation}
+    P(|R_n| \geq \varepsilon) \leq \theta
+\end{equation}
+
+where in order to maintain a set level of precision, we have certain constraints on the variance bound by our number of samples and the set values of $\varepsilon, \theta$.
+
+\begin{equation}
+    Var(\hat{\gamma}_n) = \frac{1}{n} \{ E[h(Y_1) (\frac{f(Y_1)}{g(Y_1)})^2 ] - \gamma^2 \}
+\end{equation}
+
+\subsection{Bootstrapping}
+\begin{equation}
+    \theta = \mathbb{P}(X \leq 1) = e^{-\lambda} (1 + \lambda)
+\end{equation}
+
+\subsection{Simple Linear Regression}
+
 
 \end{document}
