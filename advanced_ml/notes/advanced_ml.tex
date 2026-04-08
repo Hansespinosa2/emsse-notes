@@ -99,7 +99,36 @@ where in order to maintain a set level of precision, we have certain constraints
     \theta = \mathbb{P}(X \leq 1) = e^{-\lambda} (1 + \lambda)
 \end{equation}
 
+\section{Wednesday April 8th}
 \subsection{Simple Linear Regression}
+\begin{equation}
+    \hat{\beta}_1 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})y_i}{\sum_{i=1}^{n}(x_1 - \bar{x})^2}
+\end{equation}
+
+\begin{equation}
+    \hat{\beta}_1 \backsim N(\beta_1, \frac{\sigma^2}{S_{xx}})
+\end{equation}
+
+\begin{equation}
+    \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+\end{equation}
+
+\begin{equation}
+    R^2 = \frac{\sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}
+\end{equation}
+
+Michaelis-Menten model:
+\begin{equation}
+    y_i = \textbf{E}(Y_i) = \frac{\theta_1 x_i}{x_i + \theta_2}
+\end{equation}
+
+proving $cov(\hat{b}_n, \bar{y}) = 0$
+
+\begin{gather}
+    Cov(\hat{b}_n, \bar{y}) = \frac{1}{n} \sum_{i=1}^{n} (\frac{S_{xy}}{S_{xx}} - \bar{b}_n)(\bar{y} - \bar{y}) = 0
+\end{gather}
+
+\subsection{Multiple Linear Regression}
 
 
 \end{document}
