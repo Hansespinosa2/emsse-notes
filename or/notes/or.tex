@@ -238,6 +238,37 @@ A computer manufacturer must plan production over $n$ months
 \subsubsection{Exercise 1}
 
 \subsubsection{Exercise 2}
+For the following graph:
+(Graph nodes: A, B, C, D, E with directed edge weights: B to A is 10, C to B is 20, A to C is 12, E to A is 7, A to D is 60, C to D is 32).
+ 
+\begin{figure}[htbp]
+  \centerline{\includegraphics[width=0.75\textwidth]{../../images/or_ex_2_graph.png}}
+  \caption{}
+  \label{fig:or_ex_2_graph}
+\end{figure}
+
+Find the shortest path originating from node E using Dijkstra's algorithm. Provide the Dijkstra table and the shortest path tree. Is this tree unique?
+\\ \\
+\textbf{Solution: }
+See solution in Table \ref{tab:dijkstra_ex_2}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{c|ccccccccc}
+        Step & E & A & B & C & D \\
+        \hline
+        0 (start) & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+        1 (E) & 0 & 7 & $\infty$ & $\infty$ & $\infty$ \\
+        2 (A) & 0 & 7 & $\infty$ & 19 & 67 \\
+        3 (C) & 0 & 7 & 39 & 19 & 51 \\
+        4 (B) & 0 & 7 & 39 & 19 & 51 \\
+        5 (D) & 0 & 7 & 39 & 19 & 51
+    \end{tabular}
+    \caption{Dijkstra's Algorithm}
+    \label{tab:dijkstra_ex_2}
+\end{table}
+
+The shortest path tree removes the arcs from B to A and that of A to D.
+This tree is indeed unique.
 
 \subsubsection{Exercise 3}
 A farmer has a limited arable land area available and wishes to organize the production of two crops (e.g., tomatoes and peppers) in order to maximize his profit. Each crop requires a certain number of working hours and a certain amount of water, both available in limited quantities for the season. Furthermore, quotas may limit the area planted with one of the crops to respond to market conditions.
@@ -249,7 +280,7 @@ He has a total of 20 hectares of land, 180 working hours, and 32 cubic meters of
 To stabilize the market, he cannot plant more than 6 hectares of tomatoes.
 
 Provide the linear programming formulation for the above problem. Propose the decision variables, the objective function, and the constraints.
-
+\\ \\
 \textbf{Solution: }
 For this problem, the quantity we seek to maximize is $p$, the total profit of the problem.
 This profit comes from the sales of tomatoes and peppers, of which the unit profit is provided for each.
