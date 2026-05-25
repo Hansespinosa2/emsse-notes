@@ -342,5 +342,194 @@ We get the following LP:
   & \quad x_1, x_2 \geq 0
 \end{align}
 
+\section{Thursday May 14th}
+\subsection{Industrial Automation Exercise}
+
+
+\subsubsection{Introduction}
+In this assignment, we address a \textbf{Three-Machine Flowshop Scheduling Problem} ($F3 || \sum U_j$). The primary objective is to determine an optimal or near-optimal sequence of jobs to minimize the \textbf{number of tardy jobs}. 
+
+In a flowshop environment, every job $J_j$ must be processed on Machine 1 ($M_1$), then Machine 2 ($M_2$), and finally Machine 3 ($M_3$) in that specific order. A job is considered tardy if its completion time on the final machine ($C_{j,3}$) exceeds its specified due date ($d_j$).
+
+\subsubsection{Problem Definition}
+We are given a set of 8 jobs, each with specific processing times $p_{i,j}$ (where $i$ is the machine index and $j$ is the job index) and a due date $d_j$.
+
+\subsubsection{Job Data}
+The following table provides the processing times for each machine and the respective due dates for 8 jobs:
+
+\begin{table}[h!]
+\centering
+\caption{Processing Times and Due Dates for 8 Jobs}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\textbf{Job ($j$)} & \textbf{$M_1$ ($p_{1,j}$)} & \textbf{$M_2$ ($p_{2,j}$)} & \textbf{$M_3$ ($p_{3,j}$)} & \textbf{Due Date ($d_j$)} \\ \midrule
+1 & 5  & 3  & 4  & 25 \\
+2 & 8  & 2  & 5  & 18 \\
+3 & 6  & 4  & 7  & 40 \\
+4 & 3  & 1  & 2  & 12 \\
+5 & 10 & 5  & 8  & 55 \\
+6 & 4  & 3  & 6  & 30 \\
+7 & 7  & 4  & 4  & 22 \\
+8 & 2  & 2  & 3  & 15 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Mathematical Formulation}
+The objective is to minimize the total number of tardy jobs:
+\begin{equation}
+    \min Z = \sum_{j=1}^{8} U_j
+\end{equation}
+Where:
+\begin{equation}
+    U_j = 
+    \begin{cases} 
+      1 & \text{if } C_{j,3} > d_j \\
+      0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+The completion time $C_{j,i}$ for job $j$ on machine $i$ is calculated as:
+\begin{itemize}
+    \item $C_{j,1} = C_{j-1,1} + p_{1,j}$
+    \item $C_{j,2} = \max(C_{j,1}, C_{j-1,2}) + p_{2,j}$
+    \item $C_{j,3} = \max(C_{j,2}, C_{j-1,3}) + p_{3,j}$
+\end{itemize}
+
+
+
+
+\textbf{Solution:}
+
+\pagebreak
+\section{Challenge II}
+\subsection{Work}
+\textbf{Parameters: }
+Below are the relevant parameters of the problem.
+\begin{itemize}
+    \item \textbf{Site:} $N$ is the number of production sites ($N=30$). $n$ is the index of production site, i.e. $n=0$ refers to the first production site and $n=29$ is the 30th.
+    \item \textbf{Reseller:} $M$ is the number of resellers, indexed by $m$ from 0 to 3.
+    \item \textbf{Time: } $T$ is the time period, indexed by $t$, from 0 to 29.
+    \item \textbf{Ingredient:} $S$ is the number of ingredients, indexed by $s$, from 0 to 2, with 0 refering to sugar, 1 referring to powder milk, and 2 referring to flavour
+    \item \textbf{Demand:} Each $n$ production site has a daily demand for each product.
+          This demand is $d_{n,t,s}$ referring to site, time, ingredient.
+          Ex: $d_{20,3,2}=20$ means the 21st site, in the fourth time period, has 20 units of demand for flavor.
+    \item \textbf{Capacity:} Each reseller $m$ has a capacity for each product $s$ for each time period $t$ $p_{m,s,t}$.
+    \item \textbf{Inventory Cost:} Each $n$ site has the ability to hold inventory at the end of a period $t$.
+          We have an inventory cost $q_{n,s}$ as a parameter for the inventory holding cost associated with each site and ingredient.
+    \item \textbf{Fixed Ordering Cost:} Each order has a fixed ordering cost parameter $b_{m}$ that depends only on the reseller purchased from.
+    \item \textbf{Variable Ordering Cost:} Each unit purchased as a cost $c_{s}$ for each ingredient in the shipment, regardless of the seller.
+    \item \textbf{Initial inventory: } We define an initial inventory for each site $n$ and product $s$ $v^{0}_{n,s}$
+\end{itemize}
+
+\textbf{Variables:}
+We can therefore create a set of variables to help us solve this problem.
+\begin{itemize}
+    \item \textbf{Ordering Variable:} At each time step $t=0,\dots,29$ , we must decide for each site $n=0,\dots,29$ how much of ingredient $s=0,\dots,2$ to order from each reseller $m=0,\dots,3$
+          We therefore create a variable $x_{n,m,t,s}$.
+    \item \textbf{Inventory Stock:} We must also create a variable to denote, at the \textit{beginning} of each time period $t$, how much inventory for each $m$ ingredient to stock at each $n$ site.
+          This variable is $v_{n,t,s}$.
+    \item \textbf{Fixed Order Binary: } $y_{n,m,t}$ to denote when we order from a manufacturer $m$ to a site $n$ in period $t$.
+\end{itemize}
+
+\textbf{Objective:}
+We want to minimize the total cost incurred by the company over the 30-day period while ensuring that each production site meets demand.
+This cost can be broken up into a few components.
+\begin{equation}
+    \text{Inventory} + \text{Fixed Order Cost} + \text{Variable Cost}
+\end{equation}
+Our variable cost will be constant, as we must meet demand over the course of each period, so we can exclude that from our problem.
+Inventory cost is the following equation:
+\begin{equation}
+    \sum_{N} \sum_{S} q_{n,s} \sum_{T} v_{n,t,s}
+\end{equation}
+
+In order to find the fixed order cost, we need to identify the number of orders we complete for each site $n$ and seller $m$ at each period $t$.
+We must create a binary variable $y_{n,m,t}$ to denote when we order from a manufacturer $m$ to a site $n$ in period $t$.
+
+\begin{equation}
+    y_{n,m,t} =
+    \begin{cases}
+        1 & \text{if } \exists s \in S \text{ such that } x_{n,m,t,s} > 0 \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+The fixed order cost is then
+\begin{equation}
+    \sum_{M} b_m \sum_{N} \sum_{T} y_{n,m,t}
+\end{equation}
+
+Our final objective is therefore
+
+\begin{align}
+  \text{minimize} & \quad \sum_{N} \sum_{S} q_{n,s} \sum_{T} v_{n,t,s} + \sum_{M} b_m \sum_{N} \sum_{T} y_{n,m,t}
+\end{align}
+
+\textbf{Constraints:}
+
+\begin{align}
+&\text{(Inventory balance)} \\
+&v_{n,t+1,s}
+=
+v_{n,t,s}
++
+\sum_{m \in M} x_{n,m,t,s}
+-
+d_{n,t,s}
+\quad \forall n,t,s
+\\[6pt]
+&\text{(Reseller capacity)} \\
+&\sum_{n \in N} x_{n,m,t,s}
+\le p_{m,s,t}
+\quad \forall m,t,s
+\\[6pt]
+&\text{(Fixed cost linking)} \\
+&\sum_{s \in S} x_{n,m,t,s}
+\le M_{n,m,t} \, y_{n,m,t}
+\quad \forall n,m,t
+\\[6pt]
+&\text{(Binary variables)} \\
+&y_{n,m,t} \in \{0,1\}
+\quad \forall n,m,t
+\\[6pt]
+&\text{(Non-negativity)} \\
+&x_{n,m,t,s} \ge 0,\quad v_{n,t,s} \ge 0
+\quad \forall n,m,t,s
+\end{align}
+
+\subsection{Final Solution}
+\begin{align}
+\text{minimize} \quad
+& \sum_{n \in N} \sum_{s \in S} \sum_{t \in T} q_{n,s} \, v_{n,t,s}
++ \sum_{m \in M} b_m \sum_{n \in N} \sum_{t \in T} y_{n,m,t}
+\\[6pt]
+\text{subject to} \quad
+& v_{n,t+1,s}
+=
+v_{n,t,s}
++
+\sum_{m \in M} x_{n,m,t,s}
+-
+d_{n,t,s}
+\quad \forall n \in N, t \in T, s \in S
+\\[6pt]
+& v_{n,0,s} = v^{0}_{n,s}
+\quad \forall n \in N, s \in S
+\\[6pt]
+& \sum_{n \in N} x_{n,m,t,s}
+\le p_{m,s,t}
+\quad \forall m \in M, t \in T, s \in S
+\\[6pt]
+& \sum_{s \in S} x_{n,m,t,s}
+\le M_{m,t} \, y_{n,m,t}
+\quad \forall n \in N, m \in M, t \in T
+\\[6pt]
+& x_{n,m,t,s} \ge 0,\; v_{n,t,s} \ge 0
+\quad \forall n,m,t,s
+\\[6pt]
+& y_{n,m,t} \in \{0,1\}
+\quad \forall n \in N, m \in M, t \in T
+\end{align}
+
 
 \end{document}
