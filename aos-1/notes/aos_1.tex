@@ -1,0 +1,147 @@
+\RequirePackage[orthodox]{nag}
+\documentclass[11pt]{article}
+
+%% Define the include path
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{include/}{../../include/}}
+\makeatother
+
+\usepackage{../../include/akazachk}
+
+\title{Avancee en apprentissage statistique}
+\author{Andres Espinosa}
+\begin{document}
+\pgfplotsset{compat=1.18}
+\maketitle
+
+\tableofcontents
+\section{Monday September 7th}
+I arrived to this class and also missed last week's class.
+They talked about parameter estimation and maximum likelihood, it seems.
+We are now moving onto multiple linear regression.
+
+\subsection{Linear Regression}
+Simple linear regression is a special case of multiple linear regression.
+Consider the case in which we have a scalar real-valued output variable $y \in \mathbb{R}$ and a vector of input variables $\textbf{x} \in \mathbb{R}^n$.
+In linear regression, we have a vector of weights $\textbf{w} \in \mathbb{R}^n$ and a zero-mean gaussian random variable $\varepsilon \sim N(0,P^2)$.
+We declare $f(x)$, a function that relates our weights to a predicted value of $y$.
+\begin{equation}
+  f(x) = \textbf{w}^\top \textbf{x}
+\end{equation}
+with this function, we can measure the difference between our predictions and our real-value and attribute it to the error $\varepsilon$.
+\begin{equation}
+  y = f(x) + \varepsilon
+\end{equation}
+
+\begin{equation}
+  \hat{y} \approx f(x)
+\end{equation}
+
+Naturally, this leads to the question of how we determine our weight vector $\textbf{w}$ that we use to get our linear regression model.
+If we have a data sample: $\{ (x_1, y_1), (x_2, y_2), \dots, (x_m, y_m)\}$, we can use that to get our best guess for those values of the weight vector.
+We can use maximum likelihood estimate to estimate the values.
+
+\begin{gather}
+  L(w|data) = \mathbb{P} (data|w) = \prod_{i=1}^{m} g_y(y_i | x_i, w) \\
+  = \prod_{i=1}^{m} (2\pi)^{-1/2}(P^2)^{-1/2}e^{-\frac{1}{2P^2}(y_i - \textbf{w}^\top \textbf{x})^2} \\
+  = \prod_{i=1}^{m} (2\pi)^{-1/2}(P^2)^{-1/2}e^{-\frac{1}{2P^2} ||\textbf{y} - \textbf{X} \textbf{w}||_2^2 } \quad \text{matrix case}
+\end{gather}
+We can stack our data samples next to each other in vectors to facilitate this maximum likelihood.
+\begin{align}
+  \textbf{y} = 
+  \begin{bmatrix}
+    y_1 \\ y_2 \\ \vdots \\ y_m 
+  \end{bmatrix},
+  \textbf{X} = 
+  \begin{bmatrix}
+    \textbf{x}_1^\top \\
+    \textbf{x}_2^\top \\
+    \vdots \\
+    \textbf{x}_m^\top
+  \end{bmatrix},
+  \textbf{w} = 
+  \begin{bmatrix}
+    w_0 \\ w_1 \\ \vdots \\ w_n
+  \end{bmatrix}
+\end{align}
+So we have $\textbf{y} \in \mathbb{R}^m, \textbf{X} \in \mathbb{R}^{m \times n}, \textbf{w} \in \mathbb{R}^n$.
+With maximum likelihood estimation, we can solve the below least-squares equation to get our predicted $\hat{\textbf{w}}$.
+\begin{equation}
+  \hat{\textbf{w}} = (\textbf{X}^\top \textbf{X})^{-1} \textbf{X}^\top \textbf{y} = \textbf{X}^\dagger \textbf{y}
+\end{equation}
+We can then get our predicted values for $y$, based off of any $x$ using the model $f(x) = \textbf{w}^\top \textbf{x}$.
+If we have a series of inputs $\textbf{X}$, we can turn it into a series of predictions with
+\begin{equation}
+  \hat{\textbf{y}} = \textbf{X} \hat{\textbf{w}}
+\end{equation}
+
+What is the distribution of $\hat{\textbf{w}}$?
+\begin{equation}
+  \hat{\mathbf{w}} \sim N(w, P^2(\mathbf{X}^\top \textbf{X})^{-1})
+\end{equation}
+We will prove this in the practical session.
+
+We can use the maximum likelihood estimate to estimate our value for $P$
+\begin{equation}
+  \hat{P}_{ML}^2 = \frac{1}{m} \sum_{i=1}^{m} \hat{\varepsilon_i} ^2
+\end{equation}
+where $\hat{\varepsilon} = y_i - \hat{y}_i$.
+It is an estimate because we are using the predicted weights $\hat{\mathbf{w}}$.
+We then remove the bias by doing the empirical
+\begin{equation}
+  \hat{P}^2 = \frac{1}{m - (n-1)} \sum_{i=1}^{m} \hat{\varepsilon}_i^2
+\end{equation}
+
+\textbf{Remark:}
+We might have problems when computing $(\textbf{X}^\top \textbf{X})^{-1}$.
+If we have repeated data points, then the matrix is not full rank and it is therefore not invertible.
+We can add a tiny noise onto the diagonal of the matrix so that we ensure full rank, and that we can compute the inverse.
+
+\begin{equation}
+  \hat{\mathbf{w}} = (\textbf{X}^\top \textbf{X} + \xi I_p)^{-1} \textbf{X}^\top \textbf{y}
+\end{equation}
+where $\xi$ is a tiny noise with arbitrary distribution.
+
+\subsection{Bayesian LR}
+Here we move onto a bayesian form of linear regression.
+I do not fully understand what that is at the moment.
+
+We set a prior on $w \sim N(0,\Sigma_n)$, that it follows a normal distribution with zero mean and covariance $\Sigma_p$.
+
+\begin{equation}
+  P(\textbf{w} | \textbf{X}, \textbf{y}) = \frac{P_y(y|\textbf{X},\textbf{w}) P(\textbf{w})}{P_y(\textbf{y} | \textbf{X})}
+\end{equation}
+
+\begin{equation}
+  P(\textbf{w} | \mathbf{X}, \mathbf{y}) \propto e^{-\frac{1}{2}((\textbf{w} - \bar{\textbf{w}})^\top \textbf{A} (\textbf{w} - \bar{\textbf{w}}) )}
+\end{equation}
+where 
+\begin{equation}
+  \bar{\textbf{w}} = \sigma^{-2} \textbf{A} \textbf{X}^\top \textbf{y}, \quad \textbf{A} = \sigma^{-2} \textbf{X}^\top \textbf{X} + \Sigma_n^{-1}
+\end{equation}
+
+If we don't put any weight on our covariance matrix $\Sigma$, then we end up getting the same maximum likelihood estimation as the $\hat{\mathbf{w}}$ ends up being the same as previously.
+If we have it be the $\xi I_n$, then it is the same as the previous with that tiny regularization that allows us to compute the inverse.
+We can choose whatever we want (I am still unclear on how or why we would do that) for $\Sigma_n$, as long as it is a covariance matrix—symmetric ($\Sigma = \Sigma^\top$) and PSD ($\Sigma \succeq 0$).
+
+\subsection{Predictions}
+Why would we want other covariances?
+It seems that it enables us to regularize or penalize the model by putting assumptions on the covariance.
+It allows us as the model designer to have some say in how good we think our model is, and then embed those assumptions in the model to improve them accordingly.
+Maximum Likelihood goes to Maximum A Posteriori.
+\begin{equation}
+  \hat{y}_{MAP} = \textbf{x}^\top \hat{\mathbf{w}}_{MAP}
+\end{equation}
+
+This allows us to have a posterior $\textbf{w}\sim N(\bar{\textbf{w}}, \textbf{A}^{-1})$.
+It helps us get a confidence on our outputs because the covariance matrix gives us the full predictive distribution.
+I can't pretend I fully understand what that maens yet but I am much closer.
+\subsubsection{Predictive Distribution}
+We now have the same training data set $\textbf{X} \ in \mathbb{R}^{m \times n}, \textbf{y} \in \mathbb{R}^m$.
+Now, we get new inputs $\textbf{X}^*$, and we want to not only have an output but we also want to have a confidence of our prediction based off of the inputs and the output we get $f^*$.
+
+Our predictive maximum a posteriori distribution propagates into the distribution of our vector of new outputs.
+So we can model a portion of our uncertainty that comes from our weights.
+
+\end{document}
