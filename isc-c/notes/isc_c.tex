@@ -44,5 +44,178 @@ In probability theory, we have random variables.
 This has an analagous representation in evidence theory, called random sets.
 It takes the previously finite frame $\Theta$ and extends it to work in a concept of infinite frames, with an arbitrary frame $\Theta$ and a random closed set in $\mathbb{R}^p$.
 
+The upper inverse of an interpretation of evidence is the set of all interpretations that is compatible.
+And the lower inverse of an interpretation is the set of all interpretations that imply it.
+\section{Monday September 14th}
+I like how evidence theory addresses the problems with probability theory.
+Everything is uncertain.
+It appears that fuzzy sets and possibility theory allow us to model the degree of possibility of certain events.
+\subsection{Fuzzy Sets}
+A set is a collection of objects.
+We have some objects and either they belong to that set, or they do not.
+Fuzzy sets are a generalization of sets that allow for something to be partially in a set.
+Most sets in real life are not as simple as a binary subscription.
+We have gradual concepts.
+Things are old and young, large and small, close to and far from; but they are not so with a specific decimal accuracy.
+Instead, we have fuzzy ideas about them.
+
+A fuzzy set represents graded membership by a function
+\begin{equation}
+    \tilde{A} : \Theta \to [0,1]
+\end{equation}
+where the value $\tilde{A}(\theta)$ represents the degree of membership of $\theta$ in the set of $A$.
+A crisp set $A \subseteq \Theta$ can be identifeid with its indicator function $A(\theta) = \textbf{1}_A (\theta)$
+The ordinary set can then be seen as a special case of the generalized fuzzy sets.
+$F(\Theta)$ represents all fuzzy subsets of $\Theta$.
+
+The height of a fuzzy set $\tilde{A}$ is
+\begin{equation}
+    hgt(\tilde{A}) = \sup_{\theta \in \Theta} \tilde{A}(\theta)
+\end{equation}
+If the height is 1, then the fuzzy set is \textbf{normal}.
+Conceptually, that means that completely certain membership is possible to the set (we can conlude with 100\% certainty that someone is tall).
+
+We can have upper level sets ($\alpha$-cuts) of $\tilde{A}$.
+\begin{gather}
+    \tilde{A}^\alpha = \{ \theta \in \Theta | \tilde{A}(\theta) \geq \alpha \} \\
+    \tilde{A}^{\alpha +} = \{ \theta \in \Theta | \tilde{A}(@q) > \alpha \}
+\end{gather}
+If we have $\alpha = 1$, then that is the \textbf{core} of the fuzzy set (the set of all points that have full membership to the set).
+
+How can we compare fuzzy sets?
+
+For $\tilde{A}, \tilde{B} \in F(\Theta)$, 
+\begin{equation}
+    \tilde{A} \subseteq \tilde{B} \text{ iff } \forall \theta \in \Theta, \tilde{A}(\theta) \leq \tilde{B}(\theta).
+\end{equation}
+A relation is cutworthy if forall $\alpha$, we preserve the subset relation
+
+We can have fuzzy intervals, numbers, quantities in $\mathbb{R}$, and we can generalize it to $\mathbb{R}^{m \times n}$ to get multidimensional fuzzy quantities and vectors.
+
+We can also have gaussian fuzzy numbers
+
+\begin{equation}
+    \tilde{x}(x) = e^{-\frac{h}{2}(x-m)^2}
+\end{equation}
+where $m$ is the mode and $h$ is the precision (inverse of variance).
+This can also be extended to the multivariate case.
+
+The completement of a fuzzy set $\tilde{A}$ is
+\begin{equation}
+    \tilde{A}^c = 1 - \tilde{A}(\theta)
+\end{equation}
+There is a general negation, but in this lecture we use $1-x$.
+We want to keep nice properties.
+
+Below we have the original fuzzy intersection and union formulas
+\begin{gather}
+    (\tilde{A} \cap_m \tilde{B})(\theta) = \min(\tilde{A}(\theta), \tilde{B}(\theta)) \\
+   (\tilde{A} \cup_m \tilde{B})(\theta) = \max(\tilde{A}(\theta), \tilde{B}(\theta)) 
+\end{gather}
+
+This has the property of being idempotent and following De Morgan laws, as well as respecting the $\alpha$-cuts (the intersection/union of the alpha cuts is the same as the alpha cut of the intersection/union).
+
+We can also define it through product and sum
+\begin{gather}
+    (\tilde{A} \cap_p \tilde{B})(\theta) = \tilde{A}(\theta) \tilde{B}(\theta) \\
+   (\tilde{A} \cup_p \tilde{B})(\theta) = \tilde{A}(\theta)  + \tilde{B}(\theta) - \tilde{A}(\theta) \tilde{B}(\theta)
+\end{gather}
+
+We can generalize the intersection and union operations with a $t$-norm and a $t$-conorm, as long as it respects some properties.
+
+\subsubsection{Possibility Theory}
+Fuzzy sets capture the concept of ambiguity or vagueness in claims.
+Possibility theory is for us to capture the uncertainty of information.
+
+A possibility distribution is a normal fuzzy set that expresses a fuzzy restriction on $X$
+\begin{equation}
+    \tilde{\pi} : \Theta \to [0,1]
+\end{equation}
+This measures the possibility that the candidate answer $\theta$ is the true answer $X$.
+
+The possibility measure of a candidate set of answers $A$
+\begin{equation}
+    \Pi(A) = \sup_{\theta \in A} \tilde{\pi} (\theta)
+\end{equation}
+
+We can have a necessity measure that measures the extent to which $A$ is certainly true:
+\begin{equation}
+    N(A) = 1 - \Pi(A^c) = \inf_{\theta \notin A} [1-\tilde{\pi}(\theta)]
+\end{equation}.
+
+When we have multiple possibility distributions that constraint our true answer $X$, we can combine them to get a distribution from them.
+We take the intersection, if it is possible, and then we normalize it to 1.
+\begin{equation}
+    (\tilde{\pi}_1 \cap_T^* \tilde{\pi}_2)(\theta) = \frac{(\tilde{\pi}_1 \cap_T \tilde{\pi}_2)(\theta)}{\sup_{\theta^\prime \in \Theta}(\tilde{\pi}_1 \cap_T^* \tilde{\pi}_2)(\theta^\prime)}
+\end{equation}
+Our choice of $T$ changes our function that we use for this intersection.
+We can choose it based off different properties that we want (idempotence, associative, etc).
+Associativity allows sequential combination of information, and idempotence allows us to capture correlated or overlapped information without reinforcing the same signal over and over again.
+
+When we have a gaussian fuzzy vector or gaussian fuzzy number, we can combine and extend and marginalize while keeping the result also be a gaussian fuzzy vector / number.
+
+\subsection{Exercises}
+\subsubsection{Listing cuts}
+
+Let $\tilde{A}$ be the following fuzzy subset of
+$\Theta = \{a,b,c,d,e\}$:
+\begin{equation}
+    \tilde{A} = \{(a,0.5),(b,0.4),(c,0.7),(d,0.8),(e,1)\}.
+\end{equation}
+
+List all $\alpha$-cuts and strong $\alpha$-cuts of $\tilde{A}$.
+
+\textbf{Solution}
+
+\begin{equation}
+    \tilde{A}^\alpha = 
+    \begin{cases}
+       \{ a,b,c,d,e \} & \alpha \leq 0.4 \\
+       \{ a,c,d,e \} & 0.4 < \alpha \leq 0.5 \\
+       \{ c,d,e \} & 0.5 < \alpha \leq 0.7 \\
+       \{ d,e \} & 0.7 < \alpha \leq 0.8 \\
+       \{ e \} & 0.8 < \alpha \\
+    \end{cases}
+\end{equation}
+
+\subsubsection{t-norm proof}
+
+Prove that the following inequalities hold for every $t$-norm $T$ and every
+$(x,y) \in [0,1]$:
+\begin{equation}
+    T_D(x,y) \leq T(x,y) \leq \min(x,y),
+\end{equation}
+where $T_D$ is the drastic $t$-norm defined by
+\begin{equation}
+    T_D(x,y) =
+    \begin{cases}
+        \min(x,y), & \text{if } \max(x,y)=1,\\
+        0, & \text{otherwise.}
+    \end{cases}
+\end{equation}
+
+\textbf{Solution}
+We can take the first inequality and put it in the case equation below:
+\begin{gather}
+    \min(x,y) \leq T(x,y) \leq \min(x,y) \quad \text{if } \max(x,y)=1 \\
+    0 \leq T(x,y) \leq \min(x,y) \quad \text{otherwise.}
+\end{gather}
+which simplifies to
+\begin{gather}
+    T(x,y) = \min(x,y) \quad \text{if } \max(x,y)=1 \\
+    0 \leq T(x,y) \leq \min(x,y) \quad \text{otherwise.}
+\end{gather}
+We can prove these separately.
+Firstly, if $\max(x,y) = 1$, then that means that either $x,y = 1$.
+A T-norm must follow the boundary condition property, which specifies that $T(x,1) = x$.
+Clearly, the boundary condition is then equivalent to $min(x,y)$ in this case, where one of the variables is 1.
+
+Now we must prove that 
+
+\begin{equation}
+    0 \leq T(x,y) \leq \min(x,y) \quad \text{if } \max(x,y) < 1
+\end{equation}
+via the monotonicity of t-norms, we get $T(x,y) \leq \min(x,y)$, and it is also non-negative.
+
 
 \end{document}
