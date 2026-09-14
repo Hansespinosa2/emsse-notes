@@ -248,5 +248,54 @@ where $m$ is the mean of $f$ and $k$ is the covariance.
 
 The Gaussian Process defines a prior distribution on $f(\mathbf{x})$.
 
+\subsection{Theoretical Exercises}
+\subsubsection{GPR, weight space view}
+Showing that the straightforward formulation of the GPR model can be re-expressed without those intermediate variables.
+
+\begin{equation}
+  \textbf{f}^* | \Phi^*, \Phi, \textbf{y} \sim N(\Phi^* \bar{\textbf{w}}, \Phi^* \textbf{A}^{-1} \Phi^{* \top})
+\end{equation}
+where $\bar{\textbf{w}} = \sigma_n^{-2} \textbf{A}^{-1} \Phi^\top \textbf{y}$, $\textbf{A} = \sigma_n^{-2} \Phi^\top \Phi + \Sigma_p^{-1}$
+and we would like to get to
+\begin{equation}
+ \textbf{f}^* | \Phi^*, \Phi, \textbf{y} \sim N (\Phi^* \Sigma_p \Phi^\top (K + \sigma_n^2 I_n)^{-1} \textbf{y}, \Phi^* \Sigma_p \Phi^{* \top} - \Phi^* \Sigma_p \Phi^\top (K+\sigma_n^2 I_n)^{-1} \Phi \Sigma_p \Phi^{* \top})
+\end{equation}
+where $K=\Phi \Sigma_p \Phi^\top$
+
+\textbf{Solution:}
+\begin{gather}
+  \textbf{f}^* | \Phi^*, \Phi, \textbf{y} \sim N(\Phi^* \bar{\textbf{w}}, \Phi^* \textbf{A}^{-1} \Phi^{* \top}) \\
+  = \textbf{f}^* | \Phi^*, \Phi, \textbf{y} \sim N(\Phi^* [\sigma_n^{-2} \textbf{A}^{-1} \Phi^\top \textbf{y}], \Phi^* [\sigma_n^{-2} \Phi^\top \Phi + \Sigma_p^{-1}] \Phi^{* \top}) \\
+  =  \textbf{f}^* | \Phi^*, \Phi, \textbf{y} \sim N(\Phi^* [\sigma_n^{-2} [\sigma_n^{-2} \Phi^\top \Phi + \Sigma_p^{-1}] \Phi^\top \textbf{y}], \Phi^* [\sigma_n^{-2} \Phi^\top \Phi + \Sigma_p^{-1}] \Phi^{* \top})
+\end{gather}
+I will now take the second part separately
+\begin{gather}
+  \Phi^* [\sigma_n^{-2} \Phi^\top \Phi + \Sigma_p^{-1}] \Phi^{* \top} \\
+  = \Phi^* \sigma_n^{-2} \Phi^\top \Phi \Phi^{* \top} + \Phi^* \Sigma_p^{-1} \Phi^{* \top}
+\end{gather}
+It appears I had a poor attempt.
+I think we need to instead inverse the $\textbf{A}^{-1}$ and then substitute it in for it all to work well.
+
+\begin{gather}
+  \sigma^{-2} \Phi^\top (K + \sigma^{2} I_m) = \sigma^{-2} \Phi^\top (\Phi \Sigma \Phi^\top + \sigma^2 I) \\
+  = A \Sigma \Phi^\top
+\end{gather}
+We can start from the first equation and then reduce to go back to the version with w bar and A.
+
+\textbf{Covariance}
+In order to solve this we use the woodbury matrix identity: $(Z + UWV^\top)^{-1} = Z^{-1} - Z^{-1} U (W^{-1} + V^\top Z^{-1} U)^{-1} V^\top Z^{-1}$.
+If we have 
+\begin{gather}
+  Z = \Sigma_p^{-1} \\
+  W = \sigma_m^{-2} I_m \\
+  U = \Phi^\top \\
+  V^\top = \Phi
+\end{gather}
+\begin{gather}
+  \Phi^* A^{-1} \Phi^{* \top} = \Phi^* (\sigma^{-2} \Phi^\top \Phi + \Sigma^{-1})^{-1} \Phi^{* \top} \\
+  = \Phi^* (\Sigma - \Sigma \Phi^\top(\sigma^{2} I + \Phi \Sigma \Phi^\top )^{-1} \Phi \Sigma) \Phi^{* \top} \\
+  = \Phi^* \Sigma \Phi^{* \top} - \Phi^* \Sigma \Phi^\top (\Phi \Sigma \Phi^\top + \sigma^2 I)^{-1} \Phi \Sigma \Phi^{* \top}
+\end{gather}
+\subsubsection{GPR function space view}
 
 \end{document}
