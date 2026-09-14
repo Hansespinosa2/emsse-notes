@@ -144,4 +144,109 @@ Now, we get new inputs $\textbf{X}^*$, and we want to not only have an output bu
 Our predictive maximum a posteriori distribution propagates into the distribution of our vector of new outputs.
 So we can model a portion of our uncertainty that comes from our weights.
 
+\section{Monday September 14th}
+\subsection{Gaussian Process Regression}
+If we have a nonlinear process that we would like to model linearly,
+then we can augment the variable vector to capture the nonlinearity.
+For example,
+
+\begin{align}
+  \textbf{x} = 
+  \begin{bmatrix}
+    x_1 \\ x_n x_1^2 \\ \vdots \\ x_1 x_2 \dots x_{n-1} x_n^2 \\ x_n
+  \end{bmatrix}
+\end{align}.
+
+There are many different ways that the augmented vector can be created.
+The log function, or just the square, or square root, etc.
+This augmentation process then becomes a part of the problem for the modeler, as they must use some information that they have on the real-world model and embed that understanding in the function choices.
+Poor choices of augmentation can then increase the amount of variables significantly without adding that much valuable information from it.
+With more variables, we also increase our chance of overfitting on our data, if our data is not sufficiently diverse enough.
+
+We can formalize this process.
+We have an input vector $\textbf{x} \in \mathbb{R}^n$, and a nonlinear transformation of $\textbf{x}, \phi(\textbf{x}) \in \mathbb{R}^{p}$.
+$\{ \phi : \textbf{x}\to \phi(\textbf{x})  \}$ is a function that maps our input vector into a higher dimension space.
+We can take our input vector and arrange it into a matrix $\textbf{X} \in \mathbb{R}^{m \times n}$.
+We can then get a matrix $\Phi \in \mathbb{R}^{m \times p} $ from the following.
+\begin{align}
+  \Phi = 
+  \begin{bmatrix}
+    \phi (\textbf{x}_1) \\ \phi (\textbf{x}_2) \\ \vdots \\ \phi (\textbf{x}_m)
+  \end{bmatrix}
+\end{align}
+And we can split our data into training and test matrices as well.
+
+\subsubsection{Gaussian Process Regression}
+We can have a naive formulation for this.
+The Gaussian Process Regression replaces the $\textbf{x}$ with the nonlinear transformation as such:
+\begin{equation}
+  f(\textbf{x}) = \phi(\textbf{x})^\top \textbf{w}
+\end{equation},
+where $\textbf{w} \in R^p$.
+And for a case of training data, we have $\Phi \textbf{w}$.
+
+We have the posterior on $\textbf{w}$ that we had previously but with different mean and precision matrix.
+\begin{gather}
+  \textbf{w} | \textbf{X},\textbf{y} \sim N(\bar{\textbf{w}}, \textbf{A}^{-1}) \\
+  \bar{\textbf{w}} = \sigma_m^{-2} \textbf{A}^{-1} \Phi \textbf{y} \\
+  \textbf{A} = \sigma_m^{-2} \Phi^\top \Phi + \Sigma_p^{-1}
+\end{gather}
+and we have a posterior on our predictions $\textbf{f}^*$
+\begin{gather}
+  \textbf{f}^* | \textbf{X}^*, \textbf{X} ,y \sim N(\Phi^* \bar{\textbf{w}},\Phi^* \textbf{A}^{-1} \Phi^{* \top} ) \\
+  \bar{\textbf{w}} = \sigma_m^{-2} \textbf{A}^{-1} \Phi \textbf{y} \\
+  \textbf{A} = \sigma_m^{-2} \Phi^\top \Phi + \Sigma_p^{-1}
+\end{gather}
+Since the matrix $\textbf{A} \in \mathbb{R}^{p \times p}$, and $p >> m$, then we have increased the computational complexity as we will have to compute the inverse of that matrix.
+Can we re-formulate the problem so we can address these computational complexity issues?
+
+We can expand the formula for $\textbf{f}^*$ to get an expanded veersion without the $m, A$ variables.
+We make sure we only need to invert a matrix of size $m$ so that we do not need to invert one of the much larger $p$.
+
+\subsubsection{Kernel Function}
+$\textbf{K} \in \mathbb{R}^{m \times m}$ is the kernel matrix and is created by such:
+\begin{equation}
+  \textbf{K} = \Phi \Sigma_p  \Phi^\top
+\end{equation}
+where any general term is:
+\begin{equation}
+  k_{ij} = k(\textbf{x}_i, \mathbf{x}_j) = \phi(\textbf{x}_i )^\top \Sigma_p \phi(\textbf{x}_j)
+\end{equation}.
+We can rearrange and this and split $\Sigma_p = \Sigma_p^{1/2} \Sigma_p^{1/2}$ to get
+\begin{equation}
+  k_{ij} = \psi (\textbf{x}_i)^\top \psi (\textbf{x}_j)
+\end{equation}
+where $\psi(\textbf{x}) = \Sigma_p^{1/2} \phi(\textbf{x})$.
+The kernel function then is the inner product of two training instances.
+
+The kernel trick seems to be: because the kernel function will output a scalar inner product matrix, which is symmetric and positive semi-definite,
+we do not actually need to compute the $\phi(\textbf{x})$.
+We can instead just pick a kernel function that will output a positive semi-definite matrix.
+But how do we choose a kernel function?
+
+The kernel functions tell us how instances are tied to each other.
+These kernel functions may have some properties:
+\begin{itemize}
+  \item \textbf{Stationary:} $k(\textbf{x}, \textbf{x}^\prime)$ only depends on the difference $\textbf{x} - \textbf{x}^\prime$.
+  \item \textbf{Dot Product} $k(\textbf{x}, \textbf{x}^\prime)$ only depends on $\textbf{x}^\top \textbf{x}^\prime$
+\end{itemize}
+We pick these properties if we have some information on the data and we want to preserve certain assumptions in the kernel
+
+The squared exponential kernel is 
+\begin{equation}
+  k(\textbf{x}, \textbf{x}^\prime) = \sigma_f^2 e^{-\frac{1}{2} (\textbf{x} - \textbf{x}^\prime)^\top \textbf{M} (\textbf{x} - \mathbf{x}^\prime)} + \sigma_m^2 \textbf{I}_m
+\end{equation}
+where $\textbf{M}$ is usually chosen to be $\frac{1}{l^2} \textbf{I}_p$, where $l$ is a parameter of length scale.
+
+\subsubsection{Function-Space View}
+The Gaussian Process Regression model allows for computing distributions over functions.
+We define a pdf for $f$:
+\begin{equation}
+  f(\textbf{x}) \sim GP(m(\textbf{x}), k(\textbf{x}, \textbf{x}^\prime))
+\end{equation}
+where $m$ is the mean of $f$ and $k$ is the covariance.
+
+The Gaussian Process defines a prior distribution on $f(\mathbf{x})$.
+
+
 \end{document}
