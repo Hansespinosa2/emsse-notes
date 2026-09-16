@@ -685,6 +685,96 @@ x_5 & 0 & 0 & -1/4 & -2 & -3/4 & 1 & -1/4 & 5/4 & 25/4 \\ \hline
 \end{array}
 \]
 
+\subsubsection{Exercise 3.6}
+Find the optimal solution for the following LP:
+\begin{align}
+  \text{maximize} & \quad 3x_1 + 3x_2 \\
+  \text{subject to} & \quad x_1 + 4x_2 \leq 12 \\
+  & \quad 2x_1 + x_2 \leq 10 \\
+  & \quad \textbf{x} \succeq 0
+\end{align}
+\textbf{Solution:}
+We can create our slack variables $y_1, y_2$ which also serve as our augmented variables for the phase 1 of the simplex since we are in $\textbf{A} \textbf{x} \succeq \textbf{b}$ format.
 
+I will jump into the tableau with the slack variables as the basis
+\[
+\begin{array}{c|c|cccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & y_1 & y_2 & b \\ \hline
+    y_1 & 0 & 1 & 4 & 1 & 0 & 12 \\
+    y_2 & 0 & 2 & 1 & 0 & 1 & 10 \\ \hline
+        & c_j & 3 & 3 & 0 & 0 \\
+        & z_j & 0 & 0 & 0 & 0 & 0 \\ \hline
+        & c_j - z_j & 3 & 3 & 0 & 0 & 0
+\end{array}
+\]
+
+here we can choose $x_1$ to enter the basis and $y_2$ to leave it.
+\[
+\begin{array}{c|c|cccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & y_1 & y_2 & b \\ \hline
+    y_1 & 0 & 0 & 7/2 & 1 & -1/2 & 7 \\
+    x_1 & 3 & 1 & 1/2 & 0 & 1/2 & 5 \\ \hline
+        & c_j & 3 & 3 & 0 & 0 \\
+        & z_j & 3 & 3/2 & 0 & 3/2 & 15 \\ \hline
+        & c_j - z_j & 0 & 3/2 & 0 & -3/2 & -15
+\end{array}
+\]
+We choose $x_2$ to enter the basis and $y_1$ to leave it
+\[
+\begin{array}{c|c|cccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & y_1 & y_2 & b \\ \hline
+    x_2 & 3 & 0 & 1 & 2/7 & -7 & 2 \\
+    x_1 & 3 & 1 & 0 & -1/7 & -3 & 4  \\ \hline
+        & c_j & 3 & 3 & 0 & 0 \\
+        & z_j & 3 & 3 & 3/7 & -30 & 18 \\ \hline
+        & c_j - z_j & 0 & 0 & - & - & -18
+\end{array}
+\]
+
+\subsubsection{Exercise 3.8}
+Find the optimal solution for the following LP:
+\begin{align}
+  \text{maximize} & \quad -3x_1 + 4x_2 \\
+  \text{subject to} & \quad x_1 + 2x_2 \leq 18 \\
+  & \quad x_1 + x_2 \leq 10 \\
+  & \quad 3x_1 + x_2 \leq 20 \\
+  & \quad x_1, x_2 \geq 0
+\end{align}
+\textbf{Solution:}
+\[
+\begin{array}{c|c|ccccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & x_3 & x_4 & x_5 & b \\ \hline
+    x_3 & 0 & 1 & 2 & 1 & 0 & 0 & 18 \\
+    x_4 & 0 & 1 & 1 & 0 & 1 & 0 & 10 \\
+    x_5 & 0 & 3 & 1 & 0 & 0 & 1 & 20 \\ \hline
+        & c_j & 3 & 4 & 0 & 0 & 0 \\
+        & z_j & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+        & c_j - z_j & 3 & 4 & 0 & 0 & 0 & 0
+\end{array}
+\]
+We choose $x_2$ to enter the basis and $x_3$ to leave
+\[
+\begin{array}{c|c|ccccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & x_3 & x_4 & x_5 & b \\ \hline
+    x_2 & 4 & 1/2 & 1 & 1/2 & 0 & 0 & 9 \\
+    x_4 & 0 & 1/2 & 0 & -1/2 & 1 & 0 & 1 \\
+    x_5 & 0 & 5/2 & 0 & -1/2 & 0 & 1 & 11 \\ \hline
+        & c_j & 3 & 4 & 0 & 0 & 0 \\
+        & z_j & 2 & 4 & 2 & 0 & 0 & 36 \\ \hline
+        & c_j - z_j & 1 & 0 & -2 & 0 & 0 & -36
+\end{array}
+\]
+We choose $x_1$ to enter the basis and $x_4$ to leave.
+\[
+\begin{array}{c|c|ccccc|c}
+    \text{Basis} & c_b & x_1 & x_2 & x_3 & x_4 & x_5 & b \\ \hline
+    x_2 & 4 & 0 & 1 & 1 & -1 & 0 & 8 \\
+    x_1 & 3 & 1 & 0 & -1 & 2 & 0 & 2 \\
+    x_5 & 0 & 0 & 0 & 2 & -5 & 1 & 6 \\ \hline
+        & c_j & 3 & 4 & 0 & 0 & 0 \\
+        & z_j & 3 & 4 & 1 & 2 & 0 & 38 \\ \hline
+        & c_j - z_j & 0 & 0 & -1 & -2 & 0 & -38
+\end{array}
+\]
 
 \end{document}
