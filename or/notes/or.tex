@@ -531,5 +531,160 @@ d_{n,t,s}
 \quad \forall n \in N, m \in M, t \in T
 \end{align}
 
+\section{Wednesday September 16th}
+We will have an exam on September 23rd at 8:00AM for linear programming.
+The final exam will be before the break and will be for the non-linear component of the course.
+
+In the simplex algorithm, we need to start with an initial feasible basis.
+How do we get it?
+We have a two-step simplex algorithm, where the first step is to get a basic feasible solution of any sort, and the second step is to traverse from that basic feasible solution to get the global optima.
+
+In the first step, we add an artificial variable of the same size as the actual variables $(\mathbf{y}, \mathbf{x} \in \mathbb{R}^m )$.
+
+\begin{align}
+  \text{minimize} & \quad \textbf{1}^\top \textbf{y} \\
+  \text{subject to} & \quad \textbf{A} \textbf{x} + \textbf{y} = \textbf{b} \\
+  & \quad \textbf{x} \succeq 0,  \textbf{y} \succeq 0
+\end{align}
+If we are able to get a solution where $\textbf{1}^\top \textbf{y} = 0$, then we have a basic feasible solution to the original problem
+We can always get a basic feasible solution in this first step problem by setting $\textbf{y} = \textbf{b}$.
+After solving, we can remove the $\textbf{y}$ variable, since it would be equal to zero anyways.
+
+For the reduced cost, we get the cost in the context of the non-basic variables.
+We transform and then express the objective function by the non-basic variables.
+\subsubsection{Example 1}
+\begin{center}
+\begin{tabular}{c|rrrr}
+    & $x_1$ & $x_2$ & $x_3$ & $b$ \\
+\hline
+$x_3$ & $0$ & $-\frac{3}{4}$ & $1$ & $\frac{3}{2}$ \\
+$x_1$ & $1$ & $\frac{5}{4}$ & $0$ & $\frac{1}{2}$ \\
+\hline
+$c^\top$ & $-4$ & $-1$ & $-1$ & $0$
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{c|rrrr}
+    & $x_1$ & $x_2$ & $x_3$ & $b$ \\
+\hline
+$x_3$ & $0$ & $-\frac{3}{4}$ & $1$ & $\frac{3}{2}$ \\
+$x_1$ & $1$ & $\frac{5}{4}$ & $0$ & $\frac{1}{2}$ \\
+\hline
+$c^\top$ & $0$ & $\frac{13}{4}$ & $0$ & $\frac{7}{2}$
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{c|rrrr}
+    & $x_1$ & $x_2$ & $x_3$ & $b$ \\
+\hline
+$x_3$ & $0$ & $-\frac{3}{4}$ & $1$ & $\frac{3}{2}$ \\
+$x_1$ & $1$ & $\frac{5}{4}$ & $0$ & $\frac{1}{2}$ \\
+\hline
+$c^\top$ & $0$ & $\frac{13}{4}$ & $0$ & $\frac{7}{2}$
+\end{tabular}
+\end{center}
+
+\subsubsection{Example 2}
+
+\begin{align}
+  \text{maximize} & \quad -2 x_2 + x_3 - x_4 \\
+  \text{subject to} & \quad - x_2 + x_4 = 1 \\
+  & \quad - x_3 + x_4 = 3 \\
+  & \quad \textbf{x} \succeq 0
+\end{align}
+To get a basic feasible solution we can add the variables $y_1, y_2$
+
+\begin{align}
+  \text{maximize} & \quad - y_1 - y_2 \\
+  \text{subject to} & \quad - x_2 + x_4 + y_1= 1 \\
+  & \quad - x_3 + x_4 + y_2 = 3 \\
+  & \quad \textbf{x} \succeq 0, \textbf{y} \succeq 0
+\end{align}
+
+\[
+\begin{array}{c|c|ccccc|c}
+\text{Basis} & c_B & x_2 & x_3 & x_4 & y_1 & y_2 & b \\ \hline
+y_1 & -1 & -1 & 0 & 1 & 1 & 0 & 1 \\
+y_2 & -1 & 0 & -1 & 1 & 0 & 1 & 3 \\ \hline
+ & c_j & 0 & 0 & 0 & -1 & -1 & \\ \hline
+ & z_j & 1 & 1 & -2 & -1 & -1 & -4 \\
+ & c_j-z_j & -1 & -1 & 2 & 0 & 0 &
+\end{array}
+\]
+We can pick $x_4$ to pivot on, and we can have $y_1$ leave the basis.
+\[
+\begin{array}{c|c|ccccc|c}
+\text{Basis} & c_B & x_2 & x_3 & x_4 & y_1 & y_2 & b \\ \hline
+x_4 & 0 & -1 & 0 & 1 & 1 & 0 & 1 \\
+y_2 & -1 & 1 & -1 & 0 & -1 & 1 & 2 \\ \hline
+ & c_j & 0 & 0 & 0 & -1 & -1 & \\ \hline
+ & z_j & -1 & 1 & 0 & 1 & -1 & -4 \\
+ & c_j-z_j & 1 & -1 & 0 & -2 & 0 &
+\end{array}
+\]
+I will now stop this to move on to the next example since we moved on.
+
+\subsubsection{Example 3}
+\begin{align}
+  \text{minimize} & \quad x_1 + 6x_2 - 7x_3 + x_4 + 5x_5 \\
+  \text{subject to} & \quad 5x_1 - 4x_2 + 13x_3 - 2x_4 + x_5 = 20 \\
+  & \quad x_1 - x_2 + 5x_3 - x_4 + x_5 = 8 \\
+  & \quad \textbf{x} \succeq 0 
+\end{align}
+We now want to test the feasibility so we add two variables $y_1, y_2$ and then solve simplex to minimize those artificial variables.
+\begin{align}
+  \text{maximize} & \quad -y_1 - y_2 \\
+  \text{subject to} & \quad 5x_1 - 4x_2 + 13x_3 - 2x_4 + x_5 + y_1 = 20 \\
+  & \quad x_1 - x_2 + 5x_3 - x_4 + x_5 + y_2 = 8 \\
+  & \quad \textbf{x} \succeq 0, \textbf{y} \succeq 0
+\end{align}
+
+\[
+\begin{array}{c|c|ccccccc|c}
+\text{Basis} & c_B & x_1 & x_2 & x_3 & x_4 & x_5 & y_1 & y_2 & b \\ \hline
+y_1 & -1 & 5 & -4 & 13 & -2 & 1 & 1 & 0 & 20 \\
+y_2 & -1 & 1 & -1 & 5 & -1 & 1 & 0 & 1 & 8 \\ \hline
+ & c_j & 0 & 0 & 0 & 0 & 0 & -1 & -1 & \\ 
+ & z_j & -6 & 5 & -18 & 3 & -2 & -1 & -1 & -28 \\ \hline
+ & c_j - z_j & 6 & -5 & 18 & -3 & 2 & 0 & 0 & 28
+\end{array}
+\]
+We choose $x_1$ to enter the basis and $y_1$ to leave
+\[
+\begin{array}{c|c|ccccccc|c}
+\text{Basis} & c_B & x_1 & x_2 & x_3 & x_4 & x_5 & y_1 & y_2 & b \\ \hline
+x_1 & 0 & 1 & -4/5 & 13/5 & -2/5 & 1/5 & 1/5 & 0 & 4 \\
+y_2 & -1 & 0 & -1/5 & -8/5 & -3/5 & 4/5 & -1/5 & 1 & 4 \\ \hline
+ & c_j & 0 & 0 & 0 & 0 & 0 & -1 & -1 & \\ 
+ & z_j & 0 & 1/5 & 8/5 & 3/5 & -4/5 & 1/5 & -1 & -4 \\ \hline
+ & c_j - z_j & 0 & -1/5 & -8/5 & -3/5 & 4/5 & -6/5 & 0 & 4
+\end{array}
+\]
+We choose $x_5$ to enter and $y_2$ to leave.
+\[
+\begin{array}{c|c|ccccccc|c}
+\text{Basis} & c_B & x_1 & x_2 & x_3 & x_4 & x_5 & y_1 & y_2 & b \\ \hline
+x_1 & 0 & 1 & -4/5 + 1/20 & 13/5 + 3/5 & -2/5 + 3/20 & 1/5 - 1/5 & 1/5+ 1/20 & 0 - 1/4& 4 - 5/4 \\
+x_5 & 0 & 0 & -1/4 & -2 & -3/4 & 1 & -1/4 & 5/4 & 25/4 \\ \hline
+ & c_j & 0 & 0 & 0 & 0 & 0 & -1 & -1 & \\ 
+ & z_j & 0 & 1/5 & 8/5 & 3/5 & -4/5 & 1/5 & -1 & -4 \\ \hline
+ & c_j - z_j & 0 & -1/5 & -8/5 & -3/5 & 4/5 & -6/5 & 0 & 4
+\end{array}
+\]
+
+\[
+\begin{array}{c|c|ccccccc|c}
+\text{Basis} & c_B & x_1 & x_2 & x_3 & x_4 & x_5 & y_1 & y_2 & b \\ \hline
+x_1 & 0 & 1 & -3/4 & 16/5 & -1/4 & 0 & 1/4 & - 1/4& 11/4 \\
+x_5 & 0 & 0 & -1/4 & -2 & -3/4 & 1 & -1/4 & 5/4 & 25/4 \\ \hline
+ & c_j & 0 & 0 & 0 & 0 & 0 & -1 & -1 & \\ 
+ & z_j & 0 & 1/5 & 8/5 & 3/5 & -4/5 & 1/5 & -1 & -4 \\ \hline
+ & c_j - z_j & 0 & -1/5 & -8/5 & -3/5 & 4/5 & -6/5 & 0 & 4
+\end{array}
+\]
+
+
 
 \end{document}
