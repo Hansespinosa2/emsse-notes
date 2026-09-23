@@ -777,4 +777,131 @@ We choose $x_1$ to enter the basis and $x_4$ to leave.
 \end{array}
 \]
 
+\section{Wednesday September 23rd}
+\subsection{Free Optimisation}
+Free optimisation corresponds to finding the optimal value of a function with variables that are unconstrained.
+We have $f : \mathbb{R} \to \mathbb{R}$ and $f(x) = \frac{1}{2} a x^2 - bx$.
+We seek to find a $x^* \in \mathbb{R}$
+\begin{align}
+  \text{minimize} & \quad f(x) 
+\end{align}
+To find the critical points of this function, we can take the derivative of the function
+\begin{gather}
+    f(x) = \frac{1}{2} a x^2 - bx \\
+    \frac{d f}{d x } =  ax - b 
+\end{gather}
+When the derivative of a function is equal to zero, we get the critical points
+\begin{equation}
+    x = \frac{b}{a}
+\end{equation}
+
+We can also generalize to the multi-dimensional input space with a vector $\mathbf{x} \in \mathbb{R}^{n}$
+
+\begin{align}
+  \text{minimize} & \quad f(x) = \frac{1}{2}  \textbf{x}^\top \textbf{A} \textbf{x} - \textbf{b}^\top \textbf{x}
+\end{align}
+This is the quadratic form of $f$.
+If the gradient of this quadratic form is equal to zeros, then we are at a critical point
+\begin{equation}
+    \nabla f(x) = \textbf{A} \textbf{x} - \textbf{b} = \textbf{0}
+\end{equation}
+
+\begin{equation}
+    \lim_{t \to 0} \frac{f(\textbf{x} + t \textbf{h}) - f(\textbf{x})}{t} = \nabla f(x^*)^\top \textbf{h}
+\end{equation}
+
+\subsubsection{General Case}
+We can have the general case $f : \mathbb{R}^n \to \mathbb{R}$ where our only constraint is that $f$ is differentiable.
+We want to find the optimal solution $\textbf{x}^*$ that minimizes $f(\textbf{x}^*)$.
+The solution must occur where the derivative of the function is zero.
+\subsection{Exercises}
+\subsubsection{First}
+We have $f : \mathbb{R}^2 \to \mathbb{R}$.
+With the form $f(x,y) = 8 x^2 + y^2 + x y + 1$.
+
+\textbf{Solution: }
+We can solve this by taking the partial derivatives and stacking them or doing the limit with $\textbf{l} = [h,k], t$
+
+\begin{gather}
+    \frac{f((x,y) + t(h,k) - f(x,y))}{t} = \frac{f(x+th, y+ tk) - f(x,y)}{t} \\ 
+    = 8(k+th)^2 + (y+tk)^2 + (x+th)(y+tk) + 1 - (8 x^2 + y^2 + x y + 1) \\
+    \dots
+\end{gather}
+
+\begin{align}
+  \nabla f(x,y) = 
+  \begin{bmatrix}
+     16x + y \\ 2y + x
+  \end{bmatrix}
+\end{align}
+
+The partial derivative method is much simpler.
+\subsubsection{Second}
+$f(x,y)= x^2 + y^2 + \frac{1}{x^2 y^2}$
+\begin{gather}
+    \frac{d f}{d x} = 2x - \frac{2}{x^3 y^2} \\
+    \frac{d f}{d y} = 2y - \frac{2}{x^2 y^3} 
+\end{gather}
+
+\begin{align}
+  \nabla f(x,y) = 
+  \begin{bmatrix}
+     2x - \frac{2}{x^3 y^2} \\ 2y - \frac{2}{x^2 y^3}
+  \end{bmatrix}
+\end{align}
+
+\subsubsection{Third}
+$f(x,y) = (2x - x^2)(2y-y^2)$
+\begin{gather}
+    \frac{d f}{d x} = (2 - 2x)(2y - y^2) \\
+    \frac{d f}{d y} = (2 - 2y)(2x - x^2)
+\end{gather}
+
+\begin{align}
+  \nabla f = 
+  \begin{bmatrix}
+     (2 - 2x)(2y - y^2) \\ (2 - 2y)(2x - x^2)
+  \end{bmatrix}
+\end{align}
+The solutions occur at $x=0,y=0,x=1,y=1, x=2,y=2$
+
+\subsubsection{Fourth}
+$f(x,y,z) = 8x^2 + y^2 + z^2 + xz + yz + 1$
+\begin{gather}
+    \frac{d f}{d x} = 16x + z \\
+    \frac{d f}{d y} = 2y + z \\
+    \frac{d f}{d z} = 2z + x + y  
+\end{gather}
+
+\begin{align}
+  \nabla f = 
+  \begin{bmatrix}
+     16x + z \\ 2y + z \\ 2z + x + y
+  \end{bmatrix}
+\end{align}
+
+We can get the solution here by solving the linear equations $\textbf{A} \textbf{x} = \textbf{0}$
+where 
+\begin{align}
+  \textbf{A} = 
+  \begin{bmatrix}
+     16 & 0 & 1 \\
+     0 & 2 & 1 \\
+     1 & 1 & 2
+  \end{bmatrix}
+\end{align}
+
+
+\subsubsection{fifth}
+$f(x,y,z,t) = t(x^2 + y^2) + z^3$
+
+\begin{gather}
+    \frac{d f}{d x} = 2tx \\
+    \frac{d f}{d y} = 2ty \\
+    \frac{d f}{d z} = 3z^2 \\
+    \frac{d f}{d t} =  x^2 + y^2
+\end{gather}
+
+
+
 \end{document}
